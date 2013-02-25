@@ -1,99 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>代码人生</title>
-  <meta name="author" content="黄亿华">
-
-  
-  <meta name="description" content="DNS污染原理 DNS污染是比DNS劫持更加难以防御的一种攻击，受攻击者访问网站时可被导向其他域名，例如某“不存在的网站”被导向了一个“不存在的IP地址”。 DNS污染的原理如下： DNS查询也是一个经典的请求-回答模式。首先，客户端发起DNS查询，这是一个UDP包。路由器在转发IP包时， &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://flashsword20.github.com/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="代码人生" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">代码人生</a></h1>
-  
-    <h2>A blog for coder lost in career.</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:flashsword20.github.com" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[代码人生]]></title>
+  <link href="http://flashsword20.github.com/atom.xml" rel="self"/>
+  <link href="http://flashsword20.github.com/"/>
+  <updated>2013-02-25T21:49:26+08:00</updated>
+  <id>http://flashsword20.github.com/</id>
+  <author>
+    <name><![CDATA[黄亿华]]></name>
     
-      <h1 class="entry-title"><a href="/blog/2013/02/25/blackhole-anti-dns-poison/">BlackHole开发日志&#8211;防止DNS污染</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-
-
-<time datetime="2013-02-25T21:13:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3></h3>
+  <entry>
+    <title type="html"><![CDATA[BlackHole开发日志--防止DNS污染]]></title>
+    <link href="http://flashsword20.github.com/blog/2013/02/25/blackhole-anti-dns-poison/"/>
+    <updated>2013-02-25T21:13:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2013/02/25/blackhole-anti-dns-poison</id>
+    <content type="html"><![CDATA[<h3></h3>
 
 <hr />
 
@@ -105,7 +30,7 @@
 
 <p>DNS查询也是一个经典的请求-回答模式。首先，客户端发起DNS查询，这是一个UDP包。路由器在转发IP包时，对其内容做解析，若发现其是使用53端口的UDP包，并且其内容符合某些特征(普通的DNS请求都是明文)，则从旁路直接返回一个伪造的应答，将其应答指向某个特定IP。因为这个返回速度非常快，所以先于正常请求到达客户端。而客户端收到一个返回包，就认为得到了答案，不再继续接收，而正确的请求结果就被忽略了！</p>
 
-<p><img src="/images/posts/dns-poison.png" alt="image" /></p>
+<p><img src="http://flashsword20.github.com/images/posts/dns-poison.png" alt="image" /></p>
 
 <p>一般防止DNS污染有几种方法：</p>
 
@@ -147,42 +72,15 @@
 <p>  BlackHole还是修改hosts文件的替代方案。通过修改&#8221;config/zones&#8221;可以自定义DNS拦截规则，支持通配符&#8221;*&#8221;。</p></li>
 </ul>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/17/fenng-career/">十年莽撞IT路</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-17T18:39:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>原文地址：<a href="http://dbanotes.net/mylife/ten_years_it_road.html">http://dbanotes.net/mylife/ten_years_it_road.html</a> 作者冯大辉<a href="http://weibo.com/fenng">@fenng</a></p>
+  <entry>
+    <title type="html"><![CDATA[十年莽撞IT路]]></title>
+    <link href="http://flashsword20.github.com/blog/2013/02/17/fenng-career/"/>
+    <updated>2013-02-17T18:39:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2013/02/17/fenng-career</id>
+    <content type="html"><![CDATA[<p>原文地址：<a href="http://dbanotes.net/mylife/ten_years_it_road.html">http://dbanotes.net/mylife/ten_years_it_road.html</a> 作者冯大辉<a href="http://weibo.com/fenng">@fenng</a></p>
 
 <p>按：博文视点周筠老师多次叮嘱我写点关于个人成长的心得，颇感压力。回首在 IT 这个行业也差不多有 10 年了，在互联网也有 7 年之久，没做成什么惊人的事业，也没什么赚到大把的钞票，如果冒充什么成功导师大谈人生感悟岂不是会被读者朋友笑掉大牙，当然引来板砖也说不定。如果说有可取的，恐怕也就是自己莽撞的混入这个行业阴差阳错的一路走过来，有些教训或许能供朋友们参考一下。所以，硬着头皮记录一下过去几年的流水账。是为序。</p>
 
@@ -269,42 +167,15 @@
 <p>有的时候面对即将毕业的同学对于职业或是人生的困惑，我真的不知道该如何作答，我不知道每一次选择会怎样改变你，每一个个体是不相同的，不可能复制别人的道路，但有一点可以肯定的是，在这个糟糕的时代，我们都将面对更大的压力，会历经更大的痛苦，唯有更加顽强一些，在你快绝望的时候再坚持一下。这是我经历十年莽撞IT路后给自己的一点忠告。</p>
 
 <p>{这是 2011 年写的东西，重新整理，放在这里作为一份记录}</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>2013-2-17</h4>
+  <entry>
+    <title type="html"><![CDATA[blackhole开发日记II]]></title>
+    <link href="http://flashsword20.github.com/blog/2013/02/17/blackhole-develop-diary2/"/>
+    <updated>2013-02-17T15:14:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2013/02/17/blackhole-develop-diary2</id>
+    <content type="html"><![CDATA[<h4>2013-2-17</h4>
 
 <p>时隔一个月，再次迎来更新！</p>
 
@@ -321,42 +192,15 @@
 <p>成功完成了blackhole在windows下的配置。后来网上搜到有人做过差不多的工具AntiDnsPollution<a href="http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/">http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/</a>，还比这个简单。有点失望，安安心心做好工作才是王道啊。</p>
 
 <p>以后技术方面还是要多积累才行。不过blackhole项目还是有自己的优势的，低延迟、支持缓存、可持久化、可定制都是其优点。好好把任务完成吧。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">Mac使用ssh Socks代理翻墙</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-05T21:46:00+08:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
+  <entry>
+    <title type="html"><![CDATA[Mac使用ssh socks代理翻墙]]></title>
+    <link href="http://flashsword20.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/"/>
+    <updated>2013-01-05T21:46:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang</id>
+    <content type="html"><![CDATA[<p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
 
 <p>使用ssh作为socks proxy：</p>
 
@@ -382,42 +226,15 @@ echo yourpassword
 <p>还有就是autoproxy的配置，在Chrome下使用SwitchySharp，在规则列表里加上<a href="https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt">https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt</a>，选择AutoProxy兼容列表即可，当然对应情景模式别忘了选成你配好的本地代理！</p>
 
 <p>最后将启动脚本ln -s到/Library/StartupItems/，至此大功告成。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/17/blackhole-develop-diary/">BlackHole开发日记</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-17T23:04:00+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>起因</h3>
+  <entry>
+    <title type="html"><![CDATA[BlackHole开发日记]]></title>
+    <link href="http://flashsword20.github.com/blog/2012/12/17/blackhole-develop-diary/"/>
+    <updated>2012-12-17T23:04:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2012/12/17/blackhole-develop-diary</id>
+    <content type="html"><![CDATA[<h3>起因</h3>
 
 <p>最近公司在做一个邮件系统的项目，涉及到测试对外发送的环节。开始构思是这样：建立一个接收服务器，并将所有请求导向该服务器。这里面就涉及到一个DNS拦截的问题。这个问题其实在开发和测试环境中很常见，但是单是绑hosts或者使用传统DNS都不太能满足需要(不支持通配符)。</p>
 
@@ -959,42 +776,15 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 <p>比如开始准备实现一个简单的GlobalFactory，做Spring做的事，只是省去繁琐的xml配置（而且印象中Spring启动实在是太慢了）。后来发现，依赖管理是相当复杂的一块，特别是初始化的时候的顺序。后来只好引入了Spring，发现Spring本身启动并不慢，而且使用annotation代替xml之后，也相当容易配置，重构起来也很方便，一改我在公司项目开发中，Spring又慢又笨重的印象。</p>
 
 <p>再比如项目需要做到一个可外部管理应用的东西，当时还得意洋洋的搞了个项目叫wifesays，用的是TCP文本协议。后来才发现，Java有个模块JMX，专门就是用来干这事的。不过之前很难理解JMX，现在发现容易理解很多。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/12/coder-routine/">程序员每天每周每月每年应该做的事情</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-12T20:11:00+08:00" pubdate data-updated="true">Dec 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>【引自等你 我的朋友的博客】作为一个合格程序员每天该做的事</em></p>
+  <entry>
+    <title type="html"><![CDATA[程序员每天每周每月每年应该做的事情]]></title>
+    <link href="http://flashsword20.github.com/blog/2012/12/12/coder-routine/"/>
+    <updated>2012-12-12T20:11:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2012/12/12/coder-routine</id>
+    <content type="html"><![CDATA[<p><em>【引自等你 我的朋友的博客】作为一个合格程序员每天该做的事</em></p>
 
 <h4>程序员每天该做的事</h4>
 
@@ -1111,49 +901,22 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 <h5>5、推出一种新产品</h5>
 
 <p>可以是一个真正的产品，也可以只是一个类库，只要是你创造的东西就行，让别人使用它，也为世界作点贡献。当然如果真的很有价值，收点注册费也是应该的。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/12/haoer-zhuan-fang/">图灵访谈之三十二：我的精神家园——陈皓（@左耳朵耗子）专访</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-12T08:08:00+08:00" pubdate data-updated="true">Dec 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>转载自<a href="http://www.ituring.com.cn">图灵社区</a>，原文地址<a href="http://www.ituring.com.cn/article/9174">http://www.ituring.com.cn/article/9174</a></em></p>
+  <entry>
+    <title type="html"><![CDATA[图灵访谈之三十二：我的精神家园——陈皓（@左耳朵耗子）专访]]></title>
+    <link href="http://flashsword20.github.com/blog/2012/12/12/haoer-zhuan-fang/"/>
+    <updated>2012-12-12T08:08:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2012/12/12/haoer-zhuan-fang</id>
+    <content type="html"><![CDATA[<p><em>转载自<a href="http://www.ituring.com.cn">图灵社区</a>，原文地址<a href="http://www.ituring.com.cn/article/9174">http://www.ituring.com.cn/article/9174</a></em></p>
 
 <p>芝兰生于深谷，不以无人而不芳 。君子修身养德，不以穷困而改志。</p>
 
 <pre><code>    “码农人物志”第二期码农代表：陈皓（@左耳朵耗子），酷壳coolshell.cn博主。14年软件开发相关工作经验，8年以上项目和团队管理经验，6年的软件行业咨询经验。擅长底层技术架构，团队建设，软件工程，软件研发咨询，以及全球软件团队协作管理。对高性能，高可用性，分布式，高并发，以及大规模数据处理系统有一些经验和心得。喜欢关注底层技术平台和互联网行业应用。技术擅长C/C++/Java和Unix/Linux/Windows。现于Amazon中国任研发经理，负责库存预测和电子商务全球化业务（全球开店）的研发。
 </code></pre>
 
-<p><img src="/images/posts/haoer.jpeg" alt="image" /></p>
+<p><img src="http://flashsword20.github.com/images/posts/haoer.jpeg" alt="image" /></p>
 
 <h3>经历</h3>
 
@@ -1257,42 +1020,15 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 <h5>图灵社区：有人说你现在的文章仍然说明你是一个躺在自己池子里说话的人，是不是说你仍然没有达到一个很高的层次？</h5>
 
 <p>我承认我活在我的精神家园里面。我推荐大家看一下王小波的《我的精神家园》，这篇文章对我的影响非常大。看了这篇文章，你就会明白我为什么要躺在自己的池子里，如果不想被这个社会所污染，就必须要躺在自己的池子里。做大众是很容易的，做自己是最难的。当你老了的时候，回想过去，如果你是为自己而活的，你总会觉得很踏实。可能有人会觉得我偏激，没关系，为什么要所有人看法都一致呢？世界因为不同而美丽，多元化的价值观并不冲突。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/11/you-duo-shao-kai-fa-ren-yuan-shi-chao-guo-si-shi-de/">有多少开发人员是超过四十的?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T20:24:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>你知道有几个开发人员是超过40的？对你们当中不少人而言，这个数是0。对你们当中知道一两个超过40开发者的人，我有个问题：他们中有几个人能称得上优秀？如果你知道任何一个超过40的优秀的开发人员，请做一件对你有益的事：向他请教。看看他掌握的那些技术是否还跟得上时代。一旦你做了这些，请为大家做一件事，就是找个地方把他公布出来，因为实际上，在这个行业里并没有多少优秀的老的开发人员（对那些读这篇文章的旧时代过来的人：我尽量表示尊敬和爱戴 ）。</p>
+  <entry>
+    <title type="html"><![CDATA[有多少开发人员是超过四十的?]]></title>
+    <link href="http://flashsword20.github.com/blog/2012/12/11/you-duo-shao-kai-fa-ren-yuan-shi-chao-guo-si-shi-de/"/>
+    <updated>2012-12-11T20:24:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2012/12/11/you-duo-shao-kai-fa-ren-yuan-shi-chao-guo-si-shi-de</id>
+    <content type="html"><![CDATA[<p>你知道有几个开发人员是超过40的？对你们当中不少人而言，这个数是0。对你们当中知道一两个超过40开发者的人，我有个问题：他们中有几个人能称得上优秀？如果你知道任何一个超过40的优秀的开发人员，请做一件对你有益的事：向他请教。看看他掌握的那些技术是否还跟得上时代。一旦你做了这些，请为大家做一件事，就是找个地方把他公布出来，因为实际上，在这个行业里并没有多少优秀的老的开发人员（对那些读这篇文章的旧时代过来的人：我尽量表示尊敬和爱戴 ）。</p>
 
 <p>出现这种情况有两个原因。第一：绝大多数的开发人员在工作了几年后都转向了管理岗位，一方面是因为他们原本的职业生涯规划就是这样(不管你喜欢与否，很多开发人员仍然认为，作为一个开发人员就该朝着这个方向奋斗)，要么是他们因为偶然的原因进入了管理层。对于后一种情况，我们只讨论那些优秀的开发者，他们表现良好，不管交给任何任务都能出色的完成。等进入管理层后，他们绝大多数的时间都是被锁在会议室里，根本没有任何时间剩余来做编程——尽管他们中的有些人很可能更喜欢把精力更多的放在编程上。两种情况中，这些人很快都会失去开发者的身份，早晚的事儿。</p>
 
@@ -1309,178 +1045,29 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 <p>重申，我不能保证这就是能让开发人员长期保持自己高质量的最好的方法，但我想我正在努力去做。</p>
 
 <p>本文英文原文：<a href="http://thatextramile.be/blog/2011/03/thoughts-on-developer-longevity">Thoughts On Developer Longevity</a></p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/11/about-career/">About-career</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T20:06:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>其实我依然不坚定</h3>
+  <entry>
+    <title type="html"><![CDATA[about-career]]></title>
+    <link href="http://flashsword20.github.com/blog/2012/12/11/about-career/"/>
+    <updated>2012-12-11T20:06:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2012/12/11/about-career</id>
+    <content type="html"><![CDATA[<h3>其实我依然不坚定</h3>
 
 <p>虽然之前写了一篇程序员职业规划方面的东西，觉得应该坚定的像个手艺人一样，学好技术，耐得住寂寞，但是对于自己的将来如何发展，心里仍然没底。
 最近做项目多少也得到了一些教训，有技术的，更多是技术无关的。所以很想做一个程序员职业规划方面的网站，解除自己的疑惑，也希望可以帮助同样也在迷茫的人。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/19/kai-shi-shi-yong-octpress/">开始使用octpress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-19T22:21:00+08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>终于把octopress搭建到github上了，装个ruby不容易啊～
+  <entry>
+    <title type="html"><![CDATA[开始使用octpress]]></title>
+    <link href="http://flashsword20.github.com/blog/2012/11/19/kai-shi-shi-yong-octpress/"/>
+    <updated>2012-11-19T22:21:00+08:00</updated>
+    <id>http://flashsword20.github.com/blog/2012/11/19/kai-shi-shi-yong-octpress</id>
+    <content type="html"><![CDATA[<p>终于把octopress搭建到github上了，装个ruby不容易啊～
 rake是个好东西。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    
-<section>
-  <h1>新浪微博</h1>
-  <ul id="weibo">
-    <li>
-      <iframe 
-        width="100%" 
-        height="550" 
-        class="share_self" 
-        frameborder="0" 
-        scrolling="no" 
-        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
-      </iframe>
-    </li>
-  </ul>
-</section>
-
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2013/02/25/blackhole-anti-dns-poison/">BlackHole开发日志&#8211;防止DNS污染</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/17/fenng-career/">十年莽撞IT路</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">Mac使用ssh socks代理翻墙</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/17/blackhole-develop-diary/">BlackHole开发日记</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - 黄亿华 -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-
-
-
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
-</body>
-</html>
+</feed>

@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>blackhole开发日记II - 代码人生</title>
+  <meta name="author" content="黄亿华">
+
+  
+  <meta name="description" content="2013-2-17 时隔一个月，再次迎来更新！ 过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题： 收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flashsword20.github.com/blog/2013/02/17/blackhole-develop-diary2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="代码人生" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">代码人生</a></h1>
+  
+    <h2>A blog for coder lost in career.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flashsword20.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">blackhole开发日记II</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>2013-2-17</h4>
+
+<p>时隔一个月，再次迎来更新！</p>
+
+<p>过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题：</p>
+
+<p>收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包，做为判定DNS劫持和DNS拦截的依据，最终将正确结果缓存。实现的方式是NIO，复用DatagramChannel。</p>
+
+<p>经过测试，gfw在实现DNS污染的同时，不会丢弃掉回包，因此此方案是可行的，而且比起UDP转TCP的方式，理论上速度会快很多。</p>
+
+<hr />
+
+<h4>2013-2-25</h4>
+
+<p>成功完成了blackhole在windows下的配置。后来网上搜到有人做过差不多的工具AntiDnsPollution<a href="http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/">http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/</a>，还比这个简单。有点失望，安安心心做好工作才是王道啊。</p>
+
+<p>以后技术方面还是要多积累才行。不过blackhole项目还是有自己的优势的，低延迟、支持缓存、可持久化、可定制都是其优点。好好把任务完成吧。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">黄亿华</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flashsword20.github.com/blog/2013/02/17/blackhole-develop-diary2/" data-via="" data-counturl="http://flashsword20.github.com/blog/2013/02/17/blackhole-develop-diary2/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/" title="Previous Post: Mac使用ssh socks代理翻墙">&laquo; Mac使用ssh socks代理翻墙</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/17/fenng-career/" title="Next Post: 十年莽撞IT路">十年莽撞IT路 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/25/blackhole-anti-dns-poison/">BlackHole开发日志--防止DNS污染</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/17/fenng-career/">十年莽撞IT路</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">Mac使用ssh socks代理翻墙</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/17/blackhole-develop-diary/">BlackHole开发日记</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - 黄亿华 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
