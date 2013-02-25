@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://flashsword20.github.com/">
+  <link rel="canonical" href="http://code4craft.github.com/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -49,7 +49,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:flashsword20.github.com" />
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -125,6 +125,8 @@
 </ul>
 
 
+<h3>BlackHole解决方案</h3>
+
 <p>BlackHole解决方案是第4种：向一个不存在的地址发送DNS查询，正常情况下不会有应答；若触发DNS污染，则只会有伪造包返回。记录这个伪造包的特征(一般是A记录的IP地址)，加入黑名单，下次如果收到这些包，则直接过滤。</p>
 
 <p>其实开发BlackHole时不知道有AntiDnsPollution这款工具，完成了才知道，采取的方法不谋而合。只不过BlackHole做的更复杂一点，增加了一些功能：</p>
@@ -147,6 +149,8 @@
 <p>  BlackHole还是修改hosts文件的替代方案。通过修改&#8221;config/zones&#8221;可以自定义DNS拦截规则，支持通配符&#8221;*&#8221;。</p></li>
 </ul>
 
+
+<p>BlackHole的源码地址：<a href="https://github.com/code4craft/blackhole">https://github.com/code4craft/blackhole</a></p>
 </div>
   
   

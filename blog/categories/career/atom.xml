@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: career | 代码人生]]></title>
-  <link href="http://flashsword20.github.com/blog/categories/career/atom.xml" rel="self"/>
-  <link href="http://flashsword20.github.com/"/>
-  <updated>2013-02-25T21:51:36+08:00</updated>
-  <id>http://flashsword20.github.com/</id>
+  <link href="http://code4craft.github.com/blog/categories/career/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-02-25T22:14:52+08:00</updated>
+  <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[about-career]]></title>
-    <link href="http://flashsword20.github.com/blog/2012/12/11/about-career/"/>
+    <link href="http://code4craft.github.com/blog/2012/12/11/about-career/"/>
     <updated>2012-12-11T20:06:00+08:00</updated>
-    <id>http://flashsword20.github.com/blog/2012/12/11/about-career</id>
+    <id>http://code4craft.github.com/blog/2012/12/11/about-career</id>
     <content type="html"><![CDATA[<h3>其实我依然不坚定</h3>
 
 <p>虽然之前写了一篇程序员职业规划方面的东西，觉得应该坚定的像个手艺人一样，学好技术，耐得住寂寞，但是对于自己的将来如何发展，心里仍然没底。

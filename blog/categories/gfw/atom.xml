@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: gfw | 代码人生]]></title>
-  <link href="http://flashsword20.github.com/blog/categories/gfw/atom.xml" rel="self"/>
-  <link href="http://flashsword20.github.com/"/>
-  <updated>2013-02-25T21:51:36+08:00</updated>
-  <id>http://flashsword20.github.com/</id>
+  <link href="http://code4craft.github.com/blog/categories/gfw/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-02-25T22:14:52+08:00</updated>
+  <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[BlackHole开发日志--防止DNS污染]]></title>
-    <link href="http://flashsword20.github.com/blog/2013/02/25/blackhole-anti-dns-poison/"/>
+    <link href="http://code4craft.github.com/blog/2013/02/25/blackhole-anti-dns-poison/"/>
     <updated>2013-02-25T21:13:00+08:00</updated>
-    <id>http://flashsword20.github.com/blog/2013/02/25/blackhole-anti-dns-poison</id>
+    <id>http://code4craft.github.com/blog/2013/02/25/blackhole-anti-dns-poison</id>
     <content type="html"><![CDATA[<h3></h3>
 
 <hr />
@@ -50,6 +50,8 @@
 </ul>
 
 
+<h3>BlackHole解决方案</h3>
+
 <p>BlackHole解决方案是第4种：向一个不存在的地址发送DNS查询，正常情况下不会有应答；若触发DNS污染，则只会有伪造包返回。记录这个伪造包的特征(一般是A记录的IP地址)，加入黑名单，下次如果收到这些包，则直接过滤。</p>
 
 <p>其实开发BlackHole时不知道有AntiDnsPollution这款工具，完成了才知道，采取的方法不谋而合。只不过BlackHole做的更复杂一点，增加了一些功能：</p>
@@ -72,14 +74,16 @@
 <p>  BlackHole还是修改hosts文件的替代方案。通过修改"config/zones"可以自定义DNS拦截规则，支持通配符"*"。</p></li>
 </ul>
 
+
+<p>BlackHole的源码地址：<a href="https://github.com/code4craft/blackhole">https://github.com/code4craft/blackhole</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Mac使用ssh socks代理翻墙]]></title>
-    <link href="http://flashsword20.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/"/>
+    <link href="http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/"/>
     <updated>2013-01-05T21:46:00+08:00</updated>
-    <id>http://flashsword20.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang</id>
+    <id>http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang</id>
     <content type="html"><![CDATA[<p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
 
 <p>使用ssh作为socks proxy：</p>

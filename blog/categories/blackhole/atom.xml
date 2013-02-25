@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: BlackHole | 代码人生]]></title>
-  <link href="http://flashsword20.github.com/blog/categories/blackhole/atom.xml" rel="self"/>
-  <link href="http://flashsword20.github.com/"/>
-  <updated>2013-02-25T21:51:36+08:00</updated>
-  <id>http://flashsword20.github.com/</id>
+  <link href="http://code4craft.github.com/blog/categories/blackhole/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-02-25T22:14:52+08:00</updated>
+  <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[BlackHole开发日志--防止DNS污染]]></title>
-    <link href="http://flashsword20.github.com/blog/2013/02/25/blackhole-anti-dns-poison/"/>
+    <link href="http://code4craft.github.com/blog/2013/02/25/blackhole-anti-dns-poison/"/>
     <updated>2013-02-25T21:13:00+08:00</updated>
-    <id>http://flashsword20.github.com/blog/2013/02/25/blackhole-anti-dns-poison</id>
+    <id>http://code4craft.github.com/blog/2013/02/25/blackhole-anti-dns-poison</id>
     <content type="html"><![CDATA[<h3></h3>
 
 <hr />
@@ -50,6 +50,8 @@
 </ul>
 
 
+<h3>BlackHole解决方案</h3>
+
 <p>BlackHole解决方案是第4种：向一个不存在的地址发送DNS查询，正常情况下不会有应答；若触发DNS污染，则只会有伪造包返回。记录这个伪造包的特征(一般是A记录的IP地址)，加入黑名单，下次如果收到这些包，则直接过滤。</p>
 
 <p>其实开发BlackHole时不知道有AntiDnsPollution这款工具，完成了才知道，采取的方法不谋而合。只不过BlackHole做的更复杂一点，增加了一些功能：</p>
@@ -72,14 +74,16 @@
 <p>  BlackHole还是修改hosts文件的替代方案。通过修改"config/zones"可以自定义DNS拦截规则，支持通配符"*"。</p></li>
 </ul>
 
+
+<p>BlackHole的源码地址：<a href="https://github.com/code4craft/blackhole">https://github.com/code4craft/blackhole</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[BlackHole开发日记]]></title>
-    <link href="http://flashsword20.github.com/blog/2012/12/17/blackhole-develop-diary/"/>
+    <link href="http://code4craft.github.com/blog/2012/12/17/blackhole-develop-diary/"/>
     <updated>2012-12-17T23:04:00+08:00</updated>
-    <id>http://flashsword20.github.com/blog/2012/12/17/blackhole-develop-diary</id>
+    <id>http://code4craft.github.com/blog/2012/12/17/blackhole-develop-diary</id>
     <content type="html"><![CDATA[<h3>起因</h3>
 
 <p>最近公司在做一个邮件系统的项目，涉及到测试对外发送的环节。开始构思是这样：建立一个接收服务器，并将所有请求导向该服务器。这里面就涉及到一个DNS拦截的问题。这个问题其实在开发和测试环境中很常见，但是单是绑hosts或者使用传统DNS都不太能满足需要(不支持通配符)。</p>
