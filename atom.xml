@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-02-25T22:14:52+08:00</updated>
+  <updated>2013-02-25T23:01:24+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,37 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2012年总结]]></title>
+    <link href="http://code4craft.github.com/blog/2013/02/25/2012-summary/"/>
+    <updated>2013-02-25T22:40:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/02/25/2012-summary</id>
+    <content type="html"><![CDATA[<p>看了别人写的数字总结，自己也来跟风写一个吧。</p>
+
+<p>看了8本书：</p>
+
+<p>《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》</p>
+
+<p>学了一门语言：python。</p>
+
+<p>阅读3个项目源码：JDK集合框架和锁框架，qmail源码，JavaMail源码。</p>
+
+<p>Java web后端开发学到技术：</p>
+
+<p>Struts2 iBatis SpringAOP</p>
+
+<p>做了3个得意的业余项目：可配置博客搬家、BlackHole、太极验证码。</p>
+
+<p>写了45篇技术相关的博客，内容的质量比起2011年有了很大提高。</p>
+
+<p>参加了两次20人左右的演讲。</p>
+
+<p>完成了一个大项目：邮件重构，参与者7人。</p>
+
+<p>买了一个域名codecraft.us，做了一个网站。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[BlackHole开发日志--防止DNS污染]]></title>

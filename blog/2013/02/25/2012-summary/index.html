@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>blackhole开发日记II - 代码人生</title>
+  <title>2012年总结 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="2013-2-17 时隔一个月，再次迎来更新！ 过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题： 收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包， &hellip;">
+  <meta name="description" content="看了别人写的数字总结，自己也来跟风写一个吧。 看了8本书： 《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》 学了一门语言： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/02/17/blackhole-develop-diary2/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/02/25/2012-summary/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">blackhole开发日记II</h1>
+      <h1 class="entry-title">2012年总结</h1>
     
     
       <p class="meta">
@@ -83,30 +83,36 @@
   
 
 
-<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
+<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h4>2013-2-17</h4>
+<div class="entry-content"><p>看了别人写的数字总结，自己也来跟风写一个吧。</p>
 
-<p>时隔一个月，再次迎来更新！</p>
+<p>看了8本书：</p>
 
-<p>过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题：</p>
+<p>《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》</p>
 
-<p>收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包，做为判定DNS劫持和DNS拦截的依据，最终将正确结果缓存。实现的方式是NIO，复用DatagramChannel。</p>
+<p>学了一门语言：python。</p>
 
-<p>经过测试，gfw在实现DNS污染的同时，不会丢弃掉回包，因此此方案是可行的，而且比起UDP转TCP的方式，理论上速度会快很多。</p>
+<p>阅读3个项目源码：JDK集合框架和锁框架，qmail源码，JavaMail源码。</p>
 
-<hr />
+<p>Java web后端开发学到技术：</p>
 
-<h4>2013-2-25</h4>
+<p>Struts2 iBatis SpringAOP</p>
 
-<p>成功完成了blackhole在windows下的配置。后来网上搜到有人做过差不多的工具AntiDnsPollution<a href="http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/">http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/</a>，还比这个简单。有点失望，安安心心做好工作才是王道啊。</p>
+<p>做了3个得意的业余项目：可配置博客搬家、BlackHole、太极验证码。</p>
 
-<p>以后技术方面还是要多积累才行。不过blackhole项目还是有自己的优势的，低延迟、支持缓存、可持久化、可定制都是其优点。好好把任务完成吧。</p>
+<p>写了45篇技术相关的博客，内容的质量比起2011年有了很大提高。</p>
+
+<p>参加了两次20人左右的演讲。</p>
+
+<p>完成了一个大项目：邮件重构，参与者7人。</p>
+
+<p>买了一个域名codecraft.us，做了一个网站。</p>
 </div>
 
 
@@ -129,7 +135,7 @@
   
 
 
-<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
+<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
       
 
 
@@ -137,7 +143,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/02/17/blackhole-develop-diary2/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/02/17/blackhole-develop-diary2/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/02/25/2012-summary/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/02/25/2012-summary/" >Tweet</a>
   
   
   
@@ -146,10 +152,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/" title="Previous Post: Mac使用ssh socks代理翻墙">&laquo; Mac使用ssh socks代理翻墙</a>
+        <a class="basic-alignment left" href="/blog/2013/02/25/blackhole-anti-dns-poison/" title="Previous Post: BlackHole开发日志--防止DNS污染">&laquo; BlackHole开发日志--防止DNS污染</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/02/17/fenng-career/" title="Next Post: 十年莽撞IT路">十年莽撞IT路 &raquo;</a>
       
     </p>
   </footer>
