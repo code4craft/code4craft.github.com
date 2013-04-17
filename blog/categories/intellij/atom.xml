@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: IntelliJ | 代码人生]]></title>
+  <link href="http://code4craft.github.com/blog/categories/intellij/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-04-17T21:20:38+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[黄亿华]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IntelliJ使用心得]]></title>
+    <link href="http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de/"/>
+    <updated>2013-04-17T21:18:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de</id>
+    <content type="html"><![CDATA[<h3>调整界面为酷酷的黑色</h3>
+
+<p>Appearance=>theme=>Darcula</p>
+
+<h3>检出项目:</h3>
+
+<p>VCS=>Checkout From Version Control，maven项目会被自动识别出来</p>
+
+<h3>设置快捷键：</h3>
+
+<p>keymap，有很多套方案，当然即使选择eclipse也还是有很多和eclipse不同的地方</p>
+
+<h3>自动补全：</h3>
+
+<p>Mac下默认是clt+space，可以使用keymap=>Main menu=>Code=>Competion设置。</p>
+
+<h3>去除自动补全的大小写敏感：</h3>
+
+<p>不知道多少童鞋和我一样被eclipse惯坏了，使用自动补全完全不注意大小写的，IntelliJ默认区分大小写，很是让人难过。不过在Editor=>Code Completion里把Case sensitive completion设置为None就可以了。</p>
+
+<h3>使用Tomcat运行web项目：</h3>
+
+<p>需安装插件：Tomcat and TomEE intergration</p>
+
+<p>选择Run=>Edit Configurations，点+，选tomcat server，Deloyment选择对应artifact。详细文章：<a href="http://my.oschina.net/tsl0922/blog/94621">http://my.oschina.net/tsl0922/blog/94621</a></p>
+
+<h3>Key promotor</h3>
+
+<p>有个插件叫做key promotor，可以在操作的时候提示快捷键，初学的时候比较好用。</p>
+
+<h3>项目间文件复制</h3>
+
+<h3>Debug</h3>
+
+<p>debug最好不要使用method breakpoint，会导致启动异常缓慢。</p>
+
+<h3>Live Template</h3>
+
+<p>用惯了eclipse快捷键的人可能会不习惯，sysout、foreach等快捷方式找不到了，main方法也无法自动补全了，其实这个在IntelliJ中有一个异常强大的模块Live Template来实现。</p>
+
+<p>例如，在class中尝试psvm+tab，则会发现main方法产生了；输入iter+tab，则生成了foreach语句。
+live template还有一个surround的用法，选中某个变量，键入ctl+alt+j两次，则会出现自动补全的菜单。</p>
+
+<p>此外，还可以自定义Live Template。Code Snippet技术应用也挺普遍的，IntelliJ的Live Template优点是内置了一些智能的变量和函数，可以做到一些语义级别的分析和运用。</p>
+]]></content>
+  </entry>
+  
+</feed>

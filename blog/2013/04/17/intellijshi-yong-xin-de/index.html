@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>2012年总结 - 代码人生</title>
+  <title>IntelliJ使用心得 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="看了别人写的数字总结，自己也来跟风写一个吧。 看了8本书： 《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》 学了一门语言： &hellip;">
+  <meta name="description" content="调整界面为酷酷的黑色 Appearance=>theme=>Darcula 检出项目: VCS=>Checkout From Version Control，maven项目会被自动识别出来 设置快捷键： keymap，有很多套方案，当然即使选择eclipse也还是有很多和eclipse不同的地方 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/02/25/2012-summary/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">2012年总结</h1>
+      <h1 class="entry-title">IntelliJ使用心得</h1>
     
     
       <p class="meta">
@@ -83,36 +83,57 @@
   
 
 
-<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
+<time datetime="2013-04-17T21:18:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>看了别人写的数字总结，自己也来跟风写一个吧。</p>
+<div class="entry-content"><h3>调整界面为酷酷的黑色</h3>
 
-<p>看了8本书：</p>
+<p>Appearance=>theme=>Darcula</p>
 
-<p>《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》</p>
+<h3>检出项目:</h3>
 
-<p>学了一门语言：python。</p>
+<p>VCS=>Checkout From Version Control，maven项目会被自动识别出来</p>
 
-<p>阅读3个项目源码：JDK集合框架和锁框架，qmail源码，JavaMail源码。</p>
+<h3>设置快捷键：</h3>
 
-<p>Java web后端开发学到技术：</p>
+<p>keymap，有很多套方案，当然即使选择eclipse也还是有很多和eclipse不同的地方</p>
 
-<p>Struts2 iBatis SpringAOP</p>
+<h3>自动补全：</h3>
 
-<p>做了3个得意的业余项目：可配置博客搬家、BlackHole、太极验证码。</p>
+<p>Mac下默认是clt+space，可以使用keymap=>Main menu=>Code=>Competion设置。</p>
 
-<p>写了45篇技术相关的博客，内容的质量比起2011年有了很大提高。</p>
+<h3>去除自动补全的大小写敏感：</h3>
 
-<p>参加了两次20人左右的演讲。</p>
+<p>不知道多少童鞋和我一样被eclipse惯坏了，使用自动补全完全不注意大小写的，IntelliJ默认区分大小写，很是让人难过。不过在Editor=>Code Completion里把Case sensitive completion设置为None就可以了。</p>
 
-<p>完成了一个大项目：邮件重构，参与者7人。</p>
+<h3>使用Tomcat运行web项目：</h3>
 
-<p>买了一个域名codecraft.us，做了一个网站。</p>
+<p>需安装插件：Tomcat and TomEE intergration</p>
+
+<p>选择Run=>Edit Configurations，点+，选tomcat server，Deloyment选择对应artifact。详细文章：<a href="http://my.oschina.net/tsl0922/blog/94621">http://my.oschina.net/tsl0922/blog/94621</a></p>
+
+<h3>Key promotor</h3>
+
+<p>有个插件叫做key promotor，可以在操作的时候提示快捷键，初学的时候比较好用。</p>
+
+<h3>项目间文件复制</h3>
+
+<h3>Debug</h3>
+
+<p>debug最好不要使用method breakpoint，会导致启动异常缓慢。</p>
+
+<h3>Live Template</h3>
+
+<p>用惯了eclipse快捷键的人可能会不习惯，sysout、foreach等快捷方式找不到了，main方法也无法自动补全了，其实这个在IntelliJ中有一个异常强大的模块Live Template来实现。</p>
+
+<p>例如，在class中尝试psvm+tab，则会发现main方法产生了；输入iter+tab，则生成了foreach语句。
+live template还有一个surround的用法，选中某个变量，键入ctl+alt+j两次，则会出现自动补全的菜单。</p>
+
+<p>此外，还可以自定义Live Template。Code Snippet技术应用也挺普遍的，IntelliJ的Live Template优点是内置了一些智能的变量和函数，可以做到一些语义级别的分析和运用。</p>
 </div>
 
 
@@ -135,15 +156,21 @@
   
 
 
-<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
+<time datetime="2013-04-17T21:18:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/intellij/'>IntelliJ</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/02/25/2012-summary/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/02/25/2012-summary/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de/" >Tweet</a>
   
   
   
@@ -152,10 +179,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/02/25/blackhole-anti-dns-poison/" title="Previous Post: BlackHole开发日志--防止DNS污染">&laquo; BlackHole开发日志--防止DNS污染</a>
+        <a class="basic-alignment left" href="/blog/2013/04/12/blackhole-io-model/" title="Previous Post: BlackHole开发日记-几种IO模型的比较">&laquo; BlackHole开发日记-几种IO模型的比较</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/04/12/blackhole-io-model/" title="Next Post: BlackHole开发日记-几种IO模型的比较">BlackHole开发日记-几种IO模型的比较 &raquo;</a>
       
     </p>
   </footer>

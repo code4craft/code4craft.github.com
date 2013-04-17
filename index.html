@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="看了别人写的数字总结，自己也来跟风写一个吧。 看了8本书： 《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》 学了一门语言： &hellip;">
+  <meta name="description" content="调整界面为酷酷的黑色 Appearance=>theme=>Darcula 检出项目: VCS=>Checkout From Version Control，maven项目会被自动识别出来 设置快捷键： keymap，有很多套方案，当然即使选择eclipse也还是有很多和eclipse不同的地方 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,121 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/17/intellijshi-yong-xin-de/">IntelliJ使用心得</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-17T21:18:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>调整界面为酷酷的黑色</h3>
+
+<p>Appearance=>theme=>Darcula</p>
+
+<h3>检出项目:</h3>
+
+<p>VCS=>Checkout From Version Control，maven项目会被自动识别出来</p>
+
+<h3>设置快捷键：</h3>
+
+<p>keymap，有很多套方案，当然即使选择eclipse也还是有很多和eclipse不同的地方</p>
+
+<h3>自动补全：</h3>
+
+<p>Mac下默认是clt+space，可以使用keymap=>Main menu=>Code=>Competion设置。</p>
+
+<h3>去除自动补全的大小写敏感：</h3>
+
+<p>不知道多少童鞋和我一样被eclipse惯坏了，使用自动补全完全不注意大小写的，IntelliJ默认区分大小写，很是让人难过。不过在Editor=>Code Completion里把Case sensitive completion设置为None就可以了。</p>
+
+<h3>使用Tomcat运行web项目：</h3>
+
+<p>需安装插件：Tomcat and TomEE intergration</p>
+
+<p>选择Run=>Edit Configurations，点+，选tomcat server，Deloyment选择对应artifact。详细文章：<a href="http://my.oschina.net/tsl0922/blog/94621">http://my.oschina.net/tsl0922/blog/94621</a></p>
+
+<h3>Key promotor</h3>
+
+<p>有个插件叫做key promotor，可以在操作的时候提示快捷键，初学的时候比较好用。</p>
+
+<h3>项目间文件复制</h3>
+
+<h3>Debug</h3>
+
+<p>debug最好不要使用method breakpoint，会导致启动异常缓慢。</p>
+
+<h3>Live Template</h3>
+
+<p>用惯了eclipse快捷键的人可能会不习惯，sysout、foreach等快捷方式找不到了，main方法也无法自动补全了，其实这个在IntelliJ中有一个异常强大的模块Live Template来实现。</p>
+
+<p>例如，在class中尝试psvm+tab，则会发现main方法产生了；输入iter+tab，则生成了foreach语句。
+live template还有一个surround的用法，选中某个变量，键入ctl+alt+j两次，则会出现自动补全的菜单。</p>
+
+<p>此外，还可以自定义Live Template。Code Snippet技术应用也挺普遍的，IntelliJ的Live Template优点是内置了一些智能的变量和函数，可以做到一些语义级别的分析和运用。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/12/blackhole-io-model/">BlackHole开发日记-几种IO模型的比较</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-12T22:16:00+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>TODO</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1369,97 +1484,6 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/11/you-duo-shao-kai-fa-ren-yuan-shi-chao-guo-si-shi-de/">有多少开发人员是超过四十的?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T20:24:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>你知道有几个开发人员是超过40的？对你们当中不少人而言，这个数是0。对你们当中知道一两个超过40开发者的人，我有个问题：他们中有几个人能称得上优秀？如果你知道任何一个超过40的优秀的开发人员，请做一件对你有益的事：向他请教。看看他掌握的那些技术是否还跟得上时代。一旦你做了这些，请为大家做一件事，就是找个地方把他公布出来，因为实际上，在这个行业里并没有多少优秀的老的开发人员（对那些读这篇文章的旧时代过来的人：我尽量表示尊敬和爱戴 ）。</p>
-
-<p>出现这种情况有两个原因。第一：绝大多数的开发人员在工作了几年后都转向了管理岗位，一方面是因为他们原本的职业生涯规划就是这样(不管你喜欢与否，很多开发人员仍然认为，作为一个开发人员就该朝着这个方向奋斗)，要么是他们因为偶然的原因进入了管理层。对于后一种情况，我们只讨论那些优秀的开发者，他们表现良好，不管交给任何任务都能出色的完成。等进入管理层后，他们绝大多数的时间都是被锁在会议室里，根本没有任何时间剩余来做编程——尽管他们中的有些人很可能更喜欢把精力更多的放在编程上。两种情况中，这些人很快都会失去开发者的身份，早晚的事儿。</p>
-
-<p>第二个主要的原因是，很多具有较长阅历的开发人员慢慢的会认为自己该掌握的知识都差不多掌握了，不再去学习新的解决问题的方法，或者是看看别的开发人员在学什么，自己也跟着学。他们认为自己做过的那些就是一切，任何具有挑战的开发任务都处理过。他们一年又一年的使用着相同的技术和方法，心想着“为什么要去改变一个冠军组合？”。虽然他们的技术方案可以用，也许会非常的好用，但他们的实现方法可能是过时的或效率低的。从这点上看，程序员的品质开始降低，持续的降低，一直到他掌握的技术过期、被淘汰。</p>
-
-<p>我不知道你会怎样，但我对在余下的职业生涯中走这两种道路是丝毫没有任何的兴趣。我希望一直能这样编程编下去，我在其中找到了乐趣，更重要的是，我希望我的技术能够一直更新不过时。我相信我作为一个开发人员贡献出来很多价值，我希望在我变的越来越老时，我仍然能够增加这种价值，把它带给我的客户。不仅仅是通过经验，还有通过时刻把握整个软件开发业的时代脉搏。可问题是：你如何能做到这些？你如何能防止自己变成这种喜欢说“相信我，孩子，20年来我都是这样写的，不会有错”的人？</p>
-
-<p>很显然，我没有一个权威的答案，因为我只是一个具有8年工作经验的开发人员。但是我做了一个简单的计划，我希望它能使我不断的增加自己作为开发人员的价值：</p>
-
-<p>让自己感觉无知一旦你认为自己无所不知，你基本就完了，这只会害了你自己、你的客户以及那些不幸的跟你共事的人。相反，要坚持阅读那些比你能干、谈论一些你不能理解的技术的人写的博客和书籍。当你阅读他们的文章、他们的代码时，你会觉得自己愚昧无知。这样很好，这些时候就是你最有可能决定去学习新知识的时刻。一直读下去，直到掌握它们，然后用实践验证你刚刚学到的东西。一遍一遍反复的这样。简言之：让自己感觉无知，这是唯一能保持学习的方法。</p>
-
-<p>质询自己的知识和思想，每天在软件开发这种工作上，相当多的知识都有一个有限的保质期。你现在所有用在开发软件上的知识10年后很有可能完全不能用。也许5年后所有的这些知识中有一半你都不再需要。请让我更进一层：半数你现在知道的知识很有可能在5年后成为阻挡你开发出一个优秀软件的负面因素。鬼才知道呢，不是吗？坚持不断的审视自己的知识。所有的方法，模式，实践理论和任何你欣赏的东西，你都需要不断的一次次的更新它们。它们现在还有价值吗？是否有新的事物出现使你对它们的存在形式或环境产生不同的认识？是改变你的思维的时候了。特别是当一两年后某些事物没有任何变化的时候，一定要这样想想 … 也许是你不再感到自己无知，这可不是一个明智之举。</p>
-
-<p>重申，我不能保证这就是能让开发人员长期保持自己高质量的最好的方法，但我想我正在努力去做。</p>
-
-<p>本文英文原文：<a href="http://thatextramile.be/blog/2011/03/thoughts-on-developer-longevity">Thoughts On Developer Longevity</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/11/about-career/">About-career</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T20:06:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>其实我依然不坚定</h3>
-
-<p>虽然之前写了一篇程序员职业规划方面的东西，觉得应该坚定的像个手艺人一样，学好技术，耐得住寂寞，但是对于自己的将来如何发展，心里仍然没底。
-最近做项目多少也得到了一些教训，有技术的，更多是技术无关的。所以很想做一个程序员职业规划方面的网站，解除自己的疑惑，也希望可以帮助同样也在迷茫的人。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1492,6 +1516,14 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/17/intellijshi-yong-xin-de/">IntelliJ使用心得</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/12/blackhole-io-model/">BlackHole开发日记-几种IO模型的比较</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/25/2012-summary/">2012年总结</a>
       </li>
     
@@ -1501,14 +1533,6 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
     
       <li class="post">
         <a href="/blog/2013/02/17/fenng-career/">十年莽撞IT路</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">Mac使用ssh socks代理翻墙</a>
       </li>
     
   </ul>
