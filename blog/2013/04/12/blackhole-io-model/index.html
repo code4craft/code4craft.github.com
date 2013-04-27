@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>BlackHole开发日记-三种IO模型的比较 - 代码人生</title>
+  <title>BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="BlackHoleJ作为一个DNS server，有一个功能是，作为一个DNS代理，把它解析不了的DNS请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。 这个功能的实现经历了三个版本，也对应了三个经典的IO模型。 BIO模型 BlackHoleJ代理模式最开始的IO模型，其实现也很简单 &hellip;">
+  <meta name="description" content="BlackHoleJ是一个DNS server。他的一个功能是，对于它把它解析不了的DNS请求，它作为一个DNS代理，将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。 这个功能的实现经历了三个版本，也对应了三个经典的IO模型。 BIO模型 BlackHoleJ代理模式最开始的IO模型 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">BlackHole开发日记-三种IO模型的比较</h1>
+      <h1 class="entry-title">BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器</h1>
     
     
       <p class="meta">
@@ -90,7 +90,7 @@
   </header>
 
 
-<div class="entry-content"><p>BlackHoleJ作为一个DNS server，有一个功能是，作为一个DNS代理，把它解析不了的DNS请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。</p>
+<div class="entry-content"><p>BlackHoleJ是一个DNS server。他的一个功能是，对于它把它解析不了的DNS请求，它作为一个DNS代理，将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。</p>
 
 <p><img src="/images/posts/forward.png" alt="image" /></p>
 
@@ -98,11 +98,82 @@
 
 <h3>BIO模型</h3>
 
-<p>BlackHoleJ代理模式最开始的IO模型，其实现也很简单，当客户请求过来时，新建一个线程处理，然后再线程中调用DatagramSocket发送UDP包，</p>
+<p>BlackHoleJ代理模式最开始的IO模型，实现很简单，当client请求过来时，新建一个线程处理，然后再线程中调用DatagramChannel发送UDP包，同时阻塞等待，最后接收到结果后返回。</p>
+
+<pre><code>public byte[] forward(byte[] query) throws IOException {
+    DatagramChannel dc = null;
+    dc = DatagramChannel.open();
+    SocketAddress address = new InetSocketAddress(configure.getDnsHost(),
+            Configure.DNS_PORT);
+    dc.connect(address);
+    ByteBuffer bb = ByteBuffer.allocate(512);
+    bb.put(query);
+    bb.flip();
+    dc.send(bb, address);
+    bb.clear();
+    dc.receive(bb);
+    bb.flip();
+    byte[] copyOfRange = Arrays.copyOfRange(bb.array(), 0, 512);
+    return copyOfRange;
+}
+</code></pre>
+
+<p>其中dc.receive(bb)一步是阻塞的。因为请求外部DNS服务器往往耗时较长，所以为了达到快速响应，不得不开很多线程进行处理。同时每个线程都需要进行轮询dc.receive(bb)是否可用，会消耗更多CPU资源。</p>
 
 <h3>NIO模型</h3>
 
-<h3>全异步模型</h3>
+<p>BlackHoleJ 1.1开始使用的IO模型。</p>
+
+<pre><code>@Override
+public byte[] forward(byte[] queryBytes, Message query,
+        List&lt;SocketAddress&gt; hosts) {
+    // send to all address
+    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
+    try {
+        ForwardAnswer forwardAnswer = new ForwardAnswer(query);
+        multiUDPReceiver.registerReceiver(query, forwardAnswer);
+        try {
+            DatagramChannel datagramChannel = multiUDPReceiver
+                    .getDatagramChannel();
+            for (SocketAddress host : hosts) {
+                byteBuffer.clear();
+                byteBuffer.put(queryBytes);
+                byteBuffer.flip();
+                datagramChannel.send(byteBuffer, host);
+            }
+        } catch (IOException e) {
+            logger.warn("error", e);
+        }
+        long time1 = System.currentTimeMillis();
+        if (forwardAnswer.getAnswer() == null) {
+            try {
+                forwardAnswer.getLock().lockInterruptibly();
+                forwardAnswer.getCondition().await(
+                        configure.getDnsTimeOut(), TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                logger.warn("error", e);
+            } finally {
+                forwardAnswer.getLock().unlock();
+            }
+        }
+    } finally {
+        multiUDPReceiver.removeAnswer(query, configure.getDnsTimeOut());
+    }
+    return forwardAnswer.getAnswer();
+}
+</code></pre>
+
+<p>这里用到了Java的Condition.wait&amp;notify机制，其实这跟NIO中Selector.select()思路是一样的。</p>
+
+<h3>AIO模型</h3>
+
+<p>BlackHoleJ 1.1.3-dev开始，使用了基于回调的AIO模型。UDPConnectionResponser对象，里面封装了client的IP和来源端口号。每次收到外部DNS响应时，再根据响应内容找到这个client的IP和来源端口号，重新发送即可。</p>
+
+<p>这实际上就是封装了callback的异步IO。</p>
+
+<p><img src="/images/posts/aio.png" alt="image" /></p>
+
+<p>使用AIO模型之后，仅仅单线程就达到了40000qps，比1.1.2效率高出了25%，而CPU开销却有了降低。</p>
 </div>
 
 
@@ -187,7 +258,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2013/04/12/blackhole-io-model/">BlackHole开发日记-三种IO模型的比较</a>
+        <a href="/blog/2013/04/12/blackhole-io-model/">BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器</a>
       </li>
     
       <li class="post">
