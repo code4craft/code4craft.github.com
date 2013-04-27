@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: BlackHoleJ | 代码人生]]></title>
+  <link href="http://code4craft.github.com/blog/categories/blackholej/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-04-27T21:09:31+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[黄亿华]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[BlackHole开发日记-三种IO模型的比较]]></title>
+    <link href="http://code4craft.github.com/blog/2013/04/12/blackhole-io-model/"/>
+    <updated>2013-04-12T22:16:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/04/12/blackhole-io-model</id>
+    <content type="html"><![CDATA[<p>BlackHoleJ作为一个DNS server，有一个功能是，作为一个DNS代理，把它解析不了的DNS请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。</p>
+
+<p><img src="/images/posts/forward.png" alt="image" /></p>
+
+<p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
+
+<h3>BIO模型</h3>
+
+<p>BlackHoleJ代理模式最开始的IO模型，其实现也很简单，当客户请求过来时，新建一个线程处理，然后再线程中调用DatagramSocket发送UDP包，</p>
+
+<h3>NIO模型</h3>
+
+<h3>全异步模型</h3>
+]]></content>
+  </entry>
+  
+</feed>
