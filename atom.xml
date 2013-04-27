@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-04-27T22:09:16+08:00</updated>
+  <updated>2013-04-27T22:44:36+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -96,13 +96,13 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
     <link href="http://code4craft.github.com/blog/2013/04/12/blackhole-io-model/"/>
     <updated>2013-04-12T22:16:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2013/04/12/blackhole-io-model</id>
-    <content type="html"><![CDATA[<p>BlackHoleJ是一个DNS server。他的一个功能是，对于它把它解析不了的DNS请求，它作为一个DNS代理，将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。</p>
+    <content type="html"><![CDATA[<p>BlackHoleJ是一个DNS服务器。他的一个功能是，对于它把它解析不了的DNS请求，它作为一个DNS代理，将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端。</p>
 
 <p><img src="http://code4craft.github.com/images/posts/forward.png" alt="image" /></p>
 
 <p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
 
-<h3>BIO模型</h3>
+<h3>BIO模型(Blocking I/O)</h3>
 
 <p>BlackHoleJ代理模式最开始的IO模型，实现很简单，当client请求过来时，新建一个线程处理，然后再线程中调用DatagramChannel发送UDP包，同时阻塞等待，最后接收到结果后返回。</p>
 
@@ -126,60 +126,70 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 
 <p>其中dc.receive(bb)一步是阻塞的。因为请求外部DNS服务器往往耗时较长，所以为了达到快速响应，不得不开很多线程进行处理。同时每个线程都需要进行轮询dc.receive(bb)是否可用，会消耗更多CPU资源。</p>
 
-<h3>NIO模型</h3>
+<h3>Select模型(I/O multiplexing)</h3>
 
-<p>BlackHoleJ 1.1开始使用的IO模型。</p>
+<p>BlackHoleJ 1.1开始使用的IO模型。因为DNS使用UDP协议，而UDP其实是无连接的，所以所有请求以及响应复用一个DatagramChannel也毫无问题。同时预先使用DatagramChannel.bind(port)绑定某端口，那么对外部DNS服务器的转发和接收都可以使用这个端口。唯一需要做的就是通过DNS包的特征，来判断到底是哪个客户端的请求！而这个特征也很好选择，DNS包的headerId和question域即可满足需求。</p>
 
-<pre><code>@Override
-public byte[] forward(byte[] queryBytes, Message query,
-        List&lt;SocketAddress&gt; hosts) {
-    // send to all address
-    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
-    try {
-        ForwardAnswer forwardAnswer = new ForwardAnswer(query);
-        multiUDPReceiver.registerReceiver(query, forwardAnswer);
-        try {
-            DatagramChannel datagramChannel = multiUDPReceiver
-                    .getDatagramChannel();
-            for (SocketAddress host : hosts) {
-                byteBuffer.clear();
-                byteBuffer.put(queryBytes);
-                byteBuffer.flip();
-                datagramChannel.send(byteBuffer, host);
-            }
-        } catch (IOException e) {
-            logger.warn("error", e);
-        }
-        long time1 = System.currentTimeMillis();
-        if (forwardAnswer.getAnswer() == null) {
-            try {
-                forwardAnswer.getLock().lockInterruptibly();
-                forwardAnswer.getCondition().await(
-                        configure.getDnsTimeOut(), TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                logger.warn("error", e);
-            } finally {
-                forwardAnswer.getLock().unlock();
-            }
-        }
-    } finally {
-        multiUDPReceiver.removeAnswer(query, configure.getDnsTimeOut());
-    }
-    return forwardAnswer.getAnswer();
+<p>发送方的伪代码大概是这样：</p>
+
+<pre><code>public byte[] forward(byte[] queryBytes) {
+    multiUDPReceiver.putForwardAnswer(query, forwardAnswer);
+    forward(queryBytes);
+    forwardAnswer.getLock.getCondition().await();
+    return answer.getAnswer();
 }
 </code></pre>
 
-<p>这里用到了Java的Condition.wait&amp;notify机制，其实这跟NIO中Selector.select()思路是一样的。</p>
+<p>接收方是一个独立的线程，代码大概是这样的：</p>
 
-<h3>AIO模型</h3>
+<pre><code>public void receive() {
+    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
+    while (true) {
+        datagramChannel.receive(byteBuffer);
+        final byte[] answer = Arrays.copyOfRange(byteBuffer.array(), 0, 512);
+        getForwardAnswer(answer).setAnswer(answer);
+        getForwardAnswer(answer).getLock.getCondition().notify();
+    }
+}
+</code></pre>
 
-<p>BlackHoleJ 1.1.3-dev开始，使用了基于回调的AIO模型。UDPConnectionResponser对象，里面封装了client的IP和来源端口号。每次收到外部DNS响应时，再根据响应内容找到这个client的IP和来源端口号，重新发送即可。</p>
+<p>这里forwardAnswer是一个包含了响应结果和一个锁的对象(这里用到了Java的Condition.wait&amp;notify机制，从而使阻塞线程交出控制权，避免更多CPU轮询)。还有一部分是multiUDPReceiver。这里multiUDPReceiver.putForwardAnswer(query, forwardAnswer)实际上是把forwardAnswer注册到一个Map里。</p>
+
+<p>这样做的好处是仅仅在一个线程检查原本的多路I/O是否就绪，也就是I/O multiplexing。这跟Linux下select模型是一样的。</p>
+
+<h3>AIO模型(Asynchronous I/O)</h3>
+
+<p>BlackHoleJ 1.1.3开始，使用了基于回调的AIO模型。这里建立了UDPConnectionResponser对象，里面封装了client的IP和来源端口号。每次收到外部DNS响应时，再根据响应内容找到这个client的IP和来源端口号，重新发送即可。</p>
 
 <p>这实际上就是封装了callback的异步IO。</p>
 
 <p><img src="http://code4craft.github.com/images/posts/aio.png" alt="image" /></p>
 
-<p>使用AIO模型之后，仅仅单线程就达到了40000qps，比1.1.2效率高出了25%，而CPU开销却有了降低。</p>
+<p>发送方的伪代码大概是这样：</p>
+
+<pre><code>public void forward(byte[] queryBytes) {
+    multiUDPReceiver.putForwardAnswer(query, forwardAnswer);
+    forward(queryBytes);
+}
+</code></pre>
+
+<p>接收方的代码大概是这样：</p>
+
+<pre><code>public void receive() {
+    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
+    while (true) {
+        datagramChannel.receive(byteBuffer);
+        final byte[] answer = Arrays.copyOfRange(byteBuffer.array(), 0, 512);
+        getForwardAnswer(answer).getResponser().response(answer);
+    }
+}
+</code></pre>
+
+<p>这里getResponser().response()直接将结果返回给客户端。</p>
+
+<h3>测试：</h3>
+
+<p>使用queryperf进行了测试，使用AIO模型之后，仅仅单线程就达到了40000qps，比1.1.2效率高出了25%，而CPU开销却有了降低。</p>
 ]]></content>
   </entry>
   
