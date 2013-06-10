@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="2013年前半年搞Scrum，工作忙了不少，但是却是瞎忙的多。 持续维护BlackHole半年时间，github上有了 24 个star，半年来最大的成果。 看了 3 本书，比较少： 《git权威指南》、《硝烟中的Scrum和XP》、《七周七语言》 又写了两个项目： webmagic(爬虫框架) &hellip;">
+  <meta name="description" content="之前做过一年的爬虫，当年功力不够，写的代码都是一点一点往上加。后来看了下据说是最优秀的爬虫scrapy的结构，山寨了一个Java版的爬虫框架。 这个框架也分为Spider、Schedular、Downloader、Pipeline几个模块。此外有一个Selector，整合了常用的抽取技术(正则、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,106 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/">使用webmagic抓取页面并保存为wordpress文件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-10T18:05:00+08:00" pubdate data-updated="true">Jun 10<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前做过一年的爬虫，当年功力不够，写的代码都是一点一点往上加。后来看了下据说是最优秀的爬虫<a href="http://www.oschina.net/p/scrapy"><code>scrapy</code></a>的结构，山寨了一个Java版的爬虫框架。</p>
+
+<p>这个框架也分为Spider、Schedular、Downloader、Pipeline几个模块。此外有一个Selector，整合了常用的抽取技术(正则、xpath)，支持链式调用以及单复数切换，因为受够了各种抽取的正则，在抽取上多下了一点功夫。</p>
+
+<p>废话不多，上代码。在webmagic里直接实现PageProcessor接口，即可实现一个爬虫。例如对我的点点博客<a href="http://progressdaily.diandian.com/">http://progressdaily.diandian.com/</a>进行抓取：</p>
+
+<pre><code>    public class DiandianBlogProcessor implements PageProcessor {
+
+        private Site site;
+
+        @Override
+        public void process(Page page) {
+            //a()表示提取链接，as()表示提取所有链接
+            //getHtml()返回Html对象，支持链式调用
+            //r()表示用正则表达式提取一条内容，rs()表示提取多条内容
+            //toString()表示取单条结果，toStrings()表示取多条
+            List&lt;String&gt; requests = page.getHtml().as().rs("(.*/post/.*)").toStrings();
+            //使用page.addTargetRequests()方法将待抓取的链接加入队列
+            page.addTargetRequests(requests);
+            //page.putField(key,value)将抽取的内容加入结果Map
+            //x()和xs()使用xpath进行抽取
+            page.putField("title", page.getHtml().x("//title").r("(.*?)\\|"));
+            //sc()使用readability技术直接抽取正文，对于规整的文本有比较好的抽取正确率
+            page.putField("content", page.getHtml().sc());
+            page.putField("date", page.getUrl().r("post/(\\d+-\\d+-\\d+)/"));
+            page.putField("id", page.getUrl().r("post/\\d+-\\d+-\\d+/(\\d+)"));
+        }
+
+        @Override
+        public Site getSite() {
+            //site定义抽取配置，以及开始url等
+            if (site == null) {
+                site = Site.me().setDomain("progressdaily.diandian.com").setStartUrl("http://progressdaily.diandian.com/").
+                        setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
+            }
+            return site;
+        }
+    }
+</code></pre>
+
+<p>然后实现抓取代码：</p>
+
+<pre><code>    public class DiandianProcessorTest {
+
+        @Test
+        public void test() throws IOException {
+            DiandianBlogProcessor diandianBlogProcessor = new DiandianBlogProcessor();
+            //pipeline是抓取结束后的处理
+            //ftl文件放到classpath:ftl/文件夹下
+            //默认放到/data/temp/webmagic/ftl/[domain]目录下
+            FreemarkerPipeline pipeline = new FreemarkerPipeline("wordpress.ftl");
+            //Spider.me()是简化写法，其实就是new一个啦
+            //Spider.pipeline()设定一个pipeline，支持链式调用
+            //ConsolePipeline输出结果到控制台
+            //FileCacheQueueSchedular保存url，支持断点续传，临时文件输出到/data/temp/webmagic/cache目录
+            //Spider.run()执行
+            Spider.me().pipeline(new ConsolePipeline()).pipeline(pipeline).schedular(new FileCacheQueueSchedular(diaoyuwengProcessor.getSite(), "/data/temp/webmagic/cache/")).
+                    processor(diaoyuwengProcessor).run();
+        }
+    }
+</code></pre>
+
+<p>跑一遍之后，将所有输出的文件，合并到一起，并加上wp的<a href="https://github.com/code4craft/webmagic/tree/master/webmagic-samples/src/main/resources">头尾</a>，就是wordpress-backup.xml了！</p>
+
+<p>代码已开源<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a><strike>有什么邪恶用途你懂的…</strike></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -762,101 +862,6 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>2013-2-17</h4>
-
-<p>时隔一个月，再次迎来更新！</p>
-
-<p>过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题：</p>
-
-<p>收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包，做为判定DNS劫持和DNS拦截的依据，最终将正确结果缓存。实现的方式是NIO，复用DatagramChannel。</p>
-
-<p>经过测试，gfw在实现DNS污染的同时，不会丢弃掉回包，因此此方案是可行的，而且比起UDP转TCP的方式，理论上速度会快很多。</p>
-
-<hr />
-
-<h4>2013-2-25</h4>
-
-<p>成功完成了blackhole在windows下的配置。后来网上搜到有人做过差不多的工具AntiDnsPollution<a href="http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/">http://xijie.wordpress.com/2011/05/29/%E5%87%A0%E4%B8%AA%E9%98%B2%E6%AD%A2dns%E6%B1%A1%E6%9F%93%E7%9A%84%E6%96%B9%E6%B3%95/</a>，还比这个简单。有点失望，安安心心做好工作才是王道啊。</p>
-
-<p>以后技术方面还是要多积累才行。不过blackhole项目还是有自己的优势的，低延迟、支持缓存、可持久化、可定制都是其优点。好好把任务完成吧。</p>
-
-<hr />
-
-<h4>2013-4-2</h4>
-
-<p>一次故障排查的经过，详解操作系统DNS重试机制</p>
-
-<h3>出现故障</h3>
-
-<p>昨天下午的时候，发现微博有人私信我。原来是一个用户(应该是在oschina上找到了BlackHole)，在公司内网使用了BlackHole作为内部DNS Server(因为BlackHole配置比较简单嘛)，然后发现，在大规模访问量下，会出现浏览器破页的现象，而且越来越严重。</p>
-
-<p>当时第一反应很开心，自己鼓捣的这个东西确实派上了用场。后来跟他沟通，与我偶尔遇到的情况是一样的：浏览网页的时候偶尔会有DNS解析不到，使用nslookup结果无问题，但是在终端下ping显示找不到host。使用sudo killall -HUP mDNSResponder刷新系统缓存后，该请求解析正常。</p>
-
-<h3>初步检查</h3>
-
-<p>怀疑是操作系统缓存了错误的结果。因为BlackHole在实现的时候有一个trick的技巧：在转发请求的时候，因为发送和返回的设计是异步的，所以需要一个key来将请求和响应对应起来。因为使用了Map结构，所以担心条目太多导致内存泄漏，所以直接使用了DNS头的ID作为key，这个ID是一个16位的整数，空间足够小，不用担心泄漏问题。但是特殊情况下，如果ID冲突，甚至可能发生返回错误的响应的问题。</p>
-
-<p>但是后来进行了尝试，对某个请求，返回伪造的相应体，并分别尝试了question区伪造和answer区伪造两个方法。但是发现，操作系统能够检查出错误的响应体并进行过滤，然后再重试！于是，这个假设的故障其实是不存在的。</p>
-
-<h3>按部就班</h3>
-
-<p>感觉“蒙”的方法总是不准确，还是老老实实按部就班的来吧。个人觉得找bug最好的方法就是重现并记录现场，比没头苍蝇乱找，或者一遍一遍看代码靠谱多了。发现chrome自带了一个工具<a href="chrome://net-internals/#dns">net-internel</a>可以查看DNS缓存情况，打开之后发现，确实有部分DNS出现了<em>error: -105 (ERR_NAME_NOT_RESOLVED)</em>的错误。</p>
-
-<p>因为错误情况非常少且跟输入无关，靠debug是行不通了，只能靠log。在程序中将一个DNS query从接收到转发、返回都打印了log。经过测试发现，原来某些请求返回了空结果！</p>
-
-<p>原因是我模仿Servlet的ServletContext机制，使用了一个ThreadLocal来记录一些状态，其中就有一条是：ServerContext.hasRecord()，表示是否已经存在答案体。结果这个设计并未经过仔细推敲，里面存在一个重大问题：ThreadLocal是单个线程对应的上下文，而我在主方法中使用了线程池ThreadPoolExecutor，而实际上线程池的线程是复用的！也就是说我这次请求，会拿到另外请求的上下文，所以有些请求本来没有记录，却当作有记录，结果返回了空响应！而且因为这个ThreadLocal变量没有清理机制，所以后来会有越来越多的空响应。</p>
-
-<p>而DNS server返回空响应(有完整的header和question)也就相当于说，我正常处理了这条请求，但是这个domain是没有数据的，你下次别查了。操作系统的甄别能力是有限的，遇到这个空响应，它就傻傻的相信了，并且缓存了起来。</p>
-
-<p>至此故障成功定位。解决方案：去掉这个半成品的ServerContext，改为参数传递。改天详细研究一下Servlet的上下文保存机制才行。</p>
-
-<h3>总结：操作系统DNS缓存及重试机制</h3>
-
-<p>经过这次排查，也发现了操作系统DNS的一些机制：</p>
-
-<ul>
-<li><p>操作系统能够在一定范围内识别不正确的DNS响应(DNS头ID、question区、answer区name错误)，并进行重试。</p></li>
-<li><p>操作系统会缓存空记录。</p></li>
-<li><p>某些浏览器(例如chrome)会在DNS返回空记录的情况下，让缓存立即过期。这相当于浏览器级别的重试机制。浏览器是能够清除操作系统缓存的。</p></li>
-</ul>
-
-
-<p>经过这番折腾，BlackHole之前一直存在的一个问题也算是解决了。有人把它应用到企业内网，还是挺令人鼓舞的。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -889,6 +894,10 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/">使用webmagic抓取页面并保存为wordpress文件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua/">2013年半年总结及计划</a>
       </li>
     
@@ -902,10 +911,6 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
     
       <li class="post">
         <a href="/blog/2013/05/04/how-to-read-source-code/">如何阅读源代码</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/17/intellijshi-yong-xin-de/">IntelliJ使用心得</a>
       </li>
     
   </ul>
