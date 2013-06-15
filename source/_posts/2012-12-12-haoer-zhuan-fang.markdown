@@ -13,6 +13,8 @@ categories:
 
 ![image](/images/posts/haoer.jpeg)
 
+<!-- more -->
+
 ###经历
 
 		“我就想要去经历一些未经历过的事情，这样老了以后才不会后悔。”

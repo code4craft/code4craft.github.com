@@ -1,0 +1,534 @@
+---
+layout: post
+title: "BlackHole开发日记"
+date: 2012-12-17 23:04
+comments: true
+categories: BlackHole
+---
+###起因
+
+最近公司在做一个邮件系统的项目，涉及到测试对外发送的环节。开始构思是这样：建立一个接收服务器，并将所有请求导向该服务器。这里面就涉及到一个DNS拦截的问题。这个问题其实在开发和测试环境中很常见，但是单是绑hosts或者使用传统DNS都不太能满足需要(不支持通配符)。
+
+后来调研DNS工具也烦了，于是想自己写一个，实现简单的功能。找到一个Java的开源项目EagleDNS看了下，把UDP连接模块看了看，发现还是比较简单的。于是就构思着开发一个简单的DNS服务器吧！
+
+<!-- more -->
+
+----------------------------------------------
+
+###开发日志
+
+
+--------------------
+
+####2012-12-14
+
+构想功能和研究协议花了一天时间，后来就急不可耐的开始编码了。花了一个上午，做了写死配置，一个拦截所有请求的简单服务器，发现能够work，更加坚定了信心。
+
+下午做了一些开发，参考jetty的思路，实现了handler的结构，基本代码成型。因为不想引入Spring，写了一堆很丑的单例。
+
+晚上回家，引入了Spring，并做了一些bugfix。
+
+引入了一个监控模块wifesays，后来发现Java有个模块JMX就是做这个事的，长见识了！
+
+------------------
+####2012-12-15
+
+将wifesays独立成一个项目。
+
+兴致勃勃的定义了wifesays的协议，是一个基于TCP的文本协议，端口用的是老婆的生日40310，呵呵。
+
+开发了一个wifesays的客户端，用了apache的commons-cli做参数解析（这是个好东西）。目标是代替telnet，并且可以通过文件输入而不是telnet那样全是纯手工的方式。这样写一个配置文件，就可以达到发送测试邮件的目的。后来Socket超时那部分很难搞定，再说吧。
+
+晚上遇到一个问题：之前的构思是，希望将blackhole作为第一顺序DNS服务器，只负责拦截，然后无法拦截的通过断开连接的方式，使用系统配置的第二顺序DNS服务器解析。
+
+但是后来发现，这样做会非常低效并且不一定可行。
+
+MacOX下，当系统尝试第一顺序DNS失败次数过多后，会放弃尝试，以后的请求都会使用其他DNS服务器。
+
+CentOS下，系统每次请求都会尝试第一顺序DNS服务器，但是超时时间非常长，导致每次解析变得很慢。
+
+后来尝试使用BlackHole做代理，于是有了转发模式。测试之后，发现转发模式能够工作。当时的兴奋很难形容。
+
+目标转移到可用性上来，熬夜做了SHELL脚本，并写了README。事实证明README是很有用的。
+
+------------
+
+####2012-12-16
+
+使用BIND的压力测试工具queryperf做了benchmark。
+
+第一次测试结果不尽人意，拦截模式qps为6000，转发模式只有3000，而BIND有36000。
+
+后来想到会不会是log的原因？因为到了大于10000qps的时候，IO操作耗时就显得很重要了。于是关掉log重试，结果提升明显，拦截模式qps达到16000，转发模式为8000。
+
+BIND是采用C写的，难道Java比C有天生的劣势？忽然想到HotSpot虚拟机都是运行一段时间会变快的，于是尝试多次测试，发现拦截模式qps达到30000。看来Java在工作时间变长之后，性能劣势就并非那么明显了。
+
+benchmark的优秀滋生了将BlackHole做成一个通用DNS服务器的野心。这是一个很宏伟的目标，涉及到DNS协议完全分析、缓存机制、UDP协议分析等。是个很有前途的目标，come on!
+
+------------------
+
+####2012-12-17
+
+今天在公司公开了这个项目，得到大家的肯定，坚定了把这个项目做下去的决心。
+
+下午公司项目codereview，被指出很多问题。虽然自己在代码可扩展性上做了不少努力，但是大家都反应可读性不那么好。决定以后改进风格。这个决定也体现在BlackHole上，因为一开始就想用英文写代码注释，所以多看看JavaDoc也是很有必要的！锻炼下英文吧，感觉这也是开源的必经之路。
+
+晚上回家时间不多，尝试着将ehcache引入，结果效果让人大跌眼镜，qps直接降到3000。不知道ehcache做了什么事，感觉额外的东西太多。
+
+但是缓存依然是需要的，得日后调研了，或许自己写一个。
+
+开始构思的是缓存外部DNS的UDP包内容，后来发现Message.getHeader()存在一个ID，如果该ID不符，则可能导致不正确的结果。queryperf中出现了很多这样的错误：
+
+	Warning: Received a response with an unexpected (maybe timed out) id: 3
+	
+看来详细研究一下DNS是非常有必要的。
+
+晚上开始记录开发日志。这才是货真价实的“每天进步一点！”。
+
+-----------------------
+
+####2012-12-18
+
+早上做了ehcache的benchmark，set和get一个40k的字符串(压缩到19k)到ehcache。10000次set和get操作，每次都使用不同的key。
+
+ehcache的测试结果(10000次)：
+
+<table>
+    <tr>
+        <td width="100">Operation</td>
+        <td width="100">Total(ms)</td>
+        <td>Average(ms)</td>
+    </tr>
+    <tr>
+        <td>set</td>
+        <td>34</td>
+        <td>0.0034</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>6</td>
+        <td>0.00065</td>
+    </tr>
+</table>
+
+结果相当令人满意。
+
+作为对比，使用JDK提供的简单Cache类型WeakHashMap做一个测试(10000次)：
+<table>
+    <tr>
+        <td width="100">Operation</td>
+        <td width="100">Total(ms)</td>
+        <td>Average(ms)</td>
+    </tr>
+    <tr>
+        <td>set</td>
+        <td>4</td>
+        <td>4e-4</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>5</td>
+        <td>5e-4</td>
+    </tr>
+</table>
+
+可以看到，ehcache的set比WeakHashMap耗时提升了10倍，但是get的效率是差不多的。因为cache的使用场景，一般都是读远大于写，所以ehcache是一个胜任的进程内缓存。回去需要调研一下昨天失败的原因。
+
+出于兴趣，又使用memcached做了一个测试。spy的客户端似乎会将字符串做压缩，最后将40k的字符串压缩到19k，但是结果仍然是毫秒级的，这也证明了涉及到网络IO的操作，会慢上几个数量级。
+
+
+memcached的测试结果(1000次)：
+
+<table>
+    <tr>
+        <td width="100">Operation</td>
+        <td width="100">Total(ms)</td>
+        <td>Average(ms)</td>
+    </tr>
+    <tr>
+        <td>set</td>
+        <td>4796</td>
+        <td>4.796</td>
+    </tr>
+    <tr>
+        <td>get</td>
+        <td>1726</td>
+        <td>1.726</td>
+    </tr>
+</table>
+
+开始调研DNS协议。尝试输出DNS query的UDP包内容，发现不是文本编码，看来得研究一下了。
+
+晚上到家，尝试将MX记录也伪造一下，方法是在domain前面加上mail.，并且把mail.domain记录到A记录列表，下次将这个mail.domain直接指向配置好的IP地址。queryperf真是个好东西。
+
+晚上使用dig查看了一些知名网站的TTL，发现都在几百到几千之间。后来尝试了一下MacOX下对TTL的应对策略，发现不会又TTL设置那么长，但是绝对跟TTL有关系。
+
+突然有个想法，可以将BlackHole内置缓存，并且可以主动刷新！这样子就很方便了，因为如果是本地搭建BlackHole，实际上本地做缓存和使用BlackHole缓存效率是相近的。
+
+明天的任务是解析代理的响应，并做缓存。
+
+--------------
+
+####2012-12-19
+
+今天上班的路上在对比Tomcat和Jety的连接模型。Tomcat使用多线程处理请求，一个请求一个线程；Jetty则采用NIO。有文章说，对于逻辑复杂、处理时间较长的连接，Tomcat有优势，但是对于处理时间较短的连接，Jetty有优势。毫无疑问DNS的处理时间是很短的，看来把之前connector部分多线程的处理模型换成NIO的，应该性能会有一些提升。以后几天一个大的开发计划，就是调研Java NIO和Jetty里的实现，写一个完整的NIO connector。Cache机制开发延后。
+
+上午在网上找了点资料，磕磕碰碰把基于NIO的服务器模型搭出来了。因为DNS使用的是UDP协议，同时数据量很小，所以NIO并没有起到理想中的效果。
+
+主要服务器部分代码在[https://github.com/flashsword20/blackhole/blob/nio/src/main/java/us/codecraft/blackhole/connector/UDPSocketMonitor.java](https://github.com/flashsword20/blackhole/blob/nio/src/main/java/us/codecraft/blackhole/connector/UDPSocketMonitor.java)。测试之后的效果让人失望，NIO效率比多线程+BIO更低，只有24000~28000qps，并且因为代码不熟悉，系统变得很不稳定。所以暂时保留到NIO分支了。
+
+结论是这样的：
+
+一个DNS query的包大小大约是几十byte，而response也不超过100 byte，如此小的传输量，同时因为UDP包也不涉及连接建立等东西，发送速度也很快，所以NIO发挥不了效率。
+
+晚上回家，尝试加入cache机制：
+
+使用了ehcache，但是死活都存在UDP包乱序的问题。后来发现
+
+**对于同一key，ehcache获取出来的对象总是同一个，这也是进程内缓存的特殊之处，不妨将其想想为一个Map**
+
+而我会尝试改变其ID值，结果就导致看起来ID变了，其实也改变了其他线程获取到的值，出现了不确定性！
+
+后来改进了数据结构，尝试写一个CopyOnWriteMessage(Message是dnsjava中DNS报文的抽象类)，结果因为其很多方法都是私有，所以失败了。后来构建了一个UDPPackage的对象，尝试将byte[]用CopyOnWrite和访问锁的方式解决并发问题，测试结果CopyOnWrite性能会好一点，这也是因为数据量较小，而且Arrays.copyOf是本地方法吧。
+
+后来测试，值得高兴的是有缓存的情况下，转发模式效率达到了40000qps，可喜可贺！
+
+家里连公司，benchmark里，UDP丢包率大概在10%，效果相当差，所以说网络才是第一要素！
+
+--------------
+
+####2012-12-20
+
+今天尝试使用Selector改造转发逻辑，结果可耻的失败了！因为**Selector不是线程安全的**，试图多个线程进行register会导致严重的问题，这也是为什么基于事件的IO模型都不怎么支持多线程的原因，太难做了。
+
+后来尝试用Java的Future机制来实现超时。我们知道，Java的FutureTask需要一个执行的线程池。如果每次都new出来当然没有问题，但是经测试性能开销较大(qps被降到了4000)。后来尝试复用同一大线程池，发现请求多了之后，总是会超时！
+
+然后jstack查看发现，很多线程仍然卡在了Callable.call方法，就是我们常说的异常把线程抛死了！原来TimeoutException也会导致线程抛出异常但是无法回收。解决方法：使用future.cancel()。
+
+这也说明，线程抛出异常死掉时，jstack查看到的是它抛出异常时的执行栈。
+
+加入超时机制后，程序算是稳定了，这周末弄个1.0版吧，以后开始写ReleaseNotes。
+
+今天看了一下代码，作为一个开源项目，似乎风格不是那么优雅，很多长函数，注释也不完整。顶多对架构和原理感兴趣，代码的OOP神马的，这方面完全提不起兴趣来啊。
+
+在自己的MBP上也编译了一个queryperf，测试性能达到55000qps，而拦截模式只有35000，果然还是缓存byte[]更给力啊。因此把拦截模式也加入了cache。
+
+晚上实验BlackHole作为DNS实装了！DNS设置为127.0.0.1，转发DNS设为之前的DNS。目前表现稳定。
+
+--------------
+
+####2012-12-21
+
+今天，太阳照常升起，逃过了一劫，那就开始新的生命吧。
+
+为了把BlackHole推广出去，想要做一个MacOS下的包。调研了mac开机启动的东西，将启动程序写成了一个plist文件，放在/Library/LaunchDaemons下面，脚本是这样的：
+	
+    <?xml version="1.0" encoding="utf-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+          <key>Label</key>
+          <string>blackhole.init</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>/usr/local/blackhole/blackhole-start.sh</string>
+          </array>
+            <key>KeepAlive</key>
+            <false/>
+          <key>RunAtLoad</key>
+            <true/>
+            <key>StandardErrorPath</key>
+            <string>/tmp/blackhole.err</string>
+            <key>StandardOutPath</key>
+            <string>/tmp/blackhole.out</string>
+            <key>UserName</key>
+            <string>root</string>
+      </dict>
+    </plist>
+
+事实证明UserName=root那段必须加上，要不然不会用root权限启动，然后就会失败！
+
+重启后一切正常，开始使用BlackHole作为DNS服务器，考察稳定性。
+
+早上来到公司就出事了，主进程启动了，wifesays没启动，导致telnet无响应。悲剧！
+
+需要加入多个DNS服务器的配置。还有就是启动的时候，为什么wifesays老是启动不起来？
+
+后来知道，因为**Spring初始化时是阻塞进行的，包括afterPropertySet方法，如果里面调用了耗时较长的程序，则会阻塞直到服务结束才会继续初始化，而这个过程的顺序是未知的**。ehcache初始化的时间挺久(好多秒，不知道为什么)，然后就导致wifesays的进程一直等不到Spring初始化结束，这时调用之，就抛出了空指针异常！后来将ehcache做了异步加载，并进行了错误判断，问题解决！
+
+下午使用qmail进行拦截测试的时候出了点问题，后来debug发现qmail竟然打了一条ANY类型的请求！原来还有这种类型，长见识了。
+
+找到几个公用的DNS服务器，以后可以增加多服务器切换的功能。
+
+多服务器的可用性是个问题，刚好最近也在研究服务器的可用性维护。最终实现如下：使用failedTimes和wakeup机制。failedTimes由外部调用指定，当次数过多时，标志为不可用；内部线程定期循环，尝试检查不可用的服务器，一旦可用，则重新标志为可用。
+
+--------------
+
+####2012-12-22
+
+今天做了一天家务，周末比上班还忙啊。晚上9点半开始写了点代码，想把外部DNS选择机制改为：最短请求时间。
+
+晚上从9点开始写代码，终于到12点写完了。开始尝试用TreeMap做一个按照响应时间自排序的数据结构，类似redis的SortedSet。后来发现：如果尝试改变TreeMap的key值，TreeMap并不会重新排序，到后面就会出现无法预知的结果了！还有一个办法就是写一个incrScore的函数，并且限定score为double类型，但是这时score就没法用自定义类型了，也不是很好用。
+
+所以最后干脆在弹出时做了一个筛选，每次选出所有元素，并做一个筛选。后来这个算法就能正常运行了。
+
+--------------
+
+####2012-12-23
+
+今天下午写了一点代码，尝试把超时跟平均响应时间分开了，分为正常响应时间、次数和超时次数。如何才能做到多个服务器可用性的判断？这个问题有很多种方案，希望找到一个可行有效的方案。
+
+这又涉及到业务的东西了。上班写一堆业务，下班不想写业务啊写业务。想做一个使用Selector，多个DNS服务器同时forward，使用最快的结果作为响应。但是后来测试，用途不大。
+
+自己在这里研究这些意义不大，这应该是一个很common的问题。晚上研究一下load balance和failover的东西。
+
+感觉这几天写的load balance的东西都太不成熟，需要等研究一下相关机制之后，再来继续深入。
+
+今天也没有想到其他的优化点了。开发先到这里吧，以后做一点推广方面的工作吧，写一个站点，然后把东西挂上去。老薛主机的下载速度太慢了，看来要找个地方把文件放进去。
+
+--------------
+
+####2012-12-24
+
+今天写的不能叫开发日记了，主要是学习，主要想要学习一些load balance的东西。
+
+看了LVS社区的一些东西，系统涉及的目标：透明性、可伸缩性、高可用性和易管理性，跟我想的还不太一样。
+
+VIP技术：无缝的单点切换。
+
+这里看了一篇章文嵩博士自己发表的[LVS集群系统网络核心原理分析](http://zh.linuxvirtualserver.org/node/98)，其中转发的原理有三种模式，可以理解为都是修改IP包内容，然后使用户与Real Server实现通信，看上去就像直接和Load Balancer通信一样。
+
+调度算法才是我想研究的重点，LVS实现了八中负载均衡调度算法，总结下来分为三种策略：
+轮循调度(Round-Robin)，最小连接数和哈希。
+
+------------
+
+####2012-12-25
+
+今天想了想，如果把BlackHole作为一个拦截工具的话，一直开启DNS服务器也不合适，所以就想写一个模块，在启动时修改OS的DNS配置，关闭时再把DNS配置切换回去，看看是不是可行？这个工具我另建了一个项目叫[dnstools](https://github.com/flashsword20/dnstools)。实现了一些windows下的DNS切换，用的是Java外部命令调用。
+
+研究了下Mac下DNS的修改方法。Mac下虽然有/etc/resovled.conf文件，但是这个文件是自动生成的，好像也不起什么作用。后来搜到一个帖子[Configure DNS lookups from the terminal ](http://hints.macworld.com/article.php?story=20050621051643993)讲的比较详细。我大概整理下帖子的内容：
+
+首先，Mac下网络配置存在/Library/Preferences/SystemConfiguration/preferences.plist这个文件中，每次系统重启会读取这个文件。但是尝试直接修改文件后，发现配置不能立刻生效，搜索之后，也没有找到好的办法使它立刻生效。
+
+还有一个办法是使用scutil。scutil修改的结果在下次重启后会失效，希望持久化修改，请修改/Library/Preferences/SystemConfiguration/preferences.plist文件。网上还搜到一篇关于使用scutil修改DNS的病毒，很好玩。这里贴上帖子里的一段修改DNS的代码，感谢原作者[emzy](http://hints.macworld.com/users.php?mode=profile&uid=1035540)(10.7下测试通过)：
+
+	#!/bin/bash
+
+	# Script is used to set the Nameserver Lookup under Max OS X 10.4 with the Console
+	# Script by Stephan Oeste <stephan@oeste.de>
+
+	if [ $# -lt 2 ] ; then
+	echo "Use: $0 <domain> <1.Nameserver> [2.Nameserver]"
+	echo "Example Use: $0 example.tld 1.2.3.4 1.2.3.5"
+	exit 1
+	fi
+
+	PSID=$( (scutil | grep PrimaryService | sed -e 's/.*PrimaryService : //')<< EOF
+	open
+	get State:/Network/Global/IPv4
+	d.show
+	quit
+	EOF
+	)
+
+	scutil << EOF
+	open
+	d.init
+	d.add ServerAddresses * $2 $3 
+	d.add DomainName $1
+	set State:/Network/Service/$PSID/DNS
+	quit
+	EOF
+
+----
+####2012-12-26
+
+今天完成了Windows下DNS的读取和写入，用的是ipconfig /all和netsh，在Java中调用脚本大概是这样子的：
+
+	Process exec = Runtime.getRuntime().exec(
+				commandString));
+	BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(exec.getInputStream()));
+	
+bufferedReader读出来就是程序的输出。只要Java程序使用管理员权限启动，那么调用的脚本也会获得对应权限，在MacOS和Win7下测试通过。
+
+今天仔细研究了下scutil，发现大概是个读写plist的工具。Mac下的配置好像都是基于XML的。
+	例如：
+	
+	open
+	d.init
+	d.add ServerAddresses * $2 $3 
+	d.add DomainName $1
+	set State:/Network/Service/$PSID/DNS
+
+这一段中，d其实是个XML的值，scutil里称之为"dict"。如果要获取一个dict的值，就是这么写：
+
+	open
+	get State:/Network/Service/$PSID/DNS
+	d.show
+	
+
+发现另一款类似的软件[dnsmasq](http://thekelleys.org.uk/dnsmasq/doc.html)，也是用于本地的轻量级DNS服务器，似乎是从hosts文件读取配置，并加以拦截，用于解决某些情况下修改hosts不生效的问题。看来已经有人研究过这个了！不过无论如何，做个东西总是好的。正好学到一些思想什么的。
+
+----
+####2012-12-27
+
+今天将Mac下DNS设置的模块完成了，于是着手做一个单机服务器吧！将项目拆开成了两个目录，server和localserver。
+
+另外解决了一个很初级的Spring配置的问题，如果要引入jar包中的配置，需要在classpath后面加上'*'，例如：
+classpath*:/spring/applicationContext*.xml
+
+后来又遇到一个问题：想要把shell脚本打入jar包，但是发现即使获取到了jar包中shell脚本的路径(xxx.jar!/xx/ss这样的路径)，也无法使用外部程序调用这个文件！
+
+----
+####2012-12-28
+
+
+怎么执行jar包内的shell脚本？这是个有趣的话题。后来尝试使用getResourceAsStream读取出文件，然后再写到临时文件夹，然后访问…好吧，问题解决。
+
+后来完善了localserver的设计。考虑到项目已经有4个模块了，就引入了maven聚合来完成编译,将xml中module的路径配置一下就可以了。 顺便提一下，maven-jar-plugin也挺好用的，可以将META-INF写入jar包。例如，下面设置依赖路径和执行的Main类:
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+			<archive>
+				<manifest>
+					<addClasspath>true</addClasspath>
+					<classpathPrefix>lib</classpathPrefix>
+					<mainClass>us.codecraft.blackhole.selfhost.MacMain</mainClass>
+				</manifest>
+			</archive>
+		</configuration>
+	</plugin>
+
+----
+####2012-12-29
+
+今天完成了Mac下的单机服务器版本，可以在程序启动的时候设置DNS服务器、清空DNS缓存，结果遇到了一个比较麻烦的问题：即使系统缓存清空了，浏览器仍然会有缓存。而且有个有趣的事情：**浏览器DNS缓存的时间跟ttl值无关**，因为浏览器不知道A记录的TTL值，所以一旦访问成功，都会尝试用一个固定过期时间来缓存内容。因为这个问题还挺费解的，也给之前的开发和测试带来不少困扰，所以就做了一个详细的研究，写了一篇博文：[为什么修改hosts不立即生效？--浏览器DNS缓存机制分析](http://my.oschina.net/flashsword/blog/99068)。
+
+剩下的就是一些操作的包装了，好好考虑和测试一下。
+
+####2012-12-30
+
+今天继续写单机版BlackHole。碰到一个问题，想要将程序作为系统进程，后台运行，并且在shell关闭时不退出，有两种办法：一种是使用nohup，一种是使用Deamon程序的开发方式来写Java，并引入很多框架，例如Apache Commons Daemon。后者觉得太重了，但是前者无法在控制台输出一些错误信息，也不够友好。最后用了一个很粗暴的方法：将错误输出重定向到一个文件，shell脚本退出的时候打印出来！赢了！
+
+后来使用package maker做了一个安装包，比想象中好用，支持shell脚本什么的。
+
+遇到一个问题，在mac下设置两个DNS，BlackHole为主DNS，结果仍然无法保证每次都使用BlackHole进行解析。后来索性改成只有一个DNS，127.0.0.1，倒是正常工作了。
+
+这个单机版本我取名叫hostd，大概是hosts取代者的意思吧。因为要保证程序即使被kill之后也能做出一些释放资源的操作(在hostd里，需要把修改过的DNS改回来)，所以给wifesays增加了一个响应，用了Java里一个响应信号量的api。
+
+	import sun.misc.Signal;  
+	import sun.misc.SignalHandler; 
+	Signal.handle(new Signal("TERM"), new SignalHandler() {
+
+			@Override
+			public void handle(Signal arg0) {
+				shutDown();
+			}
+
+	});
+	
+####2012-12-31
+
+新年的最后一天，大家都无心上班，那么我就在上班时间鼓捣项目了！将hostd完善了一下，加入了实时响应配置更改的机制。
+
+开始的想法是通过md5来判断文件内容是否被更改，但是这样每隔一个周期就必须完全load一次文件，不划算；后来想到，为什么不直接用文件的最后修改时间呢？大多数情况下，只要是人工修改的配置文件，多个配置文件的修改时间是不可能相同的，在Java里直接可以用file.lastModified()来查看，多方便！
+
+晚上写了一篇广告帖，效果不好，大家都去过节去了嘛。
+
+后来有个以前搞手机的同事回复我，手机上目前没有方便的hosts修改工具。android下改hostd是需要重启的，相当麻烦。于是感觉找到一个很大的应用场景了！
+
+####2013-1-1
+
+新的一年，新的日期格式，稍微有点不习惯。今天抽空看了一点Android开发的东西，鼓捣了一下adt。网易有个公开课讲android的，个人认为讲的不错，正好学点英语，地址[密西西比河谷州立大学：Android应用程序开发](http://v.163.com/special/opencourse/developingandroidapplications.html)。
+[原文](http://masl.cis.gvsu.edu/2010/10/12/android-dev-tutorial-now-available-on-the-gvsu-itunes-u-portal/)，[讲义](http://masl.cis.gvsu.edu/wp-content/uploads/2010/10/AndroidTutorialHandout.pdf)，[源码](http://masl.cis.gvsu.edu/wp-content/uploads/2010/10/AndroidTutorialSourceCode.zip)
+
+####2013-1-2
+
+今天白天出门了，晚上把[Android公开课](http://v.163.com/special/opencourse/developingandroidapplications.html)看了两集。虽然这个课程是比较浅，不过详略还算得当，总得来说还算是不错的，而且只有3个小时，对这种速成式的比较感兴趣。后来浏览了几个国内的视频，大多数都是面向零基础的，而且面面俱到，讲的比较慢。因为自己也没打算把这个当正业，加上也有些Java和Swing的基础，了解下大概就可以先试试开发了吧。
+
+####2013-1-3
+
+hostd for Android项目正式启动！目标是在Android下动态修改域名绑定，不需要修改hosts，不需要修改DNS服务器，也不需要重新切换APN，以用于开发环境和线上环境的快速切换。
+
+因为博主是个猴急的开发者，秉承快速原型的的原则，今天开始了一些开发的尝试。
+
+因为DNS服务器BlackHole要使用系统端口53，所以首先要确认其在Android上是否能够运行。部署服务艰难重重，记录如下：
+
+第一次：
+
+新建一个helloworld Android项目，在buildPath里加入依赖jar包，然后在MainActivity.onCreate()直接启动DNS服务器。尝试第一次，不成功：
+
+解决：使用adb logcat查看，发现产生了NoClassDefinedError，检查APK包，发现依赖jar没有打进去。再次检查buildPath，在"Order and Export"选项里把这些jar包都勾上，然后jar包被打到APK里。
+
+第二次：
+
+因为在BlackHole中使用了Spring，所以出现了问题：ClassPathXmlApplicationContext解析不到xml文件路径：提示找不到对应bean。
+
+解决：改用FileSystemXmlApplicationContext解析，并将xml存入临时目录/sdcard/spring.xml。结果大跌眼镜，抛出异常：
+
+	Unable to validate using XSD: Your JAXP provider [org.apache.harmony.xml.parsers.DocumentBuilderFactoryImpl@461a0cd0] does not support XML Schema. Are you running on Java 1.4 with Apache Crimson? Upgrade to Apache Xerces (or Java 1.5) for full XSD support.
+	
+难道Android的xmlparser不支持xsd?感觉不太可能啊，猜测应该是Spinrg底层使用XML parser和Android不兼容(Android包里似乎使用了SAXParser)。于是放弃Spring，看看以后是不是用其他IoC框架了，比如Spring for Android?
+
+第三次：
+
+直接启动SocketServer，绑定53端口，进行尝试。
+
+问题如期而至，显示Unable to bind port，Perimission denied
+
+解决：根据网络上的解决方案，在程序中插入这一段，理论上可以在运行到这里时，提示需要root权限：
+
+        try {
+            Runtime.getRuntime().exec("su");
+        } catch (IOException e) {
+        	e.printStackTrace();
+        } 
+        
+结果：
+没有出现提示，依然没有权限！
+
+第四次：
+
+继续搜索资料，发现模拟器没有root权限！作为一个玩安卓不刷机的人，还真不知道该怎么root。后来下载了一个[Root.apk](http://ishare.iask.sina.com.cn/f/20228587.html)，尝试之，终于弹出Superuser窗口(经典的骷髅头s)。
+
+后来分析，Android root的原理，就是将su替换成另外一个文件，并且使用Superuser来管理这些权限。真是曲折！
+
+####2013-1-4
+
+后来发现SocketException是没有网络权限，BindException才是没有系统权限！
+
+尝试root，发现hosts什么的还是不能改，明天再搞吧！
+
+####2013-1-5
+
+今天咨询了一个做Android的朋友，原来su只能赋予被外部执行的程序的权限，而app本身并不会因此获得权限。所以app中想要使用1024以下端口会失败。朋友他们执行需要root权限的操作，都是使用su加上外部命令来做。没有想象中的那么简单，而且Android环境不熟，开发起来各种调不通，很恼人，看来需要很多时间投入，最近也挺忙的，有大项目要上线了，因此hostd for Android暂时搁置，等有空了再搞吧。
+
+今天买了一个翻墙工具，了解到了gfw通过DNS污染来拦截的事情。可以使用BlackHole来做一个防止DNS污染的小工具？
+
+最近要做的东西好多啊，暂时就这样吧。BlackHole写了有三周了，业务时间每天没有间断过，过程中也有不少提升。找机会再更新吧。
+
+----------------------
+
+####2013-1-16
+
+gfw的实现机制，包括两项重要技术：DNS劫持及DNS污染。
+
+DNS劫持的原理跟BlackHole一模一样，只不过它是配置到ISP给的DNS服务器那里的。或许gfw掌握了一个比BlackHole更全面的DNS拦截服务器版本，呵呵。这个可以通过自行配置DNS服务器达到避免DNS劫持的效果，比如：配置成google dns: 8.8.8.8。
+
+DNS污染的原理是：不对DNS请求做拦截，而是在利用DNS解析的漏洞进行伪造。因为DNS请求是一个UDP包，假设用户向8.8.8.8发出DNS请求，实际上就是发送了一个UDP包，8.8.8.8收到请求后，返回一个答案UDP包，用户拿到第一个收到的UDP包，当成正确答案。而DNS污染则是监控到一个DNS的UDP包后，从旁路路由返回一个伪造的UDP包。因为这个伪造的包一般比较快，所以会被用户的系统当成正确答案，从而达到伪造的目的。
+
+因为BlackHole是自己实现的转发和判断机制，那么完全可以防范DNS劫持和DNS污染。实现之后，或许会有更广泛的应用场景。这个列入开发计划了！
+
+####持续更新
+
+-----------------------------
+###心得
+
+这个项目选择相当有挑战，基本上就是自己开发一个服务器。很重要的一个心得：从零开始开发，开始尝试将需要的组件都自己简单实现，后面再引入框架级的东西，可以更好的理解J2EE世界的工具。
+
+比如开始准备实现一个简单的GlobalFactory，做Spring做的事，只是省去繁琐的xml配置（而且印象中Spring启动实在是太慢了）。后来发现，依赖管理是相当复杂的一块，特别是初始化的时候的顺序。后来只好引入了Spring，发现Spring本身启动并不慢，而且使用annotation代替xml之后，也相当容易配置，重构起来也很方便，一改我在公司项目开发中，Spring又慢又笨重的印象。
+
+再比如项目需要做到一个可外部管理应用的东西，当时还得意洋洋的搞了个项目叫wifesays，用的是TCP文本协议。后来才发现，Java有个模块JMX，专门就是用来干这事的。不过之前很难理解JMX，现在发现容易理解很多。
