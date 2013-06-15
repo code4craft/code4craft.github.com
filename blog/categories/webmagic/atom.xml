@@ -4,7 +4,7 @@
   <title><![CDATA[Category: webmagic | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/webmagic/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-06-10T18:07:07+08:00</updated>
+  <updated>2013-06-16T05:49:18+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>之前做过一年的爬虫，当年功力不够，写的代码都是一点一点往上加。后来看了下据说是最优秀的爬虫<a href="http://www.oschina.net/p/scrapy"><code>scrapy</code></a>的结构，山寨了一个Java版的爬虫框架。</p>
 
 <p>这个框架也分为Spider、Schedular、Downloader、Pipeline几个模块。此外有一个Selector，整合了常用的抽取技术(正则、xpath)，支持链式调用以及单复数切换，因为受够了各种抽取的正则，在抽取上多下了一点功夫。</p>
+
+<!-- more -->
+
 
 <p>废话不多，上代码。在webmagic里直接实现PageProcessor接口，即可实现一个爬虫。例如对我的点点博客<a href="http://progressdaily.diandian.com/">http://progressdaily.diandian.com/</a>进行抓取：</p>
 

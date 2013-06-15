@@ -4,7 +4,7 @@
   <title><![CDATA[Category: BlackHoleJ | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/blackholej/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-06-10T18:07:07+08:00</updated>
+  <updated>2013-06-16T05:49:18+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -23,6 +23,9 @@
 <p><img src="/images/posts/forward.png" alt="image" /></p>
 
 <p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
+
+<!-- more -->
+
 
 <h3>BIO模型(Blocking I/O)</h3>
 

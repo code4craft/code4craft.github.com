@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-06-10T18:07:07+08:00</updated>
+  <updated>2013-06-16T05:49:18+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>之前做过一年的爬虫，当年功力不够，写的代码都是一点一点往上加。后来看了下据说是最优秀的爬虫<a href="http://www.oschina.net/p/scrapy"><code>scrapy</code></a>的结构，山寨了一个Java版的爬虫框架。</p>
 
 <p>这个框架也分为Spider、Schedular、Downloader、Pipeline几个模块。此外有一个Selector，整合了常用的抽取技术(正则、xpath)，支持链式调用以及单复数切换，因为受够了各种抽取的正则，在抽取上多下了一点功夫。</p>
+
+<!-- more -->
+
 
 <p>废话不多，上代码。在webmagic里直接实现PageProcessor接口，即可实现一个爬虫。例如对我的点点博客<a href="http://progressdaily.diandian.com/">http://progressdaily.diandian.com/</a>进行抓取：</p>
 
@@ -95,6 +98,9 @@
 
 <p>持续维护<code>BlackHole</code>半年时间，github上有了 <strong>24</strong> 个star，半年来最大的成果。</p>
 
+<!-- more -->
+
+
 <p>看了 <strong> 3 </strong> 本书，比较少：</p>
 
 <p>《git权威指南》、《硝烟中的Scrum和XP》、《七周七语言》</p>
@@ -136,44 +142,14 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[为什么要重新造轮子]]></title>
-    <link href="http://code4craft.github.com/blog/2013/05/04/about-making-wheels/"/>
-    <updated>2013-05-04T09:09:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/05/04/about-making-wheels</id>
-    <content type="html"><![CDATA[<h3>旧工具学习成本高</h3>
-
-<h3>低估问题的复杂度</h3>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Web MVC及框架的那些事]]></title>
-    <link href="http://code4craft.github.com/blog/2013/05/04/something-about-mvc-and-framework/"/>
-    <updated>2013-05-04T08:53:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/05/04/something-about-mvc-and-framework</id>
-    <content type="html"><![CDATA[<p>Struts</p>
-
-<p>Portlet</p>
-
-<p>你为什么不同？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何阅读源代码]]></title>
-    <link href="http://code4craft.github.com/blog/2013/05/04/how-to-read-source-code/"/>
-    <updated>2013-05-04T08:47:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/05/04/how-to-read-source-code</id>
-    <content type="html"><![CDATA[<p>todo</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[IntelliJ使用心得]]></title>
     <link href="http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de/"/>
     <updated>2013-04-17T21:18:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2013/04/17/intellijshi-yong-xin-de</id>
     <content type="html"><![CDATA[<p>最近尝鲜试用了一下IntelliJ，使用下来还是比较爽的，最后我这个很少花钱买软件的人，也在oschina上买了个人版。IDE毕竟是码农干活的家伙，想想也值了。使用的时候有一些心得，记录下来。</p>
+
+<!-- more -->
+
 
 <h3>调整界面为酷酷的黑色</h3>
 
@@ -256,6 +232,9 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 <p><img src="http://code4craft.github.com/images/posts/forward.png" alt="image" /></p>
 
 <p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
+
+<!-- more -->
+
 
 <h3>BIO模型(Blocking I/O)</h3>
 
@@ -359,6 +338,9 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 
 <p>《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》</p>
 
+<!-- more -->
+
+
 <p>学了一门语言：python。</p>
 
 <p>阅读3个项目源码：JDK集合框架和锁框架，qmail源码，JavaMail源码。</p>
@@ -397,6 +379,9 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 <p>DNS查询也是一个经典的请求-回答模式。首先，客户端发起DNS查询，这是一个UDP包。路由器在转发IP包时，对其内容做解析，若发现其是使用53端口的UDP包，并且其内容符合某些特征(普通的DNS请求都是明文)，则从旁路直接返回一个伪造的应答，将其应答指向某个特定IP。因为这个返回速度非常快，所以先于正常请求到达客户端。而客户端收到一个返回包，就认为得到了答案，不再继续接收，而正确的请求结果就被忽略了！</p>
 
 <p><img src="http://code4craft.github.com/images/posts/dns-poison.png" alt="image" /></p>
+
+<!-- more -->
+
 
 <p>一般防止DNS污染有几种方法：</p>
 
@@ -451,6 +436,9 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
     <updated>2013-02-17T18:39:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2013/02/17/fenng-career</id>
     <content type="html"><![CDATA[<p>原文地址：<a href="http://dbanotes.net/mylife/ten_years_it_road.html">http://dbanotes.net/mylife/ten_years_it_road.html</a> 作者冯大辉<a href="http://weibo.com/fenng">@fenng</a></p>
+
+<!-- more -->
+
 
 <p>按：博文视点周筠老师多次叮嘱我写点关于个人成长的心得，颇感压力。回首在 IT 这个行业也差不多有 10 年了，在互联网也有 7 年之久，没做成什么惊人的事业，也没什么赚到大把的钞票，如果冒充什么成功导师大谈人生感悟岂不是会被读者朋友笑掉大牙，当然引来板砖也说不定。如果说有可取的，恐怕也就是自己莽撞的混入这个行业阴差阳错的一路走过来，有些教训或许能供朋友们参考一下。所以，硬着头皮记录一下过去几年的流水账。是为序。</p>
 
@@ -555,6 +543,9 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 
 <p>经过测试，gfw在实现DNS污染的同时，不会丢弃掉回包，因此此方案是可行的，而且比起UDP转TCP的方式，理论上速度会快很多。</p>
 
+<!-- more -->
+
+
 <hr />
 
 <h4>2013-2-25</h4>
@@ -615,6 +606,9 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
     <id>http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang</id>
     <content type="html"><![CDATA[<p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
 
+<!-- more -->
+
+
 <p>使用ssh作为socks proxy：</p>
 
 <p>有很多软件都可以实现这个功能，例如Secret Socks，SSH Tunnerl Manager。Secret Socks不支持自动连接，同时每次都要输入密码，太麻烦了。SSH Tunnerl Manager也是要输入密码。不过SSH Tunnerl Manager有个好处，更改配置后它会把SSH命令都显示出来。原来Mac下SSH直接就可以支持socks代理，大概这样配置：</p>
@@ -652,6 +646,9 @@ echo yourpassword
 <p>最近公司在做一个邮件系统的项目，涉及到测试对外发送的环节。开始构思是这样：建立一个接收服务器，并将所有请求导向该服务器。这里面就涉及到一个DNS拦截的问题。这个问题其实在开发和测试环境中很常见，但是单是绑hosts或者使用传统DNS都不太能满足需要(不支持通配符)。</p>
 
 <p>后来调研DNS工具也烦了，于是想自己写一个，实现简单的功能。找到一个Java的开源项目EagleDNS看了下，把UDP连接模块看了看，发现还是比较简单的。于是就构思着开发一个简单的DNS服务器吧！</p>
+
+<!-- more -->
+
 
 <hr />
 
@@ -1199,6 +1196,9 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
     <id>http://code4craft.github.com/blog/2012/12/12/coder-routine</id>
     <content type="html"><![CDATA[<p><em>【引自等你 我的朋友的博客】作为一个合格程序员每天该做的事</em></p>
 
+<!-- more -->
+
+
 <h4>程序员每天该做的事</h4>
 
 <h5>1、总结自己一天任务的完成情况</h5>
@@ -1331,6 +1331,9 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 
 <p><img src="http://code4craft.github.com/images/posts/haoer.jpeg" alt="image" /></p>
 
+<!-- more -->
+
+
 <h3>经历</h3>
 
 <pre><code>    “我就想要去经历一些未经历过的事情，这样老了以后才不会后悔。”
@@ -1442,6 +1445,9 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
     <updated>2012-12-11T20:24:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2012/12/11/you-duo-shao-kai-fa-ren-yuan-shi-chao-guo-si-shi-de</id>
     <content type="html"><![CDATA[<p>你知道有几个开发人员是超过40的？对你们当中不少人而言，这个数是0。对你们当中知道一两个超过40开发者的人，我有个问题：他们中有几个人能称得上优秀？如果你知道任何一个超过40的优秀的开发人员，请做一件对你有益的事：向他请教。看看他掌握的那些技术是否还跟得上时代。一旦你做了这些，请为大家做一件事，就是找个地方把他公布出来，因为实际上，在这个行业里并没有多少优秀的老的开发人员（对那些读这篇文章的旧时代过来的人：我尽量表示尊敬和爱戴 ）。</p>
+
+<!-- more -->
+
 
 <p>出现这种情况有两个原因。第一：绝大多数的开发人员在工作了几年后都转向了管理岗位，一方面是因为他们原本的职业生涯规划就是这样(不管你喜欢与否，很多开发人员仍然认为，作为一个开发人员就该朝着这个方向奋斗)，要么是他们因为偶然的原因进入了管理层。对于后一种情况，我们只讨论那些优秀的开发者，他们表现良好，不管交给任何任务都能出色的完成。等进入管理层后，他们绝大多数的时间都是被锁在会议室里，根本没有任何时间剩余来做编程——尽管他们中的有些人很可能更喜欢把精力更多的放在编程上。两种情况中，这些人很快都会失去开发者的身份，早晚的事儿。</p>
 
