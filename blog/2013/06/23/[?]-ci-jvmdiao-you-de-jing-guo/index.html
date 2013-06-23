@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>一次JVM调优的经过 - 代码人生</title>
+  <meta name="author" content="黄亿华">
+
+  
+  <meta name="description" content="BlackHole开发很久了，目前稳定性、性能都还可以了，但是作为一个Java程序，内存开销一直是硬伤，动不动100M内存下去了，对于单机用户实在是不太友好。 怎么办？优化先从分析开始！ 获取内存信息 获取内存信息一般使用jmap。 jmap -histo pid 这种方式获取到得比较简略， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="代码人生" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">代码人生</a></h1>
+  
+    <h2>A blog for coder lost in career.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">一次JVM调优的经过</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-23T06:44:00+08:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>BlackHole开发很久了，目前稳定性、性能都还可以了，但是作为一个Java程序，内存开销一直是硬伤，动不动100M内存下去了，对于单机用户实在是不太友好。</p>
+
+<p>怎么办？优化先从分析开始！</p>
+
+<h3>获取内存信息</h3>
+
+<p>获取内存信息一般使用jmap。</p>
+
+<pre><code>jmap -histo pid
+</code></pre>
+
+<p>这种方式获取到得比较简略，我们可以先把内存dump下来，再进行离线分析。jhat是一个离线内存分析工具，会开启一个web服务以供展示。</p>
+
+<pre><code>jmap -dump:file=dumpfile pid
+jhat -J-Xmx512m dumpfile
+</code></pre>
+
+<p>访问http://127.0.0.1:7000即可。默认是Class列表，翻到页面底部可以查看其他功能。</p>
+
+<p>参考资料：</p>
+
+<p><a href="http://www.lhelper.org/newblog/?tag=jhat">http://www.lhelper.org/newblog/?tag=jhat</a>
+<a href="http://blog.csdn.net/gtuu0123/article/details/6039474">http://blog.csdn.net/gtuu0123/article/details/6039474</a></p>
+
+<h3>详细分析</h3>
+
+<p>以下分析仅针对JDK 7 HotSpot虚拟机。jmap -histo的结果：</p>
+
+<pre><code>num     #instances         #bytes  class name
+----------------------------------------------
+ 1:         28490        4057072  &lt;constMethodKlass&gt;
+ 2:         28490        3882464  &lt;methodKlass&gt;
+ 3:          2630        2820064  &lt;constantPoolKlass&gt;
+ 4:         46350        2412600  &lt;symbolKlass&gt;
+ 5:         32778        2372824  [C
+ 6:          2630        1990744  &lt;instanceKlassKlass&gt;
+ 7:          3418        1955208  [I
+ 8:         15491        1911568  [B
+ 9:          2347        1845400  &lt;constantPoolCacheKlass&gt;
+10:         19246         615872  java.lang.String
+11:           256         561152  [Lnet.sf.ehcache.store.chm.SelectableConcurrentHashMap$HashEntry;
+12:          2930         304720  java.lang.Class
+13:          3740         247280  [S
+14:          4321         221520  [[I
+</code></pre>
+
+<p>其中[开头表示数组，[C [I [B 分别是char[] int[] byte[]。</p>
+
+<p>constMethodKlass、都实现自sun.jvm.hotspot.oops.Klass，用于在永久代里保存类的信息。</p>
+
+<p>换到JDK6之后，发现永久代的消耗下去了。</p>
+
+<pre><code>num     #instances         #bytes  class name
+----------------------------------------------
+ 1:         10823        3072312  [B
+ 2:         16605        2318720  &lt;constMethodKlass&gt;
+ 3:         18687        1388088  [C
+ 4:         16605        1328608  &lt;methodKlass&gt;
+ 5:         27595        1296832  &lt;symbolKlass&gt;
+ 6:          1699         940392  &lt;constantPoolKlass&gt;
+ 7:          2520         883408  [I
+ 8:          1699         724944  &lt;instanceKlassKlass&gt;
+ 9:          1472         565136  &lt;constantPoolCacheKlass&gt;
+10:           256         561152  [Lnet.sf.ehcache.store.chm.SelectableConcurrentHashMap$HashEntry;
+11:         12148         291552  java.lang.String
+12:          4505         288320  net.sf.ehcache.Element
+13:          7290         233280  java.lang.ThreadLocal$ThreadLocalMap$Entry
+14:          1946         186816  java.lang.Class
+15:          4509         180360  net.sf.ehcache.store.chm.SelectableConcurrentHashMap$HashEntry
+</code></pre>
+
+<p>查看一下总的内存开销(参考资料:
+<a href="http://yytian.blog.51cto.com/535845/574527">http://yytian.blog.51cto.com/535845/574527</a>)</p>
+
+<pre><code>ps -e -o 'pid,comm,args,pcpu,rsz' | grep java |  sort -nrk5
+1239 java            java -jar -Djava.io.tmpdir=  0.1 52816
+</code></pre>
+
+<p>只有52m，看来JDK7占用内存果然增加了！</p>
+
+<p>待续。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">黄亿华</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-23T06:44:00+08:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/06/22/huan-dian-nao-liao/" title="Previous Post: 换电脑了">&laquo; 换电脑了</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/">一次JVM调优的经过</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/22/huan-dian-nao-liao/">换电脑了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/">使用webmagic抓取页面并保存为wordpress文件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua/">2013年半年总结及计划</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/17/intellijshi-yong-xin-de/">IntelliJ使用心得</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - 黄亿华 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
