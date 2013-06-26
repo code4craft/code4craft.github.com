@@ -4,7 +4,7 @@
   <title><![CDATA[Category: IntelliJ | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/intellij/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-06-23T13:17:22+08:00</updated>
+  <updated>2013-06-26T22:59:43+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -67,7 +67,7 @@
 
 <h3>File Template</h3>
 
-<p>与Eclipse的Code Template类似，只不过IntelliJ内置变量全部为大写，例如：${NAME}。可以使用#parse("File Header.java")这种格式来导入另一个文件，跟jsp include的作用一样，实现复用的一种方式吧。没有导入/导出，有点不太方便。</p>
+<p>与Eclipse的Code Template类似，只不过IntelliJ内置变量全部为大写，例如：${NAME}。可以使用#parse(&ldquo;File Header.java&rdquo;)这种格式来导入另一个文件，跟jsp include的作用一样，实现复用的一种方式吧。没有导入/导出，有点不太方便。</p>
 
 <h3>Live Template</h3>
 

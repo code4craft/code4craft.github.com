@@ -4,7 +4,7 @@
   <title><![CDATA[Category: gfw | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/gfw/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-06-23T13:17:22+08:00</updated>
+  <updated>2013-06-26T22:59:43+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -74,7 +74,7 @@
 <p>  BlackHole使用ehcache作为缓存，并且可以持久化，下次启动时可直接载入上次缓存结果。</p></li>
 <li><p>可配置</p>
 
-<p>  BlackHole还是修改hosts文件的替代方案。通过修改"config/zones"可以自定义DNS拦截规则，支持通配符"*"。</p></li>
+<p>  BlackHole还是修改hosts文件的替代方案。通过修改"config/zones"可以自定义DNS拦截规则，支持通配符"*&ldquo;。</p></li>
 </ul>
 
 
