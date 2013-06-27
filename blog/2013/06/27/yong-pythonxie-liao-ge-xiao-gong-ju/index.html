@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>2012年总结 - 代码人生</title>
+  <title>用python写了个小工具 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="看了别人写的数字总结，自己也来跟风写一个吧。 看了8本书： 《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》 学了一门语言： &hellip;">
+  <meta name="description" content="作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了python的学习。 第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦，于是写了个工具， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/02/25/2012-summary/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">2012年总结</h1>
+      <h1 class="entry-title">用python写了个小工具</h1>
     
     
       <p class="meta">
@@ -83,39 +83,36 @@
   
 
 
-<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
+<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>看了别人写的数字总结，自己也来跟风写一个吧。</p>
+<div class="entry-content"><p>作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了python的学习。</p>
 
-<p>看了8本书：</p>
+<p>第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦，于是写了个工具，为一个文本写一个助记符，然后保存到文件里，每次可以调用程序把文件读出来，再根据助记符查找到对应文本。用法可以这样：</p>
 
-<p>《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》</p>
+<pre><code>add name value
+get name
+</code></pre>
 
-<!-- more -->
+<p>例如：</p>
 
+<pre><code>add getter https://github.com/code4craft/getter 
+</code></pre>
 
-<p>学了一门语言：python。</p>
+<p>也可以用&#8220;符号穿插到程序里：</p>
 
-<p>阅读3个项目源码：JDK集合框架和锁框架，qmail源码，JavaMail源码。</p>
+<pre><code>git clone `get getter`
+</code></pre>
 
-<p>Java web后端开发学到技术：</p>
+<p>实现很简单，已经放到了github:</p>
 
-<p>Struts2 iBatis SpringAOP</p>
+<p><a href="https://github.com/code4craft/getter">https://github.com/code4craft/getter</a></p>
 
-<p>做了3个得意的业余项目：可配置博客搬家、BlackHole、太极验证码。</p>
-
-<p>写了45篇技术相关的博客，内容的质量比起2011年有了很大提高。</p>
-
-<p>参加了两次20人左右的演讲。</p>
-
-<p>完成了一个大项目：邮件重构，参与者7人。</p>
-
-<p>买了一个域名codecraft.us，做了一个网站。</p>
+<p>后续可能加入备份功能，毕竟这么一个文件维护久了之后全是心血啊。也考虑做个chrome插件？再说吧！</p>
 </div>
 
 
@@ -138,15 +135,21 @@
   
 
 
-<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
+<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/python/'>python</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/02/25/2012-summary/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/02/25/2012-summary/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" >Tweet</a>
   
   
   
@@ -155,10 +158,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/02/25/blackhole-anti-dns-poison/" title="Previous Post: BlackHole开发日志--防止DNS污染">&laquo; BlackHole开发日志--防止DNS污染</a>
+        <a class="basic-alignment left" href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/" title="Previous Post: BlackHole开发日记-一次压力测试及JVM调优的经过">&laquo; BlackHole开发日记-一次压力测试及JVM调优的经过</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/04/12/blackhole-io-model/" title="Next Post: BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器">BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器 &raquo;</a>
       
     </p>
   </footer>

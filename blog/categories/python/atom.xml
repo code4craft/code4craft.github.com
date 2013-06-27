@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: python | 代码人生]]></title>
+  <link href="http://code4craft.github.com/blog/categories/python/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-06-27T22:20:45+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[黄亿华]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[用python写了个小工具]]></title>
+    <link href="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/"/>
+    <updated>2013-06-27T22:14:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju</id>
+    <content type="html"><![CDATA[<p>作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了python的学习。</p>
+
+<p>第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦，于是写了个工具，为一个文本写一个助记符，然后保存到文件里，每次可以调用程序把文件读出来，再根据助记符查找到对应文本。用法可以这样：</p>
+
+<pre><code>add name value
+get name
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>add getter https://github.com/code4craft/getter 
+</code></pre>
+
+<p>也可以用``符号穿插到程序里：</p>
+
+<pre><code>git clone `get getter`
+</code></pre>
+
+<p>实现很简单，已经放到了github:</p>
+
+<p><a href="https://github.com/code4craft/getter">https://github.com/code4craft/getter</a></p>
+
+<p>后续可能加入备份功能，毕竟这么一个文件维护久了之后全是心血啊。也考虑做个chrome插件？再说吧！</p>
+]]></content>
+  </entry>
+  
+</feed>
