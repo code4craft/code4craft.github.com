@@ -4,7 +4,7 @@
   <title><![CDATA[Category: python, | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-06-28T10:31:54+08:00</updated>
+  <updated>2013-06-28T10:36:19+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -88,7 +88,7 @@ else
         rm -f $FILE_NAME
     else
         echo "#!/bin/sh" &gt; $FILE_NAME
-        echo "$2" &gt;&gt; $FILE_NAME
+        echo "$2 \$1 \$2 \$3" &gt;&gt; $FILE_NAME
         chmod +x $FILE_NAME
     fi
 fi

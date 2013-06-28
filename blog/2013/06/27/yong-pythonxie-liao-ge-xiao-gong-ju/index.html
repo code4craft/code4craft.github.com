@@ -160,7 +160,7 @@ else
         rm -f $FILE_NAME
     else
         echo "#!/bin/sh" &gt; $FILE_NAME
-        echo "$2" &gt;&gt; $FILE_NAME
+        echo "$2 \$1 \$2 \$3" &gt;&gt; $FILE_NAME
         chmod +x $FILE_NAME
     fi
 fi
