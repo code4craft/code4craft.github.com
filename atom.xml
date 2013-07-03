@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-02T19:53:27+08:00</updated>
+  <updated>2013-07-03T08:03:37+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[玩转github之--神啊满足我的虚荣心吧]]></title>
+    <link href="http://code4craft.github.com/blog/2013/07/03/show-in-github/"/>
+    <updated>2013-07-03T07:47:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/07/03/show-in-github</id>
+    <content type="html"><![CDATA[<h3>git版简历</h3>
+
+<p><a href="http://resume.github.io/">http://resume.github.io/</a>上有这个东东，但是样式太难看了。看到一个挺不错的模板<a href="https://github.com/hit9/GhResume">https://github.com/hit9/GhResume</a>，就给用上了。我的简历：
+<a href="http://code4craft.github.io/GhResume/">http://code4craft.github.io/GhResume/</a></p>
+
+<h3>关注star</h3>
+
+<p>最近做的项目在github每天会有几个star，出于虚荣心嘛，经常忍不住就会去看看，有人star了没？有人fork了没？</p>
+
+<p>每天看太麻烦了，干脆做成一个chrome插件，带桌面通知，有新star提醒，岂不开心？</p>
+
+<p>于是有了<a href="https://github.com/code4craft/exciting"><strong>exciting</strong></a> 哥也会做chrome插件了！液！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一个shell下的todolist]]></title>
