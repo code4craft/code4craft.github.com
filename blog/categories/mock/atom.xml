@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mock, | 代码人生]]></title>
+  <link href="http://code4craft.github.com/blog/categories/mock/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-07-06T16:13:53+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[黄亿华]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[monkeysocks开发日志]]></title>
+    <link href="http://code4craft.github.com/blog/2013/07/06/monkeysocks/"/>
+    <updated>2013-07-06T16:09:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/07/06/monkeysocks</id>
+    <content type="html"><![CDATA[<blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。</p></blockquote>
+
+<h4>2013-7-5 动机</h4>
+
+<p>前几天听说公司的测试团队在鼓捣数据固化的东西，说白了就是在测试启动时构建一个临时性的数据库，操作完之后再销毁，这样的好处是不造成测试副作用，同时屏蔽环境的差异。</p>
+
+<!--more-->
+
+
+<p>但是目前公司内部SOA用的太多了，仅仅靠数据库固化明显不现实，公司的架构团队做了一个将所有remote service放到本地启动的东西，但是这样子启动开销有点难以接受。有没有更可行的方案？</p>
+
+<p>之前也有人做过一个单测的东西，可以将所有RPC调用的结果序列化成文本文件，下次调用时再序列化出来，这样其实就屏蔽了远程调用。但是Java语言层面的机制导致要把千奇八怪的对象序列化下来，本来就是不可完成的任务(有些对象本身就不是POJO，还有在getter、setter写逻辑的)。</p>
+
+<p>于是我有一个大胆的设想：其实Java的外部依赖无非是网络IO，就是TCP/UDP包嘛，那我能不能做一个工具，录制一个稳定环境的网络流量，然后固化下来，最终在调用时进行重放，岂不是一劳永逸？</p>
+
+<p>但是TCP/UDP毕竟是系统底层的东西，而且我想对每个Java进程单独做重放，所以只能从Java内部机制入手了。</p>
+
+<p>有两个方法：</p>
+
+<p>用cglib改写所有网络IO相关的接口，改用固化调用。</p>
+
+<p>设置Java全局socks代理，并启动socks server，在socks server里做代理。</p>
+
+<p>显然第二种方法更简单，有四两拨千斤的感觉！</p>
+
+<p>找到一个Java socks server，jsocks，最初版本比较老，google code上有一个改进版，用的是ant，因为以后要集成肯定要用maven，于是就做了点maven化的处理，考虑以后单独做成一个项目，现在先改了测试下可行性吧。<a href="https://github.com/code4craft/monkeysocks/tree/master/jsocks">https://github.com/code4craft/monkeysocks/tree/master/jsocks</a></p>
+
+<p>Java里面设置全局socksProxy的方法见<a href="http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html">http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html</a>。</p>
+
+<p>鼓捣一下，成功启动起来，明天先对公司的项目进行试用。</p>
+
+<h4>2013-7-6</h4>
+
+<p>今天开始了对socks的摸索。</p>
+
+<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，固化下来毫无难度。</p>
+
+<p>想到咱这个不就是个TCP重放攻击么？了解了一下一些协议防重放攻击的机制，发现大多是在server端做，那么其实client端的请求并无不同，希望是这样！</p>
+
+<p>研究了一下http协议，response竟然有date项，希望不会作为判断依据，要不然还要做http解析，那就纠结了！怎么觉得自己老是在研究怎么实现一个gfw呢？</p>
+
+<p>在测试中，遇到了问题：</p>
+
+<p>很多协议里都自带了版本号，比如<a href="http://www.hoterran.info/mysql-protocol-soucecode-2">mysql</a>、zookeeper，这样就给识别请求和伪造响应带来了难度。幸好公司内部用的工具不是太多，理论上还是在可控状态。</p>
+
+<p>最终决定结构大概是这样子：</p>
+
+<p><img src="/images/posts/mocksocks-flow-in.png" alt="image" /></p>
+
+<p><img src="/images/posts/mocksocks-flow-out.png" alt="image" /></p>
+]]></content>
+  </entry>
+  
+</feed>
