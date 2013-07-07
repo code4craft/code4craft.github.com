@@ -4,7 +4,7 @@
   <title><![CDATA[Category: test | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/test/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-07T15:56:55+08:00</updated>
+  <updated>2013-07-07T21:12:37+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -85,6 +85,14 @@
 <img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
 
 <p><img src="/images/posts/tcp-wiredshark.png" alt="image" /></p>
+
+<p>研究了下mysql的协议，略复杂。</p>
+
+<p>这是一个有状态的协议，详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>。</p>
+
+<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
+
+<p>有点不知道怎么下手啊，又一次为自己的智商拙计！</p>
 ]]></content>
   </entry>
   
