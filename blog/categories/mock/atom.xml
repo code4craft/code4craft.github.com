@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mock | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/mock/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-07T21:12:37+08:00</updated>
+  <updated>2013-07-07T21:20:45+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -43,7 +43,7 @@
 
 <p>显然第二种方法更简单，有四两拨千斤的感觉！</p>
 
-<p>找到一个Java socks server，jsocks，最初版本比较老，google code上有一个改进版，用的是ant，因为以后要集成肯定要用maven，于是就做了点maven化的处理，考虑以后单独做成一个项目，现在先改了测试下可行性吧。<a href="https://github.com/code4craft/monkeysocks/tree/master/jsocks">https://github.com/code4craft/monkeysocks/tree/master/jsocks</a></p>
+<p>找到一个Java socks server，jsocks，最初版本比较老，google code上有一个改进版，用的是ant，因为以后要集成肯定要用maven，于是就做了点maven化的处理，考虑以后单独做成一个项目，现在先改了测试下可行性吧。<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a></p>
 
 <p>Java里面设置全局socksProxy的方法见<a href="http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html">http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html</a>。</p>
 
@@ -65,9 +65,9 @@
 
 <p>最终决定结构大概是这样子：</p>
 
-<p><img src="/images/posts/mocksocks-flow-in.png" alt="image" /></p>
+<p><img src="http://code4craft.github.io/images/posts/mocksocks-flow-in.png" alt="image" /></p>
 
-<p><img src="/images/posts/mocksocks-flow-out.png" alt="image" /></p>
+<p><img src="http://code4craft.github.io/images/posts/mocksocks-flow-out.png" alt="image" /></p>
 
 <p>晚上尝试了一下，jsocks的流程写的过于凌乱，最终缓存结构也没定好，不说了，碎觉！</p>
 
@@ -84,7 +84,7 @@
 <p>TCP协议栈大概是这样子：
 <img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
 
-<p><img src="/images/posts/tcp-wiredshark.png" alt="image" /></p>
+<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
 
 <p>研究了下mysql的协议，略复杂。</p>
 
@@ -92,7 +92,9 @@
 
 <p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
 
-<p>有点不知道怎么下手啊，又一次为自己的智商拙计！</p>
+<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
+
+<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
 ]]></content>
   </entry>
   
