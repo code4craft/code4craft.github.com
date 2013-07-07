@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-07T21:20:45+08:00</updated>
+  <updated>2013-07-07T21:38:49+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[monkeysocks架构规划]]></title>
+    <link href="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/"/>
+    <updated>2013-07-07T21:35:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch</id>
+    <content type="html"><![CDATA[<h2>jsocks的改造</h2>
+
+<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
+
+<p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
+
+<p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。</p>
+
+<h2>TCP协议分析</h2>
+
+<p>后来使用wiredshark结合程序日志来进行分析。</p>
+
+<p>TCP协议栈大概是这样子：
+<img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
+
+<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
+
+<h2>应用层协议分析</h2>
+
+<p>实现replay后，拿HTTP协议做了测试，自己用程序写了个URLConnection，倒是能够实现replay，但是换到浏览器里就很难了，因为cookie总是会有些不一样(现在基本上所有站点都会写cookie吧)。如果不对应用层协议本身进行分析，那么进行包的伪造就很难了。</p>
+
+<p>https协议对于重放攻击做了处理，每次的请求包都不一样，也无法replay成功，暂时略过。</p>
+
+<p>后来对于测试中得重点协议&mdash;mysql的协议，进行了研究。</p>
+
+<p>这是一个有状态的协议，状态转移图如下：</p>
+
+<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
+
+<p>详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>，有点hold不住的感觉啊！</p>
+
+<p>看了Authentication部分，会由server端发送一个随机数，来避免重放攻击。这个东西启发了我，因为主动权一般都是在server端，而我们要对client进行欺骗，难度就小了很多。</p>
+
+<h2>架构设计</h2>
+
+<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
+
+<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
+
+<h2>开发计划：</h2>
+
+<ul>
+<li><p>实现fake servers的TCP框架。</p></li>
+<li><p>研究并实现常用协议的fake server。</p></li>
+<li><p>确定持久化以及报文对应的策略。</p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[monkeysocks开发日志]]></title>
@@ -73,28 +128,7 @@
 
 <h4>2013-7-7</h4>
 
-<p>今天算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
-
-<p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。拿HTTP协议做了测试，自己用程序写了个URLConnection，倒是能够实现replay，但是换到浏览器里就很难了，因为cookie总是会有些不一样(现在基本上所有站点都会写cookie吧)。</p>
-
-<p>https协议对于重放攻击做了处理，每次的请求包都不一样，也无法replay成功，暂时略过。</p>
-
-<p>后来使用wiredshark结合程序日志来进行分析。</p>
-
-<p>TCP协议栈大概是这样子：
-<img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
-
-<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
-
-<p>研究了下mysql的协议，略复杂。</p>
-
-<p>这是一个有状态的协议，详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>。</p>
-
-<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
-
-<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
-
-<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
+<p>鼓捣了下架构的事情，文章单独整理了下，链接：<a href="http://code4craft.github.io/blog/2013/07/07/monkeysocks-arch/">http://code4craft.github.io/blog/2013/07/06/monkeysocks-arch/</a></p>
 ]]></content>
   </entry>
   
@@ -1816,18 +1850,6 @@ Signal.handle(new Signal("TERM"), new SignalHandler() {
 <p>重申，我不能保证这就是能让开发人员长期保持自己高质量的最好的方法，但我想我正在努力去做。</p>
 
 <p>本文英文原文：<a href="http://thatextramile.be/blog/2011/03/thoughts-on-developer-longevity">Thoughts On Developer Longevity</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[about-career]]></title>
-    <link href="http://code4craft.github.com/blog/2012/12/11/about-career/"/>
-    <updated>2012-12-11T20:06:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2012/12/11/about-career</id>
-    <content type="html"><![CDATA[<h3>其实我依然不坚定</h3>
-
-<p>虽然之前写了一篇程序员职业规划方面的东西，觉得应该坚定的像个手艺人一样，学好技术，耐得住寂寞，但是对于自己的将来如何发展，心里仍然没底。
-最近做项目多少也得到了一些教训，有技术的，更多是技术无关的。所以很想做一个程序员职业规划方面的网站，解除自己的疑惑，也希望可以帮助同样也在迷茫的人。</p>
 ]]></content>
   </entry>
   

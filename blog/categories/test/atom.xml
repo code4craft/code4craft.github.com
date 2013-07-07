@@ -4,7 +4,7 @@
   <title><![CDATA[Category: test | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/test/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-07T21:20:45+08:00</updated>
+  <updated>2013-07-07T21:38:49+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -73,28 +73,7 @@
 
 <h4>2013-7-7</h4>
 
-<p>今天算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
-
-<p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。拿HTTP协议做了测试，自己用程序写了个URLConnection，倒是能够实现replay，但是换到浏览器里就很难了，因为cookie总是会有些不一样(现在基本上所有站点都会写cookie吧)。</p>
-
-<p>https协议对于重放攻击做了处理，每次的请求包都不一样，也无法replay成功，暂时略过。</p>
-
-<p>后来使用wiredshark结合程序日志来进行分析。</p>
-
-<p>TCP协议栈大概是这样子：
-<img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
-
-<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
-
-<p>研究了下mysql的协议，略复杂。</p>
-
-<p>这是一个有状态的协议，详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>。</p>
-
-<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
-
-<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
-
-<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
+<p>鼓捣了下架构的事情，文章单独整理了下，链接：<a href="http://code4craft.github.io/blog/2013/07/07/monkeysocks-arch/">http://code4craft.github.io/blog/2013/07/06/monkeysocks-arch/</a></p>
 ]]></content>
   </entry>
   

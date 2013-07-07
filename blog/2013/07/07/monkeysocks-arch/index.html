@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>玩转github之--神啊满足我的虚荣心吧 - 代码人生</title>
+  <title>monkeysocks架构规划 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="github版简历 http://resume.github.io/上有这个东东，但是样式太难看了。看到一个挺不错的模板https://github.com/hit9/GhResume，就给用上了。我的简历：
-http://code4craft.github.io/GhResume/ 关注star &hellip;">
+  <meta name="description" content="jsocks的改造 首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。 今天把jsocks修改了下，将build工具换成了maven，并独立成了项目https://github.com/code4craft/jsocks。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ http://code4craft.github.io/GhResume/ 关注star &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/07/03/show-in-github/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -68,7 +67,7 @@ http://code4craft.github.io/GhResume/ 关注star &hellip;">
   
   <header>
     
-      <h1 class="entry-title">玩转github之--神啊满足我的虚荣心吧</h1>
+      <h1 class="entry-title">Monkeysocks架构规划</h1>
     
     
       <p class="meta">
@@ -84,25 +83,60 @@ http://code4craft.github.io/GhResume/ 关注star &hellip;">
   
 
 
-<time datetime="2013-07-03T07:47:00+08:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2013</time>
+<time datetime="2013-07-07T21:35:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>github版简历</h3>
+<div class="entry-content"><h2>jsocks的改造</h2>
 
-<p><a href="http://resume.github.io/">http://resume.github.io/</a>上有这个东东，但是样式太难看了。看到一个挺不错的模板<a href="https://github.com/hit9/GhResume">https://github.com/hit9/GhResume</a>，就给用上了。我的简历：
-<a href="http://code4craft.github.io/GhResume/">http://code4craft.github.io/GhResume/</a></p>
+<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
 
-<h3>关注star</h3>
+<p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
 
-<p>最近做的项目在github每天会有几个star，出于虚荣心嘛，经常忍不住就会去看看，有人star了没？有人fork了没？</p>
+<p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。</p>
 
-<p>每天看太麻烦了，干脆做成一个chrome插件，带桌面通知，有新star提醒，岂不开心？</p>
+<h2>TCP协议分析</h2>
 
-<p>于是有了<a href="https://github.com/code4craft/exciting"><strong>exciting</strong></a>！ 哥也会做chrome插件了！液！</p>
+<p>后来使用wiredshark结合程序日志来进行分析。</p>
+
+<p>TCP协议栈大概是这样子：
+<img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
+
+<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
+
+<h2>应用层协议分析</h2>
+
+<p>实现replay后，拿HTTP协议做了测试，自己用程序写了个URLConnection，倒是能够实现replay，但是换到浏览器里就很难了，因为cookie总是会有些不一样(现在基本上所有站点都会写cookie吧)。如果不对应用层协议本身进行分析，那么进行包的伪造就很难了。</p>
+
+<p>https协议对于重放攻击做了处理，每次的请求包都不一样，也无法replay成功，暂时略过。</p>
+
+<p>后来对于测试中得重点协议&mdash;mysql的协议，进行了研究。</p>
+
+<p>这是一个有状态的协议，状态转移图如下：</p>
+
+<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
+
+<p>详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>，有点hold不住的感觉啊！</p>
+
+<p>看了Authentication部分，会由server端发送一个随机数，来避免重放攻击。这个东西启发了我，因为主动权一般都是在server端，而我们要对client进行欺骗，难度就小了很多。</p>
+
+<h2>架构设计</h2>
+
+<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
+
+<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
+
+<h2>开发计划：</h2>
+
+<ul>
+<li><p>实现fake servers的TCP框架。</p></li>
+<li><p>研究并实现常用协议的fake server。</p></li>
+<li><p>确定持久化以及报文对应的策略。</p></li>
+</ul>
+
 </div>
 
 
@@ -125,7 +159,7 @@ http://code4craft.github.io/GhResume/ 关注star &hellip;">
   
 
 
-<time datetime="2013-07-03T07:47:00+08:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2013</time>
+<time datetime="2013-07-07T21:35:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
       
 
 
@@ -133,7 +167,7 @@ http://code4craft.github.io/GhResume/ 关注star &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/07/03/show-in-github/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/07/03/show-in-github/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/" >Tweet</a>
   
   
   
@@ -142,10 +176,8 @@ http://code4craft.github.io/GhResume/ 关注star &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/06/28/todolist/" title="Previous Post: 一个shell下的todolist">&laquo; 一个shell下的todolist</a>
+        <a class="basic-alignment left" href="/blog/2013/07/06/monkeysocks/" title="Previous Post: monkeysocks开发日志">&laquo; monkeysocks开发日志</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/06/monkeysocks/" title="Next Post: monkeysocks开发日志">monkeysocks开发日志 &raquo;</a>
       
     </p>
   </footer>
