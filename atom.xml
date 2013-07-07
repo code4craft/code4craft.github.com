@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-07T21:38:49+08:00</updated>
+  <updated>2013-07-07T21:47:29+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -24,6 +24,9 @@
 
 <p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
 
+<!--more-->
+
+
 <p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。</p>
 
 <h2>TCP协议分析</h2>
@@ -32,6 +35,8 @@
 
 <p>TCP协议栈大概是这样子：
 <img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
+
+<p>下面是wiredshark抓包的截图，从ea开始才是应用层协议的内容。</p>
 
 <p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
 
@@ -56,6 +61,8 @@
 <p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
 
 <p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
+
+<p>fake servers的实现必定是个大坑，不过能把常用协议都了解一遍，本身也很有意思不是么？</p>
 
 <h2>开发计划：</h2>
 
