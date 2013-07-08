@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-07T21:50:31+08:00</updated>
+  <updated>2013-07-08T13:27:44+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -138,6 +138,14 @@
 <h4>2013-7-7</h4>
 
 <p>鼓捣了下架构的事情，文章单独整理了下，链接：<a href="http://code4craft.github.io/blog/2013/07/07/monkeysocks-arch/">http://code4craft.github.io/blog/2013/07/06/monkeysocks-arch/</a></p>
+
+<h4>2013-7-8</h4>
+
+<p>今天跟水哥讨论起两个问题，假设拿到一个报文byte[]，存在两个难点，一个是对于可变部分的判断和伪造，另一个是对于包结构的近似匹配。</p>
+
+<p>可变部分的的判断，水哥说可以用录两次，去掉不同的部分，就变成一个不变的基和一个过滤器，然后对于以后的包，就用过滤器过滤后找到这个基。</p>
+
+<p>包结构的近似匹配，水哥提议对包的所有字节进行求和，过滤掉位置信息，似乎也是可行的方向？</p>
 ]]></content>
   </entry>
   
