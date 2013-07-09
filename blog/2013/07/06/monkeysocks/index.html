@@ -154,6 +154,16 @@
 <p>可变部分的的判断，水哥说可以用录两次，去掉不同的部分，就变成一个不变的基和一个过滤器，然后对于以后的包，就用过滤器过滤后找到这个基。</p>
 
 <p>包结构的近似匹配，水哥提议对包的所有字节进行求和，过滤掉位置信息，似乎也是可行的方向？</p>
+
+<p>用Java实现一个流管道：</p>
+
+<p><a href="http://ostermiller.org/convert_java_outputstream_inputstream.html">http://ostermiller.org/convert_java_outputstream_inputstream.html</a></p>
+
+<h4>2013-7-9</h4>
+
+<p>使用byte和条件变量实现了一个Java流的管道，线程安全的，debug了好久终于成功，当年操作系统的知识还是没还给老师！<a href="https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java">https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java</a></p>
+
+<p>这个东东使得伪造一个Socket成为了可能，下面就是使用Socket API实现fake servers的逻辑了。</p>
 </div>
 
 
