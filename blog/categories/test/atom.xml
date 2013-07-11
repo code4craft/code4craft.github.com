@@ -4,7 +4,7 @@
   <title><![CDATA[Category: test | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/test/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-09T21:38:05+08:00</updated>
+  <updated>2013-07-11T20:29:42+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -92,6 +92,15 @@
 <p>使用byte和条件变量实现了一个Java流的管道，线程安全的，debug了好久终于成功，当年操作系统的知识还是没还给老师！<a href="https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java">https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java</a></p>
 
 <p>这个东东使得伪造一个Socket成为了可能，下面就是使用Socket API实现fake servers的逻辑了。</p>
+
+<h4>2013-7-11</h4>
+
+<p>昨天太累了，项目又比较忙，先休息一天。</p>
+
+<p>今天早上考虑用自己写的TCP server框架把jsocks的连接部分重写一遍(那堆代码全部在一个类中，实在是太复杂了)，想到
+今天早上想了下InputStream这些玩意，觉得这样总会占用一个线程去把Stream转来转去的，弄成onReceive()这样的异步调用的话，就很容易做到链式调用了。</p>
+
+<p>这东西太费脑子了，先休息一天半天再说。</p>
 ]]></content>
   </entry>
   
