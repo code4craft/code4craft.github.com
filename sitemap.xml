@@ -101,15 +101,21 @@
         <lastmod>2013-07-08T14:10:13+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/
+        </loc>
+        <lastmod>2013-07-18T15:00:04+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://code4craft.github.com/about/</loc>
         <lastmod>2013-06-22T08:55:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2013-07-11T20:29:04+08:00</lastmod>
+        <lastmod>2013-07-18T15:00:04+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2013-07-11T20:29:04+08:00</lastmod>
+        <lastmod>2013-07-18T15:00:04+08:00</lastmod>
     </url>
 </urlset>

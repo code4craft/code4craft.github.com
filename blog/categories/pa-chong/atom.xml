@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-11T20:29:42+08:00</updated>
+  <updated>2013-07-18T15:00:50+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[webmagic的设计机制及原理]]></title>
+    <link href="http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/"/>
+    <updated>2013-07-18T14:52:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li</id>
+    <content type="html"><![CDATA[<p>一般来说，一个爬虫包括几个部分：</p>
+
+<ul>
+<li>页面下载</li>
+<li>链接提取</li>
+<li>链接管理</li>
+<li>内容分析和持久化</li>
+</ul>
+
+
+<p>对于通用型的爬虫，难点在于如何高效的抓取更多页面。</p>
+
+<p>而对于垂直类型的爬虫，难点则是如何高效</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用webmagic抓取页面并保存为wordpress文件]]></title>

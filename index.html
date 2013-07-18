@@ -9,7 +9,11 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。 jsocks的改造 首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。 今天把jsocks修改了下， &hellip;">
+  <meta name="description" content="一般来说，一个爬虫包括几个部分： 页面下载
+链接提取
+链接管理
+内容分析和持久化 对于通用型的爬虫，难点在于如何高效的抓取更多页面。 而对于垂直类型的爬虫，难点则是如何高效
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +68,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">Webmagic的设计机制及原理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-18T14:52:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一般来说，一个爬虫包括几个部分：</p>
+
+<ul>
+<li>页面下载</li>
+<li>链接提取</li>
+<li>链接管理</li>
+<li>内容分析和持久化</li>
+</ul>
+
+
+<p>对于通用型的爬虫，难点在于如何高效的抓取更多页面。</p>
+
+<p>而对于垂直类型的爬虫，难点则是如何高效</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -472,47 +524,6 @@ jhat -J-Xmx512m dumpfile
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/17/intellijshi-yong-xin-de/">IntelliJ使用心得</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-17T21:18:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近尝鲜试用了一下IntelliJ，使用下来还是比较爽的，最后我这个很少花钱买软件的人，也在oschina上买了个人版。IDE毕竟是码农干活的家伙，想想也值了。使用的时候有一些心得，记录下来。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/17/intellijshi-yong-xin-de/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -545,6 +556,10 @@ jhat -J-Xmx512m dumpfile
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">webmagic的设计机制及原理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/07/monkeysocks-arch/">monkeysocks架构规划</a>
       </li>
     
@@ -558,10 +573,6 @@ jhat -J-Xmx512m dumpfile
     
       <li class="post">
         <a href="/blog/2013/06/28/todolist/">一个shell下的todolist</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">写了个快捷保存文本的shell工具</a>
       </li>
     
   </ul>
