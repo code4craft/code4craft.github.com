@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-19T22:28:04+08:00</updated>
+  <updated>2013-07-19T22:29:21+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -20,7 +20,7 @@
     <id>http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li</id>
     <content type="html"><![CDATA[<p><img src="http://code4craft.github.io/images/posts/spider.jpeg" alt="image" /></p>
 
-<h1>webmagic的由来</h1>
+<h2>webmagic的由来</h2>
 
 <p>一般来说，一个爬虫包括几个部分：</p>
 
@@ -55,7 +55,7 @@
 
 <hr />
 
-<h1>webmagic的模块划分</h1>
+<h2>webmagic的模块划分</h2>
 
 <p>webmagic目前的核心代码都在<strong>webmagic-core</strong>中，<strong>webmagic-samples</strong>里有一些定制爬虫的例子，可以作为参考。而<strong>webmagic-plugin</strong>目前还不完善，后期准备加入一些并不太常用，但也有些用处的插件。下面主要介绍webmagic-core的内容。</p>
 
@@ -63,7 +63,7 @@
 
 <p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="image" /></p>
 
-<h2>Spider类-核心调度</h2>
+<h3>Spider类-核心调度</h3>
 
 <p>Spider的核心处理流程非常简单：</p>
 
@@ -90,7 +90,7 @@
 .thread(10).run();
 </code></pre>
 
-<h2>Downloader-页面下载</h2>
+<h3>Downloader-页面下载</h3>
 
 <p>页面下载是一切爬虫的开始。这方面，<strong>HttpClient</strong>(4.0后整合到HttpCompenent项目中)是不二之选。它支持自定义HTTP头(对于爬虫比较有用的就是User-agent、cookie什么的)、自动redirect、连接复用、设置代理等诸多强大的功能。</p>
 
@@ -100,7 +100,7 @@
 
 <p>一般没有必要去扩展Downloader。</p>
 
-<h2>PageProcessor-页面分析及链接抽取</h2>
+<h3>PageProcessor-页面分析及链接抽取</h3>
 
 <p>这里说的页面分析主要指HTML页面的分析。页面分析可以说是垂直爬虫最复杂的一部分，在webmagic里，PageProcessor是定制爬虫的核心。</p>
 
@@ -123,7 +123,7 @@
 
 <p>这里用到了两个文本处理的DSL(Domain-specific language，领域特定语言)，一个是正则表达式，一个是xpath。</p>
 
-<h2>Scheduler-URL管理</h2>
+<h3>Scheduler-URL管理</h3>
 
 <p>URL管理的问题可大可小。对于小规模的抓取，URL管理是很简单的。我们只需要将待抓取URL和未抓取URL分开保存，并进行去重即可。使用JDK内置的集合类型Set、List或者Queue都可以满足需要。如果我们要进行多线程抓取，则可以选择线程安全的容器，例如LinkedBlockingQueue以及ConcurrentHashMap。</p>
 
@@ -133,7 +133,7 @@
 
 <p>webmagic目前有两个Scheduler的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
 
-<h2>Pipeline-离线处理和持久化</h2>
+<h3>Pipeline-离线处理和持久化</h3>
 
 <p>Pipeline其实也是比较有争议的一部分。大家都知道持久化的重要性，但是很多框架都选择直接在页面抽取的时候将持久化一起完成，例如crawer4j。但是Pipeline真正的好处是，将页面的在线分析和离线处理拆分开来，可以在一些线程里进行下载，另一些线程里进行处理和持久化。</p>
 
