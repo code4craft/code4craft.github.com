@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-19T21:37:35+08:00</updated>
+  <updated>2013-07-19T21:54:48+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[webmagic的设计机制及原理]]></title>
+    <title type="html"><![CDATA[webmagic的设计机制及原理-如何开发一个Java爬虫]]></title>
     <link href="http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/"/>
     <updated>2013-07-18T14:52:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li</id>
@@ -46,11 +46,13 @@
 
 <p>而垂直类型的爬虫要解决的问题则不一样，比如想要爬取一些网站的新闻、博客信息，一般抓取数量要求不是很大，难点则在于如何高效的定制一个爬虫，可以精确的抽取出网页的内容，并保存成结构化的数据。这方面需求很多，webmagic就是为了解决这个目的而开发的。</p>
 
-<p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，重复的开发让人头痛。Java还有一个比较成熟的框架crawler4j，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架scrapy，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。代码已经托管到github，地址是<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a>。webmagic的目标是，成为一个可以非常方便的进行扩展和二次开发的爬虫框架。</p>
+<p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，重复的开发让人头痛。Java还有一个比较成熟的框架<a href="https://code.google.com/p/crawler4j/"><strong>crawler4j</strong></a>，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架<a href="http://scrapy.org/"><strong>scrapy</strong></a>，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。代码已经托管到github，地址是<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a>。webmagic的目标是，成为一个可以非常方便的进行扩展和二次开发的爬虫框架。</p>
 
 <hr />
 
 <h1>webmagic的模块划分</h1>
+
+<p>前面说到，webmagic参考了scrapy的模块划分，分为Spider(整个爬虫的调度框架)、Downloader(页面下载)、PageProcessor(链接提取和页面分析)、Scheduler(URL管理)、Pipeline(离线分析和持久化)几部分。只不过scrapy通过middleware实现扩展，而webmagic则通过定义这几个接口，并将其不同的实现注入主框架类Spider来实现扩展。</p>
 
 <p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="image" /></p>
 
@@ -71,6 +73,14 @@
     }
     sleep(site.getSleepTime());
 }
+</code></pre>
+
+<p>Spider的接口调用采用了链式的API设计，其余部分全部通过接口注入Spider实现不同的功能，下面是启动一个比较复杂的Spider的例子。</p>
+
+<pre><code>Spider.create(sinaBlogProcessor)
+.pipeline(new FilePipeline())
+.scheduler(new FileCacheQueueScheduler("/data/temp/webmagic/cache/"))
+.thread(10).run();
 </code></pre>
 
 <h2>Downloader-页面下载</h2>
