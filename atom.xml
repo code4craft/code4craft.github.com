@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-19T21:56:48+08:00</updated>
+  <updated>2013-07-19T22:20:58+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -46,11 +46,15 @@
 
 <p>而垂直类型的爬虫要解决的问题则不一样，比如想要爬取一些网站的新闻、博客信息，一般抓取数量要求不是很大，难点则在于如何高效的定制一个爬虫，可以精确的抽取出网页的内容，并保存成结构化的数据。这方面需求很多，webmagic就是为了解决这个目的而开发的。</p>
 
-<p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，重复的开发让人头痛。Java还有一个比较成熟的框架<a href="https://code.google.com/p/crawler4j/"><strong>crawler4j</strong></a>，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架<a href="http://scrapy.org/"><strong>scrapy</strong></a>，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。代码已经托管到github，地址是<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a>。webmagic的目标是，成为一个可以非常方便的进行扩展和二次开发的爬虫框架。</p>
+<p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，重复的开发让人头痛。Java还有一个比较成熟的框架<a href="https://code.google.com/p/crawler4j/"><strong>crawler4j</strong></a>，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架<a href="http://scrapy.org/"><strong>scrapy</strong></a>，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。代码已经托管到github，地址是<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a>。</p>
+
+<p>webmagic的实现还参考了另一个Java爬虫<a href="https://gitcafe.com/laiweiwei/Spiderman"><strong>SpiderMan</strong></a>。SpiderMan是一个全栈式的Java爬虫，它的设计思想跟webmagic稍有不同，它希望将Java语言的实现隔离，仅仅让用户通过配置就完成一个垂直爬虫。理论上，SpiderMan功能更强大，很多功能已经内置，而webmagic则比较灵活，适合熟悉Java语法的开发者，可以比较非常方便的进行扩展和二次开发。</p>
 
 <hr />
 
 <h1>webmagic的模块划分</h1>
+
+<p>webmagic目前的核心代码都在<strong>webmagic-core</strong>中，<strong>webmagic-samples</strong>里有一些定制爬虫的例子，可以作为参考。而<strong>webmagic-plugin</strong>目前还不完善，后期准备加入一些并不太常用，但也有些用处的插件。下面主要介绍webmagic-core的内容。</p>
 
 <p>前面说到，webmagic参考了scrapy的模块划分，分为Spider(整个爬虫的调度框架)、Downloader(页面下载)、PageProcessor(链接提取和页面分析)、Scheduler(URL管理)、Pipeline(离线分析和持久化)几部分。只不过scrapy通过middleware实现扩展，而webmagic则通过定义这几个接口，并将其不同的实现注入主框架类Spider来实现扩展。</p>
 
@@ -87,13 +91,19 @@
 
 <p>页面下载是一切爬虫的开始。这方面，<strong>HttpClient</strong>(4.0后整合到HttpCompenent项目中)是不二之选。它支持自定义HTTP头(对于爬虫比较有用的就是User-agent、cookie什么的)、自动redirect、连接复用、设置代理等诸多强大的功能。</p>
 
-<p>webmagic使用了HttpClient 4.0，并封装到了<strong>HttpClientDownloader</strong>。这部分参考了另一个Java爬虫<a href="https://gitcafe.com/laiweiwei/Spiderman"><strong>SpiderMan</strong></a>的部分代码。<strong>SpiderMan</strong>是一个全栈式的Java爬虫，它的设计思想跟webmagic稍有不同，它希望将Java语言的实现隔离，仅仅让用户通过配置就完成一个垂直爬虫，而webmagic则是为Java开发者可以方便的进行开发而设计的。</p>
+<p>webmagic使用了HttpClient 4.0，并封装到了<strong>HttpClientDownloader</strong>。学习HttpClient的使用对于构建高性能爬虫是非常有帮助的，目前webmagic对HttpClient的使用仍在初步阶段，不过对于一般抓取任务，已经够用了。</p>
 
 <p>webmagic还有一个好玩的功能<strong>FileDownloader</strong>。如果你不知道怎么分析页面，只是想先把它下载下来，那么可以使用FilePipeline将页面全文保存，下次运行的时候，使用FileDownloader，则可以直接从本地文件载入页面，并进行处理。对于其他模块，这跟实时下载并处理没有什么不同。</p>
 
+<p>一般没有必要去扩展Downloader。</p>
+
 <h2>PageProcessor-页面分析及链接抽取</h2>
 
-<p>这里说的页面分析主要指HTML页面的分析。页面分析可以说是垂直爬虫最复杂的一部分，webmagic的大部分工作都围绕它展开。Java世界主要有几款比较方便的分析工具：</p>
+<p>这里说的页面分析主要指HTML页面的分析。页面分析可以说是垂直爬虫最复杂的一部分，在webmagic里，PageProcessor是定制爬虫的核心。</p>
+
+<p>页面抽取最基本的方式是使用正则表达式。但是正则表达式最大的问题是，没有办法处理标签嵌套的情况。例如，我想要抽取一个&lt;div>里的内容，可以这样写：&#8221;&lt;div>(.*?)&lt;/div>&ldquo;。但是如果这个div内部还包含几个子div，这个时候使用正则表达式就会将子div的&rdquo;&lt;/div>&ldquo;作为终止符截取。为了解决这个问题，我们就需要进行HTML的分析。</p>
+
+<p>HTML分析是一个比较复杂的工作，Java世界主要有几款比较方便的分析工具：</p>
 
 <p><strong>Jsoup</strong></p>
 
