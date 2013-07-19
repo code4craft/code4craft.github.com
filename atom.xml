@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-19T06:38:32+08:00</updated>
+  <updated>2013-07-19T13:57:52+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -20,7 +20,7 @@
     <id>http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li</id>
     <content type="html"><![CDATA[<p><img src="http://code4craft.github.io/images/posts/spider.jpeg" alt="image" /></p>
 
-<h3>webmagic的由来</h3>
+<h1>webmagic的由来</h1>
 
 <p>一般来说，一个爬虫包括几个部分：</p>
 
@@ -48,11 +48,75 @@
 
 <p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，对于重复的开发烦恼不已，Java还有一个比较成熟的框架crawler4j，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架scrapy，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。</p>
 
-<p>webmagic的目标是一个可以非常方便进行扩展和二次开发的爬虫框架，这个跟scrapy的思想也非常像。因为也做过一些比较复杂的抓取任务，所以webmagic设计初始就是一个灵活性很强的框架。</p>
+<p>webmagic的目标是，成为一个可以非常方便的进行扩展和二次开发的爬虫框架。</p>
 
-<h3>webmagic的模块划分</h3>
+<hr />
+
+<h1>webmagic的模块划分</h1>
 
 <p><img src="http://code4craft.github.io/images/posts/scrapy.jpeg" alt="image" /></p>
+
+<h2>Spider类-核心调度</h2>
+
+<p>Spider的核心处理流程非常简单：</p>
+
+<pre><code>private void processRequest(Request request) {
+    Page page = downloader.download(request, this);
+    if (page == null) {
+        sleep(site.getSleepTime());
+        return;
+    }
+    pageProcessor.process(page);
+    addRequest(page);
+    for (Pipeline pipeline : pipelines) {
+        pipeline.process(page, this);
+    }
+    sleep(site.getSleepTime());
+}
+</code></pre>
+
+<h2>Downloader-页面下载</h2>
+
+<p>页面下载是一切爬虫的开始。这方面，<strong>HttpClient</strong>(4.0后整合到HttpCompenent项目中)是不二之选。它支持自定义HTTP头(对于爬虫比较有用的就是User-agent、cookie什么的)、自动redirect、连接复用、设置代理等诸多强大的功能。</p>
+
+<p>webmagic使用了HttpClient 4.0，并封装到了<strong>HttpClientDownloader</strong>。这部分参考了另一个Java爬虫<a href="https://gitcafe.com/laiweiwei/Spiderman"><strong>SpiderMan</strong></a>的部分代码。<strong>SpiderMan</strong>是一个全栈式的Java爬虫，它的设计思想跟webmagic稍有不同，它希望将Java语言的实现隔离，仅仅让用户通过配置就完成一个垂直爬虫，而webmagic则是为Java开发者可以方便的进行开发而设计的。</p>
+
+<p>webmagic还有一个好玩的功能<strong>FileDownloader</strong>。如果你不知道怎么分析页面，只是想先把它下载下来，那么可以使用FilePipeline将页面全文保存，下次运行的时候，使用FileDownloader，则可以直接从本地文件载入页面，并进行处理。对于其他模块，这跟实时下载并处理没有什么不同。</p>
+
+<h2>PageProcessor-页面分析及链接抽取</h2>
+
+<p>这里说的页面分析主要指HTML页面的分析。页面分析可以说是垂直爬虫最复杂的一部分，webmagic的大部分工作都围绕它展开。Java世界主要有几款比较方便的分析工具：</p>
+
+<p><strong>Jsoup</strong></p>
+
+<p><strong>SaxParser for html</strong></p>
+
+<p><strong>HtmlParser</strong></p>
+
+<p><strong>HtmlCleaner</strong></p>
+
+<p>Selector是webmagic的模块中我最得意的部分，这里整合了xpath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。例如，抽取一个页面某个区域的所有包含&#8221;blog&#8221;的链接，我可以这样写：</p>
+
+<pre><code>page.getHtml().xpath("//div[@class='title']").links().regex(".*blog.*").toStrings();
+</code></pre>
+
+<p>这里用到了两个文本处理的DSL(Domain-specific language，领域特定语言)，一个是正则表达式，一个是xpath。</p>
+
+<h2>Schedular-URL管理</h2>
+
+<p>URL管理的问题可大可小。对于小规模的抓取，我们只需要将待抓取URL和未抓取URL分开保存，并进行去重即可。使用JDK内置的集合类型Set、List或者Queue都可以满足需要。如果我们要进行多线程抓取，则可以选择线程安全的容器，例如LinkedBlockingQueue以及ConcurrentHashMap。</p>
+
+<p>因为小规模的URL管理非常简单，很多框架都并不将其抽象为一个模块，而是直接融入到代码中。但是实际上，抽象出Schedular模块，会使得框架的解耦程序上升一个档次，这也是我从scrapy中学到的。</p>
+
+<p>在webmagic的设计中，除了Schedular模块，其他的处理-从下载、解析到持久化，每个页面都是互相独立的。排除去重的因素，URL管理天生就是一个队列，我们可以很方便的用分布式的队列工具去扩展它，也可以基于mysql、redis或者mongodb这样的存储工具来构造一个队列，这样构建一个分布式的爬虫就轻而易举了。</p>
+
+<p>webmagic目前有两个Schedular的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
+
+<h2>Pipeline-离线处理和持久化</h2>
+
+<p>Pipeline其实也是比较有争议的一部分。大家都知道持久化的重要性，但是很多框架都选择直接在页面抽取的时候将持久化一起完成，例如crawer4j。但是Pipeline真正的好处是，将页面的在线分析和离线处理拆分开来，可以在一些线程里进行下载，另一些线程里进行处理和持久化。</p>
+
+<p>你可以扩展Pipeline来实现抽取结果的持久化，将其保存到你想要保存的地方-本地文件、数据库、mongodb等等。Pipeline的处理目前还是在线的，但是修改为离线的也并不困难。</p>
 ]]></content>
   </entry>
   
