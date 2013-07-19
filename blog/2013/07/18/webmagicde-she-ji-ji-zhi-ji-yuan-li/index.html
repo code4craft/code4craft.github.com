@@ -118,17 +118,15 @@ URL管理 最基础的URL管理， &hellip;">
 
 <p>对于通用型的爬虫，例如搜索引擎蜘蛛，需要指对互联网大部分网页无差别进行抓取。这时候难点就在于页面下载和链接管理上&mdash;如果要高效的抓取更多页面，就必须进行更快的下载；同时随着链接数量的增多，需要考虑如果对大规模的链接进行去重和调度，就成了一个很大的问题。一般这些问题都会在大公司有专门的团队去解决，比如这里有一篇来自淘宝的<a href="http://www.searchtb.com/2011/07/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%8A%93%E5%8F%96%E9%9B%86%E7%BE%A4.html?spm=0.0.0.0.hHzGxv">快速构建实时抓取集群</a>。</p>
 
-<p>而垂直类型的爬虫要解决的问题则不一样，比如想要爬取一些网站的新闻、博客信息，一般抓取数量要求不是很大，但是难点则在于如何高效的定制一个爬虫，可以精确的抽取出网页的内容，并保存成结构化的数据。这方面需求很多，webmagic就是为了解决这个目的而开发的。</p>
+<p>而垂直类型的爬虫要解决的问题则不一样，比如想要爬取一些网站的新闻、博客信息，一般抓取数量要求不是很大，难点则在于如何高效的定制一个爬虫，可以精确的抽取出网页的内容，并保存成结构化的数据。这方面需求很多，webmagic就是为了解决这个目的而开发的。</p>
 
-<p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，对于重复的开发烦恼不已，Java还有一个比较成熟的框架crawler4j，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架scrapy，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。</p>
-
-<p>webmagic的目标是，成为一个可以非常方便的进行扩展和二次开发的爬虫框架。</p>
+<p>使用Java语言开发爬虫是比较复杂的。虽然Java有很强大的页面下载、HTML分析工具，但是每个都有不小的学习成本，而且这些工具本身都不是专门为爬虫而生，使用起来也没有那么顺手。我曾经有一年的时间都在开发爬虫，重复的开发让人头痛。Java还有一个比较成熟的框架crawler4j，但是它是为通用爬虫而设计的，扩展性差一些，满足不了我的业务需要。我也有过自己开发框架的念头，但是终归觉得抽象的不是很好。直到发现python的爬虫框架scrapy，它将爬虫的生命周期拆分的非常清晰，我参照它进行了模块划分，并用Java的方式去实现了它，于是就有了webmagic。代码已经托管到github，地址是<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a>。webmagic的目标是，成为一个可以非常方便的进行扩展和二次开发的爬虫框架。</p>
 
 <hr />
 
 <h1>webmagic的模块划分</h1>
 
-<p><img src="http://code4craft.github.io/images/posts/scrapy.jpeg" alt="image" /></p>
+<p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="image" /></p>
 
 <h2>Spider类-核心调度</h2>
 
@@ -176,15 +174,15 @@ URL管理 最基础的URL管理， &hellip;">
 
 <p>这里用到了两个文本处理的DSL(Domain-specific language，领域特定语言)，一个是正则表达式，一个是xpath。</p>
 
-<h2>Schedular-URL管理</h2>
+<h2>Scheduler-URL管理</h2>
 
-<p>URL管理的问题可大可小。对于小规模的抓取，我们只需要将待抓取URL和未抓取URL分开保存，并进行去重即可。使用JDK内置的集合类型Set、List或者Queue都可以满足需要。如果我们要进行多线程抓取，则可以选择线程安全的容器，例如LinkedBlockingQueue以及ConcurrentHashMap。</p>
+<p>URL管理的问题可大可小。对于小规模的抓取，URL管理是很简单的。我们只需要将待抓取URL和未抓取URL分开保存，并进行去重即可。使用JDK内置的集合类型Set、List或者Queue都可以满足需要。如果我们要进行多线程抓取，则可以选择线程安全的容器，例如LinkedBlockingQueue以及ConcurrentHashMap。</p>
 
-<p>因为小规模的URL管理非常简单，很多框架都并不将其抽象为一个模块，而是直接融入到代码中。但是实际上，抽象出Schedular模块，会使得框架的解耦程序上升一个档次，这也是我从scrapy中学到的。</p>
+<p>因为小规模的URL管理非常简单，很多框架都并不将其抽象为一个模块，而是直接融入到代码中。但是实际上，抽象出Scheduler模块，会使得框架的解耦程序上升一个档次，这也是我从scrapy中学到的。</p>
 
-<p>在webmagic的设计中，除了Schedular模块，其他的处理-从下载、解析到持久化，每个页面都是互相独立的。排除去重的因素，URL管理天生就是一个队列，我们可以很方便的用分布式的队列工具去扩展它，也可以基于mysql、redis或者mongodb这样的存储工具来构造一个队列，这样构建一个分布式的爬虫就轻而易举了。</p>
+<p>在webmagic的设计中，除了Scheduler模块，其他的处理-从下载、解析到持久化，每个页面都是互相独立的。排除去重的因素，URL管理天生就是一个队列，我们可以很方便的用分布式的队列工具去扩展它，也可以基于mysql、redis或者mongodb这样的存储工具来构造一个队列，这样构建一个分布式的爬虫就轻而易举了。</p>
 
-<p>webmagic目前有两个Schedular的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
+<p>webmagic目前有两个Scheduler的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
 
 <h2>Pipeline-离线处理和持久化</h2>
 
