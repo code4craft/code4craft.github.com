@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T11:32:23+08:00</updated>
+  <updated>2013-07-20T13:53:05+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -69,28 +69,66 @@
 
 <p>Spider是爬虫的入口类，Spider的接口调用采用了链式的API设计，其他功能全部通过接口注入Spider实现，下面是启动一个比较复杂的Spider的例子。</p>
 
-<pre><code>    Spider.create(sinaBlogProcessor)
-    .scheduler(new FileCacheQueueScheduler("/data/temp/webmagic/cache/"))
-    .pipeline(new FilePipeline())
-    .thread(10).run();
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>启动一个Spider </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">Spider</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">sinaBlogProcessor</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">scheduler</span><span class="o">(</span><span class="k">new</span> <span class="n">FileCacheQueueScheduler</span><span class="o">(</span><span class="s">&quot;/data/temp/webmagic/cache/&quot;</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">pipeline</span><span class="o">(</span><span class="k">new</span> <span class="n">FilePipeline</span><span class="o">())</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">thread</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">run</span><span class="o">();</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Spider的核心处理流程非常简单，代码如下：</p>
-
-<pre><code>    private void processRequest(Request request) {
-        Page page = downloader.download(request, this);
-        if (page == null) {
-            sleep(site.getSleepTime());
-            return;
-        }
-        pageProcessor.process(page);
-        addRequest(page);
-        for (Pipeline pipeline : pipelines) {
-            pipeline.process(page, this);
-        }
-        sleep(site.getSleepTime());
-    }
-</code></pre>
+<p>Spider的核心处理流程非常简单，代码如下：
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Spider核心流程 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="kd">private</span> <span class="kt">void</span> <span class="n">processRequest</span><span class="o">(</span><span class="n">Request</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Page</span> <span class="n">page</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="na">download</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">page</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">sleep</span><span class="o">(</span><span class="n">site</span><span class="o">.</span><span class="na">getSleepTime</span><span class="o">());</span>
+</span><span class='line'>            <span class="k">return</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">pageProcessor</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">page</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">addRequest</span><span class="o">(</span><span class="n">page</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Pipeline</span> <span class="n">pipeline</span> <span class="o">:</span> <span class="n">pipelines</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">pipeline</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">page</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">sleep</span><span class="o">(</span><span class="n">site</span><span class="o">.</span><span class="na">getSleepTime</span><span class="o">());</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>Downloader-页面下载</h3>
 
@@ -102,11 +140,26 @@
 
 <p>下面是一个使用HttpClient最简单的例子：</p>
 
-<pre><code>    HttpClient httpClient = new DefaultHttpClient();
-    HttpGet httpGet = new HttpGet("http://youhost/xxx");
-    HttpResponse httpResponse = httpClient.execute(httpGet);
-    System.out.println(EntityUtils.toString(httpResponse.getEntity().getContent()));
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>HttpClient简单使用 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">HttpClient</span> <span class="n">httpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultHttpClient</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">HttpGet</span> <span class="n">httpGet</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpGet</span><span class="o">(</span><span class="s">&quot;http://youhost/xxx&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">HttpResponse</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="n">httpClient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpGet</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">getEntity</span><span class="o">().</span><span class="na">getContent</span><span class="o">()));</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>对于一些Javascript动态加载的网页，仅仅使用http模拟下载工具，并不能取到页面的内容。这方面的思路有两种：一种是抽丝剥茧，分析js的逻辑，再用爬虫去重现它(比如在网页中提取关键数据，再用这些数据去构造Ajax请求，最后直接从响应体获取想要的数据)；
 另一种就是：内置一个浏览器，直接获取最后加载完的页面。这方面，js可以使用<strong>PhantomJS</strong>，它内部集成了webkit。而Java可以使用<strong>Selenium</strong>，这是一个非常强大的浏览器模拟工具。考虑以后将它整理成一个独立的Downloader，集成到webmagic中去。</p>
@@ -125,26 +178,55 @@
 
 <p>Jsoup是一个集强大和便利于一体的HTML解析工具。它方便的地方是，可以用于支持用jquery中css selector的方式选取元素，这对于熟悉js的开发者来说基本没有学习成本。</p>
 
-<pre><code>    String content = "blabla";
-    Document doc = JSoup.parse(content);
-    Elements links = doc.select("a[href]");
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Jsoup的CSS Selector </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;blabla&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">Document</span> <span class="n">doc</span> <span class="o">=</span> <span class="n">JSoup</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Elements</span> <span class="n">links</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;a[href]&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Jsoup还支持白名单过滤机制，对于网站防止XSS攻击也是很好的。</p>
 
 <h4><strong>HtmlParser</strong></h4>
 
-<p>这个项目很久没有维护了，但是它的名字实在太好了。HtmlParser的功能比较完备，也挺灵活，但是还是谈不上方便。HtmlParser的核心元素是Node，对应一个HTML标签，支持getChildren()等树状遍历方式。HtmlParser另外一个核心元素是NodeFilter，通过实现NodeFilter接口，可以对页面元素进行筛选。这里有一篇HtmlParser的使用文章：<a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-crawler/">使用 HttpClient 和 HtmlParser 实现简易爬虫</a>。</p>
+<p>HtmlParser的功能比较完备，也挺灵活，但谈不上方便。这个项目很久没有维护了，最新版本是2.1。HtmlParser的核心元素是Node，对应一个HTML标签，支持getChildren()等树状遍历方式。HtmlParser另外一个核心元素是NodeFilter，通过实现NodeFilter接口，可以对页面元素进行筛选。这里有一篇HtmlParser的使用文章：<a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-crawler/">使用 HttpClient 和 HtmlParser 实现简易爬虫</a>。</p>
 
 <h4><strong>Apache tika</strong></h4>
 
 <p>tika是专为抽取而生的工具，还支持PDF、Zip甚至是Java Class。使用tika分析HTML，需要自己定义一个抽取内容的Handler并继承<code>org.xml.sax.helpers.DefaultHandler</code>，解析方式就是xml标准的方式。crawler4j中就使用了tika作为解析工具。SAX这种流式的解析方式对于分析大文件很有用，我个人倒是认为对于解析html意义不是很大。</p>
 
-<pre><code>    InputStream inputStream = null;
-    HtmlParser htmlParser = new HtmlParser();
-    htmlParser.parse(new ByteArrayInputStream(page.getContentData()), 
-     contentHandler, metadata, new ParseContext());
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>使用tika进行HTML解析 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">InputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">HtmlParser</span> <span class="n">htmlParser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HtmlParser</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">htmlParser</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">page</span><span class="o">.</span><span class="na">getContentData</span><span class="o">()),</span>
+</span><span class='line'>     <span class="n">contentHandler</span><span class="o">,</span> <span class="n">metadata</span><span class="o">,</span> <span class="k">new</span> <span class="n">ParseContext</span><span class="o">());</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h4><strong>HtmlCleaner与XPath</strong></h4>
 
@@ -152,56 +234,137 @@
 
 <p>学习XPath可以参考w3school的<a href="http://www.w3school.com.cn/xpath/">XPath 教程</a>。下面是使用HtmlCleaner和xpath进行抽取的一段代码：</p>
 
-<pre><code>    HtmlCleaner htmlCleaner = new HtmlCleaner();
-    TagNode tagNode = htmlCleaner.clean(text);
-    Object[] objects = tagNode.evaluateXPath("xpathStr");
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>使用HtmlCleaner和XPath抽取元素 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">HtmlCleaner</span> <span class="n">htmlCleaner</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HtmlCleaner</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">TagNode</span> <span class="n">tagNode</span> <span class="o">=</span> <span class="n">htmlCleaner</span><span class="o">.</span><span class="na">clean</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Object</span><span class="o">[]</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">tagNode</span><span class="o">.</span><span class="na">evaluateXPath</span><span class="o">(</span><span class="s">&quot;xpathStr&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h4>几个工具的对比</h4>
 
 <p>在这里评价这些工具的主要标准是“方便”。就拿抽取页面所有链接这一基本任务来说，几种代码分别如下：</p>
 
-<p>XPath:</p>
-
-<pre><code>    //a/@href
-</code></pre>
+<p>XPath:
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>XPath提取链接 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">tagNode</span><span class="o">.</span><span class="na">evaluateXPath</span><span class="o">(</span><span class="s">&quot;//a/@href&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>CSS Selector:</p>
 
-<pre><code>    //使用类似js的实现
-    $("a[href]").attr("href")
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>CSS Selector提取链接 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="c1">//使用类似js的实现</span>
+</span><span class='line'>    <span class="n">$</span><span class="o">(</span><span class="s">&quot;a[href]&quot;</span><span class="o">).</span><span class="na">attr</span><span class="o">(</span><span class="s">&quot;href&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>HtmlParser：</p>
 
-<pre><code>    Parser p = new Parser(value);
-    NodeFilter aFilter = new TagNameFilter("a");
-    NodeList nodes = p.extractAllNodesThatMatch(aFilter);
-    for (int i = 0; i &lt; nodes.size(); i++) {
-        Node eachNode = nodes.elementAt(i);
-        if (eachNode instanceof LinkTag) {
-            LinkTag linkTag = (LinkTag) eachNode;
-            System.out.println(linkTag.extractLink());
-        }
-    }
-</code></pre>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>HtmlParser提取链接 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">Parser</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Parser</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">NodeFilter</span> <span class="n">aFilter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TagNameFilter</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">NodeList</span> <span class="n">nodes</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">extractAllNodesThatMatch</span><span class="o">(</span><span class="n">aFilter</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span> <span class="n">nodes</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Node</span> <span class="n">eachNode</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="na">elementAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">eachNode</span> <span class="k">instanceof</span> <span class="n">LinkTag</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">LinkTag</span> <span class="n">linkTag</span> <span class="o">=</span> <span class="o">(</span><span class="n">LinkTag</span><span class="o">)</span> <span class="n">eachNode</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">linkTag</span><span class="o">.</span><span class="na">extractLink</span><span class="o">());</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>XPath是最简单的，可以精确选取到href属性值；而CSS Selector则次之，可以选取到HTML标签，属性值需要调用函数去获取；而HtmlParser和SAX则需要手动写程序去处理标签了，比较麻烦。</p>
 
 <h4>webmagic的Selector</h4>
 
-<p><strong>Selector</strong>是webmagic为了简化页面抽取开发的独立模块，是整个项目中我最得意的部分。这里整合了CSS Selector、XPath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。即使你使用自己开发的爬虫工具，webmagic的Selector仍然值得一试。例如，我已经下载了一个页面，现在要抽取某个区域的所有包含"blog"的链接，我可以这样写：</p>
+<p><strong>Selector</strong>是webmagic为了简化页面抽取开发的独立模块，是整个项目中我最得意的部分。这里整合了CSS Selector、XPath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。即使你使用自己开发的爬虫工具，webmagic的Selector仍然值得一试。</p>
 
-<pre><code>    //content是用别的爬虫工具抽取到的正文
-    String content = "blabla";
-    List&lt;String&gt; links = Html.create(content)
-    $("div.title")  //css 选择
-    .xpath("//@href")  //提取链接
-    .regex(".*blog.*") //正则匹配过滤
-    .toStrings(); //转换为string
-</code></pre>
+<p>例如，我已经下载了一个页面，现在要抽取某个区域的所有包含"blog"的链接，我可以这样写：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>webmagic的链式抽取 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="c1">//content是用别的爬虫工具抽取到的正文</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;blabla&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">links</span> <span class="o">=</span> <span class="n">Html</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">content</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">$</span><span class="o">(</span><span class="s">&quot;div.title&quot;</span><span class="o">)</span>  <span class="c1">//css 选择，Java里虽然很少有$符号出现，不过貌似$作为方法名是合法的</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">xpath</span><span class="o">(</span><span class="s">&quot;//@href&quot;</span><span class="o">)</span>  <span class="c1">//提取链接</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="s">&quot;.*blog.*&quot;</span><span class="o">)</span> <span class="c1">//正则匹配过滤</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">toStrings</span><span class="o">();</span> <span class="c1">//转换为string</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>另外，webmagic的抓取链接需要显示的调用<code>Page.addTargetRequests()</code>去添加，这也是为了灵活性考虑的(很多时候，下一步的URL不是单纯的页面href链接，可能会根据页面模块进行抽取，甚至可能是自己拼凑出来的)。</p>
+
+<p>补充一个有意思的话题，就是对于页面正文的自动抽取。相信用过Evernote Clearly都会对其自动抽取正文的技术印象深刻。这个技术又叫<strong>Readability</strong>，webmagic对readability有一个粗略的实现<strong>SmartContentSelector</strong>，用的是P标签密度计算的方法，在测试oschina博客时有不错的效果。</p>
 
 <h3>Scheduler-URL管理</h3>
 
@@ -217,9 +380,17 @@
 
 <h3>Pipeline-离线处理和持久化</h3>
 
-<p>Pipeline其实也是比较有争议的一部分。大家都知道持久化的重要性，但是很多框架都选择直接在页面抽取的时候将持久化一起完成，例如crawer4j。但是Pipeline真正的好处是，将页面的在线分析和离线处理拆分开来，可以在一些线程里进行下载，另一些线程里进行处理和持久化。</p>
+<p>Pipeline其实也是容易被忽略的一部分。大家都知道持久化的重要性，但是很多框架都选择直接在页面抽取的时候将持久化一起完成，例如crawer4j。但是Pipeline真正的好处是，将页面的在线分析和离线处理拆分开来，可以在一些线程里进行下载，另一些线程里进行处理和持久化。</p>
 
 <p>你可以扩展Pipeline来实现抽取结果的持久化，将其保存到你想要保存的地方-本地文件、数据库、mongodb等等。Pipeline的处理目前还是在线的，但是修改为离线的也并不困难。</p>
+
+<p>webmagic目前只支持控制台输出和文件持久化，但是持久化到数据库也是很容易的。</p>
+
+<h2>结语</h2>
+
+<p>webmagic确实是一个山寨的框架，本身也没有太多创新的东西，但是确实对Java爬虫的实现有了一些简化。在强大便利的功能和较高的灵活性中间，webmagic选择了后者，目标就是要打造一个熟练的Java开发者也用的比较顺手的工具，并且可以集成到自己的业务系统中，这一点我自己开发了不少这样的业务，对其灵活性还是比较有信心的。</p>
+
+<p>之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。webmagic目前的代码实现非常简单，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎大牛给予建议和指正。</p>
 ]]></content>
   </entry>
   
