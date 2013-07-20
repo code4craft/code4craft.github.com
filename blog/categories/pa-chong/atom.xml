@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T14:01:17+08:00</updated>
+  <updated>2013-07-20T14:27:03+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -29,16 +29,16 @@
 <ul>
 <li><p>页面下载</p>
 
-<p>页面下载是一个爬虫的基础。下载页面之后才能进行其他后续操作。</p></li>
+<p> 页面下载是一个爬虫的基础。下载页面之后才能进行其他后续操作。</p></li>
 <li><p>链接提取</p>
 
-<p>一般爬虫都会有一些初始的种子URL，但是这些URL对于爬虫是远远不够的。爬虫在爬页面的时候，需要不断发现新的链接。</p></li>
+<p> 一般爬虫都会有一些初始的种子URL，但是这些URL对于爬虫是远远不够的。爬虫在爬页面的时候，需要不断发现新的链接。</p></li>
 <li><p>URL管理</p>
 
-<p>最基础的URL管理，就是对已经爬过的URL和没有爬的URL做区分，防止重复爬取。</p></li>
+<p> 最基础的URL管理，就是对已经爬过的URL和没有爬的URL做区分，防止重复爬取。</p></li>
 <li><p>内容分析和持久化</p>
 
-<p>一般来说，我们最终需要的都不是原始的HTML页面。我们需要对爬到的页面进行分析，转化成结构化的数据，并存储下来。</p></li>
+<p> 一般来说，我们最终需要的都不是原始的HTML页面。我们需要对爬到的页面进行分析，转化成结构化的数据，并存储下来。</p></li>
 </ul>
 
 
@@ -61,7 +61,7 @@
 
 <h2>webmagic的模块划分</h2>
 
-<p>webmagic目前的核心代码都在<strong>webmagic-core</strong>中，<strong>webmagic-samples</strong>里有一些定制爬虫的例子，可以作为参考。而<strong>webmagic-plugin</strong>目前还不完善，后期准备加入一些并不太常用，但也有些用处的插件。下面主要介绍webmagic-core的内容。</p>
+<p>webmagic目前的核心代码都在<strong>webmagic-core</strong>中，<strong>webmagic-samples</strong>里有一些定制爬虫的例子，可以作为参考。而<strong>webmagic-plugin</strong>目前还不完善，后期准备加入一些常用的功能。下面主要介绍webmagic-core的内容。</p>
 
 <p>前面说到，webmagic参考了scrapy的模块划分，分为Spider(整个爬虫的调度框架)、Downloader(页面下载)、PageProcessor(链接提取和页面分析)、Scheduler(URL管理)、Pipeline(离线分析和持久化)几部分。只不过scrapy通过middleware实现扩展，而webmagic则通过定义这几个接口，并将其不同的实现注入主框架类Spider来实现扩展。</p>
 
