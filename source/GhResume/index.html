@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Github R&#233;sum&#233;</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="github, resume, cool">
+    <meta name="description" content="Another resume generator for github user">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css"/>
+    <!-- use impress demo's font, thanks! -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <!-- rusume style sheet -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!--[IF IE]>
+    <style>
+      .container{
+        margin-right: auto; 
+        margin-left: auto; 
+        width: 91%; 
+        background: url("static/ie-background.png") repeat; 
+      }
+    </style>
+    <![endif]-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      $.noConflict();
+    </script>
+    <script src="vendors/js-url.min.js" type="text/javascript" charset="utf-8" language="javascript"></script>
+  </head>
+  <body>
+
+    <div class="container" id="user">
+
+      <!-- avatar from gravatar-->
+      <div class="row">
+        <div class="span3" id="avatar_container">
+          <!-- Is it ok to use this cute cat here? -->
+          <img src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-128.gif?1347543527" alt="avatar" id="avatar" height="170" width="170" />
+        </div>
+
+        <!-- header: avatar, name,  login-name-->
+        <div class="span4 offset1">
+          <h1 id="name"></h1>
+          <!-- user infomation list -->
+          <div id="user-info-container">
+            <ul id="user-info">
+            </ul>
+          </div>
+        </div>
+
+        <!-- followers circle -->
+        <div class="span1 countcircle">
+          <div id="follower-number" >
+          </div>
+          <h2>follower</h2>
+        </div>
+
+        <!-- repos count circle -->
+        <div class="span1 countcircle">
+          <div id="repos-count" >
+          </div>
+          <h2>repo</h2>
+        </div>
+
+        <!-- hireable circle -->
+        <div class="span1 countcircle">
+          <div id="hireable" >
+          </div>
+          <h2>hireable</h2>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <div class="container" id="skills">
+    <h2>Skills</h2>
+    <hr>
+    <ul id="lang-container">
+    </ul>
+  </div>
+  <div class="container" id="repos">
+    <h2>Popular Repositories</h2>
+    <hr>
+    <ul id="repolist">
+    </ul>
+    <p style="text-align:center;clear:both; color:#999">Powered by GhResume licensing BSD</p>
+  </div>
+
+  <!-- fork me on github banner -->
+  <a href="https://github.com/hit9/GhResume">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+  </a>
+
+  <!-- application js-->
+  <script src="js/ghresume.js" type="text/javascript" charset="utf-8" language="javascript"></script>
+</body>
+</html>

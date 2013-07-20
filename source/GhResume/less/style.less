@@ -1,0 +1,238 @@
+//colors 
+@white: #fff; 
+@blue: #009999; 
+@light-blue: #09f; 
+@gray: #777; 
+@heavy-gray: #333; 
+@light-gray: #999999; 
+@green: #199c4b;
+
+// font size
+@font-normal-size: 16px; 
+@line-height-normal: @font-normal-size + 5px; 
+@h1-size: 170%; 
+@h2-size: 147%; 
+@h3-size: 130%; 
+
+//some var
+
+@count-circle-radius: 32px; 
+
+// transparent background
+.transpare(@arg:0.892745){
+    /* transparent gray */
+    background-color: rgba(0, 0, 0, @arg);
+    -webkit-transition: opacity .2s ease-in;
+    -moz-transition: opacity .2s ease-in;
+    -o-transition: opacity .2s ease-in;
+    transition: opacity .2s ease-in;
+    opacity: 1;
+}
+
+//border-radius
+.border-radius(@radius:5px){
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+    // need absolute path
+    behavior: url(/GhResume/vendors/PIE.htc);
+}
+
+// circle class
+.circle{
+    .border-radius(50em); 
+}
+
+.square(@len){
+    height: @len; 
+    width: @len; 
+}
+
+.text-circle(@radius: 30px){
+    .square(@radius * 2);
+    .circle; 
+    text-align: center; 
+    line-height: @radius * 2; 
+}
+
+html, body, div, h1, h2, h3, h4, h5, h6, p, pre,
+a, abbr, acronym, address, big, cite, code,ol, ul, li, form, label, table, tr, th, td
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+body{
+    font-family: 'PT Sans', sans-serif;
+    font-size: @font-normal-size; 
+    line-height: @line-height-normal; 
+    color: @white; 
+    background: no-repeat fixed top;
+    /* adjust background image css */
+    background-image: url("../static/background.jpg"); 
+    -moz-background-size: 100% 100%; 
+    background-size: 100% 100%;
+}
+
+a{
+    font-size: @font-normal-size; 
+    color: @blue; 
+    text-decoration: none;
+}
+
+ul{
+    list-style:none;
+    display:table-cell;
+}
+
+/*icon in ul>li*/
+ul li i{
+    margin: auto 5px;
+}
+
+/* i got this answer from stackoverflow.They say this is an old issue that
+ * offset not working in row-fluid
+ */
+.offset1 {
+    margin-left: 85px !important;
+}
+
+
+/* containers */
+.container{
+    /* gray opcity*/
+    .transpare; 
+    .border-radius; 
+    border: 1px solid transparent;
+    padding:30px; 
+    margin: 2% auto;
+}
+
+/* hr */
+hr{
+    border:none; 
+    border-bottom: solid @gray 1px; 
+}
+
+.h2{
+    font-weight: normal; 
+    font-size: @h2-size; 
+    font-style: italic;
+}
+
+.container#user{
+    margin: 3% auto;
+    h1#name{
+        font-size: 120%; 
+        margin-bottom: 35px; 
+        a{
+            font-size: 120%; 
+        }
+        span{
+            font-size: 100%; 
+            color: @light-gray; 
+        }
+    }
+    #avatar_container{
+        border-right:solid 1px @gray;
+    }
+    #avatar{
+        .circle;  
+        border: solid 4px @white;
+        background: @white; 
+    }
+    #user-info-container{
+        margin-top: 10px;
+        #user-info{
+            line-height: @line-height-normal;
+        }
+    }
+    .countcircle{
+        margin:auto 13px; 
+        h2{
+            .h2; 
+            margin: 10px auto; 
+            text-align: center; 
+            min-width: @count-circle-radius * 2; 
+        }
+        #follower-number, #repos-count, #hireable{
+            .text-circle(@count-circle-radius); //mention here: circle radius 35px!
+            font-size: @h2-size; 
+            background-color: @light-blue; 
+            color: @white; 
+        }
+    } 
+}
+
+.container#skills{
+    h2{.h2}
+    ul#lang-container{
+        display:inline-block;
+        li{
+            margin: 0 10px; 
+            float: left; 
+            text-align: center;
+            div{
+                background-color: @light-blue; 
+                .text-circle(28px); 
+                font-size: @h3-size; 
+                color: @white; 
+            }
+            span{
+                margin: 0 5px;
+                font-size: 80%;
+                font-weight: normal;
+            }
+        }
+    }
+}
+
+.container#repos{
+    h2{
+        .h2; 
+    }
+    ul#repolist{
+        float:left; 
+        min-width: 80%; 
+        h3{
+            a{
+                font-size: @h3-size; 
+                font-weight: normal;
+                span#language{
+                    color: @light-gray; 
+                    font-style: italic; 
+                    font-size: 56%; 
+                }
+            }
+        }
+        li.singlerepo{
+            border-bottom: 1px solid @heavy-gray;
+            padding: 0 0 20px 0;
+            position: relative;
+            min-height: 66px;
+            overflow: hidden;
+            margin: 0 0 20px 0;
+            list-style-type: none;
+            ul.repo-stats{
+                  position: relative;
+                  float: right;
+                  border: none;
+                  font-size: 11px;
+                  padding-left: 15px;
+                  z-index: 5;
+                  display: inline-block;
+                  margin: 0;
+                  overflow: hidden;
+                  li{
+                      float:left;
+                      display: list-item;
+                      margin:0 5px; 
+                }
+            }
+        }
+    } 
+}

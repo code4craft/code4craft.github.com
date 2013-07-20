@@ -1,0 +1,16 @@
+---
+layout: post
+title: "一个shell下的todolist"
+date: 2013-06-28 10:17
+comments: true
+categories: 
+---
+使用和文件保存都挺简单，试试看吧！
+
+[http://todotxt.com/](http://todotxt.com/)貌似还能同步到手机端？
+
+下载之后，
+	
+	ln -s xxx/todo.sh /usr/local/bin/todo
+
+貌似这样会把东西存到/usr/local/bin/todo.txt里？不管了！

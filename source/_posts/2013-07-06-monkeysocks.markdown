@@ -1,0 +1,90 @@
+---
+layout: post
+title: "monkeysocks开发日志"
+date: 2013-07-06 16:09
+comments: true
+categories: socks mock test
+---
+> monkeysocks的目标是为开发以及测试提供一个稳定的环境。
+
+#### 2013-7-5 动机
+
+前几天听说公司的测试团队在鼓捣数据固化的东西，说白了就是在测试启动时构建一个临时性的数据库，操作完之后再销毁，这样的好处是不造成测试副作用，同时屏蔽环境的差异。
+
+<!--more-->
+
+但是目前公司内部SOA用的太多了，仅仅靠数据库固化明显不现实，公司的架构团队做了一个将所有remote service放到本地启动的东西，但是这样子启动开销有点难以接受。有没有更可行的方案？
+
+之前也有人做过一个单测的东西，可以将所有RPC调用的结果序列化成文本文件，下次调用时再序列化出来，这样其实就屏蔽了远程调用。但是Java语言层面的机制导致要把千奇八怪的对象序列化下来，本来就是不可完成的任务(有些对象本身就不是POJO，还有在getter、setter写逻辑的)。
+
+于是我有一个大胆的设想：其实Java的外部依赖无非是网络IO，就是TCP/UDP包嘛，那我能不能做一个工具，录制一个稳定环境的网络流量，然后固化下来，最终在调用时进行重放，岂不是一劳永逸？
+
+但是TCP/UDP毕竟是系统底层的东西，而且我想对每个Java进程单独做重放，所以只能从Java内部机制入手了。
+
+有两个方法：
+
+用cglib改写所有网络IO相关的接口，改用固化调用。
+
+设置Java全局socks代理，并启动socks server，在socks server里做代理。
+
+显然第二种方法更简单，有四两拨千斤的感觉！
+
+找到一个Java socks server，jsocks，最初版本比较老，google code上有一个改进版，用的是ant，因为以后要集成肯定要用maven，于是就做了点maven化的处理，考虑以后单独做成一个项目，现在先改了测试下可行性吧。[https://github.com/code4craft/jsocks](https://github.com/code4craft/monkeysocks/jsocks)
+
+Java里面设置全局socksProxy的方法见[http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html](http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html)。
+
+鼓捣一下，成功启动起来，明天先对公司的项目进行试用。
+
+
+#### 2013-7-6 
+
+今天开始了对socks的摸索。
+
+首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。
+
+想到咱这个不就是个TCP重放攻击么？了解了一下一些协议防重放攻击的机制，发现大多是在server端做，那么其实client端的请求并无不同，希望是这样！
+
+研究了一下http协议，response竟然有date项，希望不会作为判断依据，要不然还要做http解析，那就纠结了！怎么觉得自己老是在研究怎么实现一个gfw呢？
+
+在测试中，遇到了问题：
+
+很多协议里都自带了版本号，比如[mysql](http://www.hoterran.info/mysql-protocol-soucecode-2)、zookeeper，这样就给识别请求和伪造响应带来了难度。幸好公司内部用的工具不是太多，理论上还是在可控状态。
+
+最终决定结构大概是这样子：
+
+![image](http://code4craft.github.io/images/posts/mocksocks-flow-in.png)
+
+![image](http://code4craft.github.io/images/posts/mocksocks-flow-out.png)
+
+晚上尝试了一下，jsocks的流程写的过于凌乱，最终缓存结构也没定好，不说了，碎觉！
+
+#### 2013-7-7
+
+鼓捣了下架构的事情，文章单独整理了下，链接：[http://code4craft.github.io/blog/2013/07/06/monkeysocks-arch/](http://code4craft.github.io/blog/2013/07/07/monkeysocks-arch/)
+
+#### 2013-7-8
+
+今天跟水哥讨论起两个问题，假设拿到一个报文byte[]，存在两个难点，一个是对于可变部分的判断和伪造，另一个是对于包结构的近似匹配。
+
+可变部分的的判断，水哥说可以用录两次，去掉不同的部分，就变成一个不变的基和一个过滤器，然后对于以后的包，就用过滤器过滤后找到这个基。
+
+包结构的近似匹配，水哥提议对包的所有字节进行求和，过滤掉位置信息，似乎也是可行的方向？
+
+用Java实现一个流管道：
+
+[http://ostermiller.org/convert_java_outputstream_inputstream.html](http://ostermiller.org/convert_java_outputstream_inputstream.html)
+
+#### 2013-7-9
+
+使用byte和条件变量实现了一个Java流的管道，线程安全的，debug了好久终于成功，当年操作系统的知识还是没还给老师！[https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java](https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java)
+
+这个东东使得伪造一个Socket成为了可能，下面就是使用Socket API实现fake servers的逻辑了。
+
+#### 2013-7-11
+
+昨天太累了，项目又比较忙，先休息一天。
+
+今天早上考虑用自己写的TCP server框架把jsocks的连接部分重写一遍(那堆代码全部在一个类中，实在是太复杂了)，想到
+今天早上想了下InputStream这些玩意，觉得这样总会占用一个线程去把Stream转来转去的，弄成onReceive()这样的异步调用的话，就很容易做到链式调用了。
+
+这东西太费脑子了，先休息一天半天再说。
