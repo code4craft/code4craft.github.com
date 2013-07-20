@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T13:53:05+08:00</updated>
+  <updated>2013-07-20T13:53:39+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -19,6 +19,8 @@
     <updated>2013-07-18T14:52:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li</id>
     <content type="html"><![CDATA[<p><img src="http://code4craft.github.io/images/posts/spider.jpeg" alt="image" /></p>
+
+<p>之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。</p>
 
 <h2>webmagic的目标</h2>
 
@@ -302,7 +304,7 @@
 
 <p>webmagic确实是一个山寨的框架，本身也没有太多创新的东西，但是确实对Java爬虫的实现有了一些简化。在强大便利的功能和较高的灵活性中间，webmagic选择了后者，目标就是要打造一个熟练的Java开发者也用的比较顺手的工具，并且可以集成到自己的业务系统中，这一点我自己开发了不少这样的业务，对其灵活性还是比较有信心的。</p>
 
-<p>之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。webmagic目前的代码实现非常简单，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎大牛给予建议和指正。</p>
+<p>webmagic目前的代码实现非常简单，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎大牛给予建议和指正。</p>
 ]]></content>
   </entry>
   
