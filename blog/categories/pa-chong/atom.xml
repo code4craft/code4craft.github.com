@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T07:33:28+08:00</updated>
+  <updated>2013-07-20T08:49:34+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -96,7 +96,7 @@
 
 <p>页面下载是一切爬虫的开始。</p>
 
-<p>大部分爬虫都是通过模拟http请求，接收并分析响应来完成。这方面，JDK自带的<strong>HttpURLConnection</strong>也可以满足最简单的需要，而<strong>Apache HttpClient</strong>(4.0后整合到HttpCompenent项目中)则是开发复杂爬虫的不二之选。它支持自定义HTTP头(对于爬虫比较有用的就是User-agent、cookie等)、自动redirect、连接复用、cookie保留、设置代理等诸多强大的功能。</p>
+<p>大部分爬虫都是通过模拟http请求，接收并分析响应来完成。这方面，JDK自带的<strong>HttpURLConnection</strong>可以满足最简单的需要，而<strong>Apache HttpClient</strong>(4.0后整合到HttpCompenent项目中)则是开发复杂爬虫的不二之选。它支持自定义HTTP头(对于爬虫比较有用的就是User-agent、cookie等)、自动redirect、连接复用、cookie保留、设置代理等诸多强大的功能。</p>
 
 <p>webmagic使用了HttpClient 4.2，并封装到了<strong>HttpClientDownloader</strong>。学习HttpClient的使用对于构建高性能爬虫是非常有帮助的，官方的<a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/">Tutorial</a>就是很好的学习资料。目前webmagic对HttpClient的使用仍在初步阶段，不过对于一般抓取任务，已经够用了。</p>
 
@@ -107,8 +107,6 @@
     HttpResponse httpResponse = httpClient.execute(httpGet);
     System.out.println(EntityUtils.toString(httpResponse.getEntity().getContent()));
 </code></pre>
-
-<p>webmagic还有一个好玩的功能<strong>FileDownloader</strong>。如果你不知道怎么分析页面，只是想先把它下载下来，那么可以使用FilePipeline将页面全文保存，下次运行的时候，使用FileDownloader，则可以直接从本地文件载入页面，并进行处理。对于其他模块，这跟实时下载并处理没有什么不同。</p>
 
 <p>对于一些Javascript动态加载的网页，仅仅使用http模拟下载工具，并不能取到页面的内容。这方面的思路有两种：一种是抽丝剥茧，分析js的逻辑，再用爬虫去重现它(比如在网页中提取关键数据，再用这些数据去构造Ajax请求，最后直接从响应体获取想要的数据)；
 另一种就是：内置一个浏览器，直接获取最后加载完的页面。这方面，js可以使用<strong>PhantomJS</strong>，它内部集成了webkit。而Java可以使用<strong>Selenium</strong>，这是一个非常强大的浏览器模拟工具。考虑以后将它整理成一个独立的Downloader，集成到webmagic中去。</p>
@@ -123,13 +121,22 @@
 
 <p>HTML分析是一个比较复杂的工作，Java世界主要有几款比较方便的分析工具：</p>
 
-<p><strong>Jsoup</strong></p>
+<h4><strong>Jsoup</strong></h4>
 
-<p><strong>HtmlParser</strong></p>
+<p>Jsoup是一个集强大和便利于一体的HTML解析工具。它方便的地方是，可以用于支持用jquery中css selector的方式选取元素，这对于熟悉js的开发者来说基本没有学习成本。</p>
 
-<p>这个项目很久没有维护了。我一直认为它目前还活的很好，很大程度上是它的名字太好了。</p>
+<pre><code>String content = "blabla";
+Document doc = JSoup.parse(content);
+Elements links = doc.select("a[href]");
+</code></pre>
 
-<p><strong>Apache tika</strong></p>
+<p>Jsoup还支持白名单过滤机制，对于网站防止XSS攻击也是很好的。</p>
+
+<h4><strong>HtmlParser</strong></h4>
+
+<p>这个项目很久没有维护了，但是它的名字实在太好了。HtmlParser的功能比较完备，也挺灵活，但是还是谈不上方便。HtmlParser的核心元素是Node，对应一个HTML标签，支持getChildren()等树状遍历方式。HtmlParser另外一个核心元素是NodeFilter，通过实现NodeFilter接口，可以对页面元素进行筛选。这里有一篇HtmlParser的使用文章：<a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-crawler/">使用 HttpClient 和 HtmlParser 实现简易爬虫</a>。</p>
+
+<h4><strong>Apache tika</strong></h4>
 
 <p>tika是专为抽取而生的工具，还支持PDF、Zip甚至是Java Class。使用tika分析HTML，需要自己定义一个抽取内容的Handler并继承<code>org.xml.sax.helpers.DefaultHandler</code>，解析方式就是xml标准的方式。crawler4j中就使用了tika作为解析工具。SAX这种流式的解析方式对于分析大文件很有用，我个人倒是认为对于解析html意义不是很大。</p>
 
@@ -142,14 +149,31 @@
     }
 </code></pre>
 
-<p><strong>HtmlCleaner</strong></p>
+<h4><strong>HtmlCleaner与xpath</strong></h4>
 
-<p>Selector是webmagic的模块中我最得意的部分，这里整合了xpath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。例如，抽取一个页面某个区域的所有包含"blog"的链接，我可以这样写：</p>
+<p>HtmlCleaner最大的优点是：支持xpath的方式选取元素。xpath是一门在XML中查找信息的语言，有一定的学习成本，但是熟练后用在HTML中其实也是挺方便的，可以让抽取效率大大提高。</p>
 
-<pre><code>page.getHtml().xpath("//div[@class='title']").links().regex(".*blog.*").toStrings();
+<p>学习xpath可以参考w3school的<a href="http://www.w3school.com.cn/xpath/">XPath 教程</a>。下面是使用HtmlCleaner和xpath进行抽取的一段代码：</p>
+
+<pre><code>HtmlCleaner htmlCleaner = new HtmlCleaner();
+TagNode tagNode = htmlCleaner.clean(text);
+Object[] objects = tagNode.evaluateXPath("xpathStr");
 </code></pre>
 
-<p>这里用到了两个文本处理的DSL(Domain-specific language，领域特定语言)，一个是正则表达式，一个是xpath。</p>
+<p>在这里评价这些工具的主要标准是“方便”。就拿抽取页面所有链接这一基本任务来说，xpath是最简单的，可以精确选取到href属性值；而CssSelector则次之，可以选取到HTML标签，属性值需要调用函数去获取；而HtmlParser和SAX则需要手动写程序去处理标签了，比较麻烦。</p>
+
+<p><strong>Selector</strong>是webmagic为了简化页面抽取开发的独立模块，是整个项目中我最得意的部分。这里整合了CssSelector、xpath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。即使你使用自己开发的爬虫工具，webmagic的Selector仍然值得一试。例如，我已经下载了一个页面，现在要抽取某个区域的所有包含"blog"的链接，我可以这样写：</p>
+
+<pre><code>//content是用别的爬虫工具抽取到的正文
+String content = "blabla";
+List&lt;String&gt; links = Html.create(content)
+$("div.title")  //css 选择
+.links()  //提取链接
+.regex(".*blog.*") //正则匹配过滤
+.toStrings(); //转换为string
+</code></pre>
+
+<p>另外，webmagic的抓取链接需要显示的调用<code>Page.addTargetRequests()</code>去添加，这也是为了灵活性考虑的(很多时候，下一步的URL不是单纯的页面href链接，可能会根据页面模块进行抽取，甚至可能是自己拼凑出来的)。</p>
 
 <h3>Scheduler-URL管理</h3>
 
