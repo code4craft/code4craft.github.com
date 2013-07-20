@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T08:49:34+08:00</updated>
+  <updated>2013-07-20T11:32:23+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -69,27 +69,27 @@
 
 <p>Spider是爬虫的入口类，Spider的接口调用采用了链式的API设计，其他功能全部通过接口注入Spider实现，下面是启动一个比较复杂的Spider的例子。</p>
 
-<pre><code>Spider.create(sinaBlogProcessor)
-.scheduler(new FileCacheQueueScheduler("/data/temp/webmagic/cache/"))
-.pipeline(new FilePipeline())
-.thread(10).run();
+<pre><code>    Spider.create(sinaBlogProcessor)
+    .scheduler(new FileCacheQueueScheduler("/data/temp/webmagic/cache/"))
+    .pipeline(new FilePipeline())
+    .thread(10).run();
 </code></pre>
 
 <p>Spider的核心处理流程非常简单，代码如下：</p>
 
-<pre><code>private void processRequest(Request request) {
-    Page page = downloader.download(request, this);
-    if (page == null) {
+<pre><code>    private void processRequest(Request request) {
+        Page page = downloader.download(request, this);
+        if (page == null) {
+            sleep(site.getSleepTime());
+            return;
+        }
+        pageProcessor.process(page);
+        addRequest(page);
+        for (Pipeline pipeline : pipelines) {
+            pipeline.process(page, this);
+        }
         sleep(site.getSleepTime());
-        return;
     }
-    pageProcessor.process(page);
-    addRequest(page);
-    for (Pipeline pipeline : pipelines) {
-        pipeline.process(page, this);
-    }
-    sleep(site.getSleepTime());
-}
 </code></pre>
 
 <h3>Downloader-页面下载</h3>
@@ -115,7 +115,7 @@
 
 <h3>PageProcessor-页面分析及链接抽取</h3>
 
-<p>这里说的页面分析主要指HTML页面的分析。页面分析可以说是垂直爬虫最复杂的一部分，在webmagic里，PageProcessor是定制爬虫的核心。</p>
+<p>这里说的页面分析主要指HTML页面的分析。页面分析可以说是垂直爬虫最复杂的一部分，在webmagic里，PageProcessor是定制爬虫的核心。通过编写一个实现PageProcessor接口的类，就可以定制一个自己的爬虫。</p>
 
 <p>页面抽取最基本的方式是使用正则表达式。正则表达式好处是非常通用，解析文本的功能也很强大。但是正则表达式最大的问题是，不能真正对HTML进行语法级别的解析，没有办法处理关系到HTML结构的情况(例如处理标签嵌套)。例如，我想要抽取一个&lt;div>里的内容，可以这样写："&lt;div>(.*?)&lt;/div>&ldquo;。但是如果这个div内部还包含几个子div，这个时候使用正则表达式就会将子div的&rdquo;&lt;/div>&ldquo;作为终止符截取。为了解决这个问题，我们就需要进行HTML的分析。</p>
 
@@ -125,9 +125,9 @@
 
 <p>Jsoup是一个集强大和便利于一体的HTML解析工具。它方便的地方是，可以用于支持用jquery中css selector的方式选取元素，这对于熟悉js的开发者来说基本没有学习成本。</p>
 
-<pre><code>String content = "blabla";
-Document doc = JSoup.parse(content);
-Elements links = doc.select("a[href]");
+<pre><code>    String content = "blabla";
+    Document doc = JSoup.parse(content);
+    Elements links = doc.select("a[href]");
 </code></pre>
 
 <p>Jsoup还支持白名单过滤机制，对于网站防止XSS攻击也是很好的。</p>
@@ -140,37 +140,65 @@ Elements links = doc.select("a[href]");
 
 <p>tika是专为抽取而生的工具，还支持PDF、Zip甚至是Java Class。使用tika分析HTML，需要自己定义一个抽取内容的Handler并继承<code>org.xml.sax.helpers.DefaultHandler</code>，解析方式就是xml标准的方式。crawler4j中就使用了tika作为解析工具。SAX这种流式的解析方式对于分析大文件很有用，我个人倒是认为对于解析html意义不是很大。</p>
 
-<pre><code>InputStream inputStream = null;
-    try {
-      HtmlParser htmlParser = new HtmlParser();
-        htmlParser.parse(new ByteArrayInputStream(page.getContentData()), contentHandler, metadata, new ParseContext());
-    } catch (Exception e) {
-        e.printStackTrace();
+<pre><code>    InputStream inputStream = null;
+    HtmlParser htmlParser = new HtmlParser();
+    htmlParser.parse(new ByteArrayInputStream(page.getContentData()), 
+     contentHandler, metadata, new ParseContext());
+</code></pre>
+
+<h4><strong>HtmlCleaner与XPath</strong></h4>
+
+<p>HtmlCleaner最大的优点是：支持XPath的方式选取元素。XPath是一门在XML中查找信息的语言，也可以用于抽取HTML元素。XPath与CSS Selector大部分功能都是重合的，但是CSS Selector专门针对HTML，写法更简洁，而XPath则是通用的标准，可以精确到属性值。XPath有一定的学习成本，但是对经常需要编写爬虫的人来说，这点投入绝对是值得的。</p>
+
+<p>学习XPath可以参考w3school的<a href="http://www.w3school.com.cn/xpath/">XPath 教程</a>。下面是使用HtmlCleaner和xpath进行抽取的一段代码：</p>
+
+<pre><code>    HtmlCleaner htmlCleaner = new HtmlCleaner();
+    TagNode tagNode = htmlCleaner.clean(text);
+    Object[] objects = tagNode.evaluateXPath("xpathStr");
+</code></pre>
+
+<h4>几个工具的对比</h4>
+
+<p>在这里评价这些工具的主要标准是“方便”。就拿抽取页面所有链接这一基本任务来说，几种代码分别如下：</p>
+
+<p>XPath:</p>
+
+<pre><code>    //a/@href
+</code></pre>
+
+<p>CSS Selector:</p>
+
+<pre><code>    //使用类似js的实现
+    $("a[href]").attr("href")
+</code></pre>
+
+<p>HtmlParser：</p>
+
+<pre><code>    Parser p = new Parser(value);
+    NodeFilter aFilter = new TagNameFilter("a");
+    NodeList nodes = p.extractAllNodesThatMatch(aFilter);
+    for (int i = 0; i &lt; nodes.size(); i++) {
+        Node eachNode = nodes.elementAt(i);
+        if (eachNode instanceof LinkTag) {
+            LinkTag linkTag = (LinkTag) eachNode;
+            System.out.println(linkTag.extractLink());
+        }
     }
 </code></pre>
 
-<h4><strong>HtmlCleaner与xpath</strong></h4>
+<p>XPath是最简单的，可以精确选取到href属性值；而CSS Selector则次之，可以选取到HTML标签，属性值需要调用函数去获取；而HtmlParser和SAX则需要手动写程序去处理标签了，比较麻烦。</p>
 
-<p>HtmlCleaner最大的优点是：支持xpath的方式选取元素。xpath是一门在XML中查找信息的语言，有一定的学习成本，但是熟练后用在HTML中其实也是挺方便的，可以让抽取效率大大提高。</p>
+<h4>webmagic的Selector</h4>
 
-<p>学习xpath可以参考w3school的<a href="http://www.w3school.com.cn/xpath/">XPath 教程</a>。下面是使用HtmlCleaner和xpath进行抽取的一段代码：</p>
+<p><strong>Selector</strong>是webmagic为了简化页面抽取开发的独立模块，是整个项目中我最得意的部分。这里整合了CSS Selector、XPath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。即使你使用自己开发的爬虫工具，webmagic的Selector仍然值得一试。例如，我已经下载了一个页面，现在要抽取某个区域的所有包含"blog"的链接，我可以这样写：</p>
 
-<pre><code>HtmlCleaner htmlCleaner = new HtmlCleaner();
-TagNode tagNode = htmlCleaner.clean(text);
-Object[] objects = tagNode.evaluateXPath("xpathStr");
-</code></pre>
-
-<p>在这里评价这些工具的主要标准是“方便”。就拿抽取页面所有链接这一基本任务来说，xpath是最简单的，可以精确选取到href属性值；而CssSelector则次之，可以选取到HTML标签，属性值需要调用函数去获取；而HtmlParser和SAX则需要手动写程序去处理标签了，比较麻烦。</p>
-
-<p><strong>Selector</strong>是webmagic为了简化页面抽取开发的独立模块，是整个项目中我最得意的部分。这里整合了CssSelector、xpath和正则表达式，并可以进行链式的抽取，很容易就实现强大的功能。即使你使用自己开发的爬虫工具，webmagic的Selector仍然值得一试。例如，我已经下载了一个页面，现在要抽取某个区域的所有包含"blog"的链接，我可以这样写：</p>
-
-<pre><code>//content是用别的爬虫工具抽取到的正文
-String content = "blabla";
-List&lt;String&gt; links = Html.create(content)
-$("div.title")  //css 选择
-.links()  //提取链接
-.regex(".*blog.*") //正则匹配过滤
-.toStrings(); //转换为string
+<pre><code>    //content是用别的爬虫工具抽取到的正文
+    String content = "blabla";
+    List&lt;String&gt; links = Html.create(content)
+    $("div.title")  //css 选择
+    .xpath("//@href")  //提取链接
+    .regex(".*blog.*") //正则匹配过滤
+    .toStrings(); //转换为string
 </code></pre>
 
 <p>另外，webmagic的抓取链接需要显示的调用<code>Page.addTargetRequests()</code>去添加，这也是为了灵活性考虑的(很多时候，下一步的URL不是单纯的页面href链接，可能会根据页面模块进行抽取，甚至可能是自己拼凑出来的)。</p>
@@ -182,6 +210,8 @@ $("div.title")  //css 选择
 <p>因为小规模的URL管理非常简单，很多框架都并不将其抽象为一个模块，而是直接融入到代码中。但是实际上，抽象出Scheduler模块，会使得框架的解耦程序上升一个档次，这也是我从scrapy中学到的。</p>
 
 <p>在webmagic的设计中，除了Scheduler模块，其他的处理-从下载、解析到持久化，每个任务都是互相独立的，因此可以通过多个Spider共用一个Scheduler来进行扩展。排除去重的因素，URL管理天生就是一个队列，我们可以很方便的用分布式的队列工具去扩展它，也可以基于mysql、redis或者mongodb这样的存储工具来构造一个队列，这样构建一个多线程乃至分布式的爬虫就轻而易举了。</p>
+
+<p>URL去重也是一个比较复杂的问题。如果数据量较少，则使用hash的方式就能很好解决。数据量较大的情况下，可以使用Bloom Filter或者更复杂的方式。</p>
 
 <p>webmagic目前有两个Scheduler的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
 
