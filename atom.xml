@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T13:54:24+08:00</updated>
+  <updated>2013-07-20T13:55:44+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -302,7 +302,7 @@
 
 <h2>结语</h2>
 
-<p>webmagic确实是一个山寨的框架，本身也没有太多创新的东西，但是确实对Java爬虫的实现有了一些简化。在强大便利的功能和较高的灵活性中间，webmagic选择了后者，目标就是要打造一个熟练的Java开发者也用的比较顺手的工具，并且可以集成到自己的业务系统中，这一点我自己开发了不少这样的业务，对其灵活性还是比较有信心的。webmagic目前的代码实现还比较简单，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎大牛给予建议和指正。</p>
+<p>webmagic确实是一个山寨的框架，本身也没有太多创新的东西，但是确实对Java爬虫的实现有了一些简化。在强大便利的功能和较高的灵活性中间，webmagic选择了后者，目标就是要打造一个熟练的Java开发者也用的比较顺手的工具，并且可以集成到自己的业务系统中，这一点我自己开发了不少这样的业务，对其灵活性还是比较有信心的。webmagic目前的代码实现还比较简单(不到2000行)，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎建议和指正。</p>
 ]]></content>
   </entry>
   
