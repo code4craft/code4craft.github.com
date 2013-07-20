@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-07-20T13:59:34+08:00</updated>
+  <updated>2013-07-20T14:01:17+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -378,7 +378,7 @@
 
 <p>URL去重也是一个比较复杂的问题。如果数据量较少，则使用hash的方式就能很好解决。数据量较大的情况下，可以使用Bloom Filter或者更复杂的方式。</p>
 
-<p>webmagic目前有两个Scheduler的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
+<p>webmagic目前有两个Scheduler的实现，<strong>QueueScheduler</strong>是一个简单的内存队列，速度较快，并且是线程安全的，<strong>FileCacheQueueScheduler</strong>则是一个文件队列，它可以用于耗时较长的下载任务，在任务中途停止后，下次执行仍然从中止的URL开始继续爬取。</p>
 
 <h3>Pipeline-离线处理和持久化</h3>
 
