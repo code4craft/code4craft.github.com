@@ -8,22 +8,27 @@ categories: 爬虫
 
 ![image](http://code4craft.github.io/images/posts/spider.jpeg)
 
+之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。
+
 ## webmagic的目标
 
 一般来说，一个爬虫包括几个部分：
 
-* 页面下载
+ - 页面下载
 
-  页面下载是一个爬虫的基础。下载页面之后才能进行其他后续操作。
-* 链接提取
+	页面下载是一个爬虫的基础。下载页面之后才能进行其他后续操作。
   
-  一般爬虫都会有一些初始的种子URL，但是这些URL对于爬虫是远远不够的。爬虫在爬页面的时候，需要不断发现新的链接。
-* URL管理
+ - 链接提取
   
-  最基础的URL管理，就是对已经爬过的URL和没有爬的URL做区分，防止重复爬取。
-* 内容分析和持久化
+	一般爬虫都会有一些初始的种子URL，但是这些URL对于爬虫是远远不够的。爬虫在爬页面的时候，需要不断发现新的链接。
   
-  一般来说，我们最终需要的都不是原始的HTML页面。我们需要对爬到的页面进行分析，转化成结构化的数据，并存储下来。
+ - URL管理
+  
+	最基础的URL管理，就是对已经爬过的URL和没有爬的URL做区分，防止重复爬取。
+  
+ - 内容分析和持久化
+  
+	一般来说，我们最终需要的都不是原始的HTML页面。我们需要对爬到的页面进行分析，转化成结构化的数据，并存储下来。
 
 不同的爬虫，对这几部分的要求是不一样的。
 
@@ -45,7 +50,7 @@ webmagic的实现还参考了另一个Java爬虫[**SpiderMan**](https://gitcafe.
 
 
 
-webmagic目前的核心代码都在**webmagic-core**中，**webmagic-samples**里有一些定制爬虫的例子，可以作为参考。而**webmagic-plugin**目前还不完善，后期准备加入一些并不太常用，但也有些用处的插件。下面主要介绍webmagic-core的内容。
+webmagic目前的核心代码都在**webmagic-core**中，**webmagic-samples**里有一些定制爬虫的例子，可以作为参考。而**webmagic-plugin**目前还不完善，后期准备加入一些常用的功能。下面主要介绍webmagic-core的内容。
 
 前面说到，webmagic参考了scrapy的模块划分，分为Spider(整个爬虫的调度框架)、Downloader(页面下载)、PageProcessor(链接提取和页面分析)、Scheduler(URL管理)、Pipeline(离线分析和持久化)几部分。只不过scrapy通过middleware实现扩展，而webmagic则通过定义这几个接口，并将其不同的实现注入主框架类Spider来实现扩展。
 
@@ -55,16 +60,15 @@ webmagic目前的核心代码都在**webmagic-core**中，**webmagic-samples**�
 
 Spider是爬虫的入口类，Spider的接口调用采用了链式的API设计，其他功能全部通过接口注入Spider实现，下面是启动一个比较复杂的Spider的例子。
 
-``` java
+{% codeblock lang:java 启动一个Spider %}
 		Spider.create(sinaBlogProcessor)
 		.scheduler(new FileCacheQueueScheduler("/data/temp/webmagic/cache/"))
 		.pipeline(new FilePipeline())
-		.thread(10).run();		
-```
-	
-Spider的核心处理流程非常简单，代码如下：
+		.thread(10).run();	
+{% endcodeblock %}
 
-```Java
+Spider的核心处理流程非常简单，代码如下：
+{% codeblock lang:java Spider核心流程 %}
 		private void processRequest(Request request) {
 	        Page page = downloader.download(request, this);
 	        if (page == null) {
@@ -78,8 +82,7 @@ Spider的核心处理流程非常简单，代码如下：
 	        }
 	        sleep(site.getSleepTime());
 	    }
-```
-
+{% endcodeblock %}
 ### Downloader-页面下载
 
 页面下载是一切爬虫的开始。
@@ -90,12 +93,12 @@ webmagic使用了HttpClient 4.2，并封装到了**HttpClientDownloader**。学�
 
 下面是一个使用HttpClient最简单的例子：
 
-```Java
+{% codeblock lang:java HttpClient简单使用 %}
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet("http://youhost/xxx");
         HttpResponse httpResponse = httpClient.execute(httpGet);
-        System.out.println(EntityUtils.toString(httpResponse.getEntity().getContent())); 
-```
+		System.out.println(EntityUtils.toString(httpResponse.getEntity().getContent())); 
+{% endcodeblock %}
 
 对于一些Javascript动态加载的网页，仅仅使用http模拟下载工具，并不能取到页面的内容。这方面的思路有两种：一种是抽丝剥茧，分析js的逻辑，再用爬虫去重现它(比如在网页中提取关键数据，再用这些数据去构造Ajax请求，最后直接从响应体获取想要的数据)；
 另一种就是：内置一个浏览器，直接获取最后加载完的页面。这方面，js可以使用**PhantomJS**，它内部集成了webkit。而Java可以使用**Selenium**，这是一个非常强大的浏览器模拟工具。考虑以后将它整理成一个独立的Downloader，集成到webmagic中去。
@@ -114,11 +117,11 @@ HTML分析是一个比较复杂的工作，Java世界主要有几款比较方便
 
 Jsoup是一个集强大和便利于一体的HTML解析工具。它方便的地方是，可以用于支持用jquery中css selector的方式选取元素，这对于熟悉js的开发者来说基本没有学习成本。
 
-```Java
+{% codeblock lang:java Jsoup的CSS Selector %}
 		String content = "blabla";
 		Document doc = JSoup.parse(content);
 		Elements links = doc.select("a[href]");
-```
+{% endcodeblock %}
 	
 Jsoup还支持白名单过滤机制，对于网站防止XSS攻击也是很好的。
 
@@ -130,12 +133,12 @@ HtmlParser的功能比较完备，也挺灵活，但谈不上方便。这个项�
 
 tika是专为抽取而生的工具，还支持PDF、Zip甚至是Java Class。使用tika分析HTML，需要自己定义一个抽取内容的Handler并继承`org.xml.sax.helpers.DefaultHandler`，解析方式就是xml标准的方式。crawler4j中就使用了tika作为解析工具。SAX这种流式的解析方式对于分析大文件很有用，我个人倒是认为对于解析html意义不是很大。
 
-```Java
+{% codeblock lang:java 使用tika进行HTML解析 %}
 		InputStream inputStream = null;
 		HtmlParser htmlParser = new HtmlParser();
 		htmlParser.parse(new ByteArrayInputStream(page.getContentData()), 
 		 contentHandler, metadata, new ParseContext());
-```
+{% endcodeblock %}
 
 ####**HtmlCleaner与XPath**
 
@@ -143,28 +146,32 @@ HtmlCleaner最大的优点是：支持XPath的方式选取元素。XPath是一�
 
 学习XPath可以参考w3school的[XPath 教程](http://www.w3school.com.cn/xpath/)。下面是使用HtmlCleaner和xpath进行抽取的一段代码：
 
-```Java
+{% codeblock lang:java 使用HtmlCleaner和XPath抽取元素 %}
 		HtmlCleaner htmlCleaner = new HtmlCleaner();
 		TagNode tagNode = htmlCleaner.clean(text);
 		Object[] objects = tagNode.evaluateXPath("xpathStr");
-```
+{% endcodeblock %}
+
 
 #### 几个工具的对比
 
 在这里评价这些工具的主要标准是“方便”。就拿抽取页面所有链接这一基本任务来说，几种代码分别如下：
 
 XPath:
-
-		//a/@href
+{% codeblock lang:java XPath提取链接 %}
+		tagNode.evaluateXPath("//a/@href")
+{% endcodeblock %}
 	
 CSS Selector:
-	
+		
+{% codeblock lang:java CSS Selector提取链接 %}
 		//使用类似js的实现
 		$("a[href]").attr("href")
+{% endcodeblock %}
 	
 HtmlParser：
 
-```Java
+{% codeblock lang:java HtmlParser提取链接 %}
         Parser p = new Parser(value);
         NodeFilter aFilter = new TagNameFilter("a");
         NodeList nodes = p.extractAllNodesThatMatch(aFilter);
@@ -175,7 +182,7 @@ HtmlParser：
                 System.out.println(linkTag.extractLink());
             }
         }
-```
+{% endcodeblock %}
 
 XPath是最简单的，可以精确选取到href属性值；而CSS Selector则次之，可以选取到HTML标签，属性值需要调用函数去获取；而HtmlParser和SAX则需要手动写程序去处理标签了，比较麻烦。
 
@@ -185,7 +192,7 @@ XPath是最简单的，可以精确选取到href属性值；而CSS Selector则�
 
 例如，我已经下载了一个页面，现在要抽取某个区域的所有包含"blog"的链接，我可以这样写：
 		
-```java
+{% codeblock lang:java webmagic的链式抽取 %}
 		//content是用别的爬虫工具抽取到的正文
 		String content = "blabla";
 		List<String> links = Html.create(content)
@@ -193,27 +200,35 @@ XPath是最简单的，可以精确选取到href属性值；而CSS Selector则�
 		.xpath("//@href")  //提取链接
 		.regex(".*blog.*") //正则匹配过滤
 		.toStrings(); //转换为string
-```
+{% endcodeblock %}
 
 另外，webmagic的抓取链接需要显示的调用`Page.addTargetRequests()`去添加，这也是为了灵活性考虑的(很多时候，下一步的URL不是单纯的页面href链接，可能会根据页面模块进行抽取，甚至可能是自己拼凑出来的)。
+
+补充一个有意思的话题，就是对于页面正文的自动抽取。相信用过Evernote Clearly都会对其自动抽取正文的技术印象深刻。这个技术又叫**Readability**，webmagic对readability有一个粗略的实现**SmartContentSelector**，用的是P标签密度计算的方法，在测试oschina博客时有不错的效果。
 
 ### Scheduler-URL管理
 
 
 URL管理的问题可大可小。对于小规模的抓取，URL管理是很简单的。我们只需要将待抓取URL和未抓取URL分开保存，并进行去重即可。使用JDK内置的集合类型Set、List或者Queue都可以满足需要。如果我们要进行多线程抓取，则可以选择线程安全的容器，例如LinkedBlockingQueue以及ConcurrentHashMap。
 
-因为小规模的URL管理非常简单，很多框架都并不将其抽象为一个模块，而是直接融入到代码中。但是实际上，抽象出Scheduler模块，会使得框架的解耦程序上升一个档次，这也是我从scrapy中学到的。
+因为小规模的URL管理非常简单，很多框架都并不将其抽象为一个模块，而是直接融入到代码中。但是实际上，抽象出Scheduler模块，会使得框架的解耦程度上升一个档次，并非常容易进行横向扩展，这也是我从scrapy中学到的。
 
 在webmagic的设计中，除了Scheduler模块，其他的处理-从下载、解析到持久化，每个任务都是互相独立的，因此可以通过多个Spider共用一个Scheduler来进行扩展。排除去重的因素，URL管理天生就是一个队列，我们可以很方便的用分布式的队列工具去扩展它，也可以基于mysql、redis或者mongodb这样的存储工具来构造一个队列，这样构建一个多线程乃至分布式的爬虫就轻而易举了。
 
 URL去重也是一个比较复杂的问题。如果数据量较少，则使用hash的方式就能很好解决。数据量较大的情况下，可以使用Bloom Filter或者更复杂的方式。
 
-webmagic目前有两个Scheduler的实现，**QueueScheduler**是一个简单的内存队列，速度较快，并且是线程安全的，**FileCacheQueueScheduler**则是一个文件队列，它可以在较长的下载任务，中途停止后，下次执行仍然从中止的URL开始继续爬取。
+webmagic目前有两个Scheduler的实现，**QueueScheduler**是一个简单的内存队列，速度较快，并且是线程安全的，**FileCacheQueueScheduler**则是一个文件队列，它可以用于耗时较长的下载任务，在任务中途停止后，下次执行仍然从中止的URL开始继续爬取。
 
 
 ### Pipeline-离线处理和持久化
 
 
-Pipeline其实也是比较有争议的一部分。大家都知道持久化的重要性，但是很多框架都选择直接在页面抽取的时候将持久化一起完成，例如crawer4j。但是Pipeline真正的好处是，将页面的在线分析和离线处理拆分开来，可以在一些线程里进行下载，另一些线程里进行处理和持久化。
+Pipeline其实也是容易被忽略的一部分。大家都知道持久化的重要性，但是很多框架都选择直接在页面抽取的时候将持久化一起完成，例如crawer4j。但是Pipeline真正的好处是，将页面的在线分析和离线处理拆分开来，可以在一些线程里进行下载，另一些线程里进行处理和持久化。
 
 你可以扩展Pipeline来实现抽取结果的持久化，将其保存到你想要保存的地方-本地文件、数据库、mongodb等等。Pipeline的处理目前还是在线的，但是修改为离线的也并不困难。
+
+webmagic目前只支持控制台输出和文件持久化，但是持久化到数据库也是很容易的。
+
+## 结语
+
+webmagic确实是一个山寨的框架，本身也没有太多创新的东西，但是确实对Java爬虫的实现有了一些简化。在强大便利的功能和较高的灵活性中间，webmagic选择了后者，目标就是要打造一个熟练的Java开发者也用的比较顺手的工具，并且可以集成到自己的业务系统中，这一点我自己开发了不少这样的业务，对其灵活性还是比较有信心的。webmagic目前的代码实现还比较简单(不到2000行)，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎建议和指正。
