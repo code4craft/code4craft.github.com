@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>写了个快捷保存文本的shell工具 - 代码人生</title>
+  <title>工作满两年时候的总结 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。 第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦。想写了个工具， &hellip;">
+  <meta name="description" content="最近工作处于低靡状态。公司玩转型，但是也没转出个啥效果。组里转到前端开发了，产品方向不定，至今也没做出个啥玩意来。工作内容缺少挑战性，更多是跟产品形态打交道了。不是很喜欢这个领域。升职的事也说不准，虽然自己只有两年工作经验，但是由于读书太久，岁数却接近30了，有点危机感。 生活上丰富多彩。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/08/03/sum/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">写了个快捷保存文本的shell工具</h1>
+      <h1 class="entry-title">工作满两年时候的总结</h1>
     
     
       <p class="meta">
@@ -83,100 +83,29 @@
   
 
 
-<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
+<time datetime="2013-08-03T15:15:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。</p>
+<div class="entry-content"><p>最近工作处于低靡状态。公司玩转型，但是也没转出个啥效果。组里转到前端开发了，产品方向不定，至今也没做出个啥玩意来。工作内容缺少挑战性，更多是跟产品形态打交道了。不是很喜欢这个领域。升职的事也说不准，虽然自己只有两年工作经验，但是由于读书太久，岁数却接近30了，有点危机感。</p>
 
-<!-- more -->
+<p>生活上丰富多彩。女儿出生了，开始操心起来了。压力也大了些，要计划买房了。老婆工作不顺利，不过她自己也没太大所谓，随遇而安吧。</p>
+
+<p>业余项目也挺丰富。BlackHoleJ和webmagic有了不少star了，都有了公司级用户，也得到了不少赞扬。</p>
+
+<!--more-->
 
 
-<p>第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦。想写了个工具，为一个文本写一个助记符，然后保存到文件里，每次可以调用程序把文件读出来，再根据助记符查找到对应文本。用法可以这样：</p>
+<p>webmagic反响出乎意料的好，还有用户去建了一个群，有个朋友基于这个做了一个企业级别的抓取工具(带管理后台的)，朋友们都戏称我教主了。能把这些东西分享出来，并得到肯定，这肯定是非常开心的。这个工具还有很多后续工作要做，最近为了它忙的头昏眼花的，孩子都有好多时候是老婆在带。所幸老婆非常认可我的业余爱好，但是自己多少也得学会安排时间了。</p>
 
-<pre><code>add alias text
-get alias
-</code></pre>
+<p>从毕业两年来，技术上的进步我自己是满意的，特别是还有能拿得出手的作品。今后的重点应该是深度为主。今年之后的计划是，好好把自己之前挖的几个坑：webmagic、MonkeySocks和taijicaptcha搞搞，都是有市场有挑战的东西。</p>
 
-<p>例如：</p>
+<p>另一方面，好好学学与人交往。必须要克服一下了，不然以后的职业发展不好走。</p>
 
-<pre><code>add getter https://github.com/code4craft/getter 
-</code></pre>
-
-<p>也可以用&#8220;符号穿插到程序里：</p>
-
-<pre><code>git clone `get getter`
-</code></pre>
-
-<p>刚开始用python写了一遍，把文件保存到~/.getrc，并每次读出来并更新。</p>
-
-<p>后来想了想，这个方法没有自动补全，太麻烦！有没有好办法？最终想到，干脆把name作为可执行文件名，value作为程序的输出，每个name对应一个输出，再以特定前缀开始，这样子也有自动提示了，岂不是更好？于是就有了shell版本：</p>
-
-<pre><code>add.sh
-
- #!/bin/sh
-FILE_PATH=/usr/local/getter
-PREFIX=-
-[ -d "$FILE_PATH" ] || mkdir -p $FILE_PATH
-if [ -z "$1" ]
-then
-    echo "Usage: $0 alias [text]"
-else
-    FILE_NAME=$FILE_PATH/$PREFIX$1
-    if [ -z "$2" ]
-    then
-        rm -f $FILE_NAME
-    else
-        echo "#!/bin/sh" &gt; $FILE_NAME
-        echo "echo \"$2\"" &gt;&gt; $FILE_NAME
-        chmod +x $FILE_NAME
-    fi
-fi
-</code></pre>
-
-<p>记得在/etc/bashrc中加一行</p>
-
-<pre><code>export PATH=$PATH:/usr/local/getter
-</code></pre>
-
-<p>后来一想，那么如果我要保存一个可执行的shell命令，执行时是不是要<code>-xx</code>?干脆把命令直接写到脚本里，也别echo了！</p>
-
-<pre><code>edd.sh
-
- #!/bin/sh
-FILE_PATH=/usr/local/getter
-PREFIX=-
-[ -d "$FILE_PATH" ] || mkdir -p $FILE_PATH
-if [ -z "$1" ]
-then
-    echo "Usage: $0 alias [command]"
-else
-    FILE_NAME=$FILE_PATH/$PREFIX$1
-    if [ -z "$2" ]
-    then
-        rm -f $FILE_NAME
-    else
-        echo "#!/bin/sh" &gt; $FILE_NAME
-        echo "$2 \$1 \$2 \$3" &gt;&gt; $FILE_NAME
-        chmod +x $FILE_NAME
-    fi
-fi
-</code></pre>
-
-<p>比如之后我要保存一条命令&#8221;curl <a href="http://code4craft.github.io/blackhole/install.sh">http://code4craft.github.io/blackhole/install.sh</a> | sh&#8221;，可以这么用：</p>
-
-<pre><code>#保存命令
-edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
-#执行命令
--install
-</code></pre>
-
-<p>代码已经放到了github:</p>
-
-<p><a href="https://github.com/code4craft/getter">https://github.com/code4craft/getter</a></p>
+<p>以一个健康的节奏生活并工作下去。</p>
 </div>
 
 
@@ -199,12 +128,12 @@ edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
   
 
 
-<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
+<time datetime="2013-08-03T15:15:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/python/'>python,</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
+    <a class='category' href='/blog/categories/sheng-huo/'>生活</a>
   
 </span>
 
@@ -213,7 +142,7 @@ edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/08/03/sum/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/08/03/sum/" >Tweet</a>
   
   
   
@@ -222,10 +151,8 @@ edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/" title="Previous Post: BlackHole开发日记-一次压力测试及JVM调优的经过">&laquo; BlackHole开发日记-一次压力测试及JVM调优的经过</a>
+        <a class="basic-alignment left" href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/" title="Previous Post: webmagic的设计机制及原理-如何开发一个Java爬虫">&laquo; webmagic的设计机制及原理-如何开发一个Java爬虫</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/06/28/todolist/" title="Next Post: 一个shell下的todolist">一个shell下的todolist &raquo;</a>
       
     </p>
   </footer>

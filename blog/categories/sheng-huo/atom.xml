@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 生活 | 代码人生]]></title>
+  <link href="http://code4craft.github.com/blog/categories/sheng-huo/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2013-08-03T15:20:07+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[黄亿华]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[工作满两年时候的总结]]></title>
+    <link href="http://code4craft.github.com/blog/2013/08/03/sum/"/>
+    <updated>2013-08-03T15:15:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/08/03/sum</id>
+    <content type="html"><![CDATA[<p>最近工作处于低靡状态。公司玩转型，但是也没转出个啥效果。组里转到前端开发了，产品方向不定，至今也没做出个啥玩意来。工作内容缺少挑战性，更多是跟产品形态打交道了。不是很喜欢这个领域。升职的事也说不准，虽然自己只有两年工作经验，但是由于读书太久，岁数却接近30了，有点危机感。</p>
+
+<p>生活上丰富多彩。女儿出生了，开始操心起来了。压力也大了些，要计划买房了。老婆工作不顺利，不过她自己也没太大所谓，随遇而安吧。</p>
+
+<p>业余项目也挺丰富。BlackHoleJ和webmagic有了不少star了，都有了公司级用户，也得到了不少赞扬。</p>
+
+<!--more-->
+
+
+<p>webmagic反响出乎意料的好，还有用户去建了一个群，有个朋友基于这个做了一个企业级别的抓取工具(带管理后台的)，朋友们都戏称我教主了。能把这些东西分享出来，并得到肯定，这肯定是非常开心的。这个工具还有很多后续工作要做，最近为了它忙的头昏眼花的，孩子都有好多时候是老婆在带。所幸老婆非常认可我的业余爱好，但是自己多少也得学会安排时间了。</p>
+
+<p>从毕业两年来，技术上的进步我自己是满意的，特别是还有能拿得出手的作品。今后的重点应该是深度为主。今年之后的计划是，好好把自己之前挖的几个坑：webmagic、MonkeySocks和taijicaptcha搞搞，都是有市场有挑战的东西。</p>
+
+<p>另一方面，好好学学与人交往。必须要克服一下了，不然以后的职业发展不好走。</p>
+
+<p>以一个健康的节奏生活并工作下去。</p>
+]]></content>
+  </entry>
+  
+</feed>
