@@ -54,7 +54,7 @@ webmagic目前的核心代码都在**webmagic-core**中，**webmagic-samples**�
 
 前面说到，webmagic参考了scrapy的模块划分，分为Spider(整个爬虫的调度框架)、Downloader(页面下载)、PageProcessor(链接提取和页面分析)、Scheduler(URL管理)、Pipeline(离线分析和持久化)几部分。只不过scrapy通过middleware实现扩展，而webmagic则通过定义这几个接口，并将其不同的实现注入主框架类Spider来实现扩展。
 
-![image](http://code4craft.github.io/images/posts/webmagic.png)
+![image](http://code4craft.github.io/images/posts/webmagic-0.1.0.png)
 
 ### Spider类-核心调度
 
