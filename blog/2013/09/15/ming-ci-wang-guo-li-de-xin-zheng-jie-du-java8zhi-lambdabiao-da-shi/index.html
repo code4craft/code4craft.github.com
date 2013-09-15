@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>名词王国里的新政-解读Java8之lambda表达式 - 代码人生</title>
+  <meta name="author" content="黄亿华">
+
+  
+  <meta name="description" content="前几天在reddit上看到Java8 M8 Developer Preview版本已经发布了，不免想要尝鲜一把。Developer Preview版本已经所有Feature都完成了，Java8的特性可以在这里看到http://openjdk.java.net/projects/jdk8/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/09/15/ming-ci-wang-guo-li-de-xin-zheng-jie-du-java8zhi-lambdabiao-da-shi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="代码人生" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">代码人生</a></h1>
+  
+    <h2>A blog for coder lost in career.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">名词王国里的新政-解读Java8之lambda表达式</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-15T08:36:00+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>前几天在reddit上看到Java8 M8 Developer Preview版本已经发布了，不免想要尝鲜一把。Developer Preview版本已经所有Feature都完成了，Java8的特性可以在这里看到<a href="http://openjdk.java.net/projects/jdk8/features">http://openjdk.java.net/projects/jdk8/features</a>，下载地址：<a href="http://jdk8.java.net/download.html">http://jdk8.java.net/download.html</a>。</p>
+
+<!--more-->
+
+
+<h2>下载及配置</h2>
+
+<p>Intellij IDEA已经完美支持Java8了。首先打开Project Structure，在Project里设置新的JDK路径，并设置Modules=>Source=>Language Level为8.0即可。</p>
+
+<p>现在我们可以使用Java8编写程序了！但是当我们开开心心编写完，享受到高级的lambda表达式后，运行程序，会提示：<code>java: Compilation failed: internal java compiler error</code>！这是因为javacc的版本还不对，在Compiler=>Java Compiler里将项目对应的javacc版本选为1.8即可。</p>
+
+<p>什么？你说你用Eclipse？好像目前还没有稳定版！想尝鲜的，可以看看这个地址<a href="http://stackoverflow.com/questions/13295275/programming-java-8-in-eclipse">http://stackoverflow.com/questions/13295275/programming-java-8-in-eclipse</a>，大致是先checkout Eclipse JDT的beta java8分支，然后在Eclipse里运行这个项目，从而启动一个支持java8的Eclipse…不过应该难不倒作为geek的你吧！</p>
+
+<h2>体验lambda表达式</h2>
+
+<p>好了，我们开始体验Java8的新特性-lambda表达式吧！现在我们的匿名类可以写成这样子了：</p>
+
+<figure class='code'><figcaption><span>java8中的lambda </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="k">new</span> <span class="nf">Thread</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Foo&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而之前的写法只能是这样子：</p>
+
+<figure class='code'><figcaption><span>以前的java匿名函数 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nd">@Override</span>
+</span><span class='line'>      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Foo&quot;</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样一看，我们似乎就是匿名类写起来简单了一点啊？而第二种方法，借助便捷的IDE，好像编写效率也没什么差别？博主开始也是这样认为，仔细学习之后，才知道其中的奥妙所在！</p>
+
+<p>这里有一个重要的信息，就是<strong><code>()-&gt;{}</code>这里代表一个函数，而非一个对象。</strong>可能这么说比较抽象，我们还是代码说话吧：</p>
+
+<figure class='code'><figcaption><span>函数作为参数 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">LambdaTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">bar</span><span class="o">(){</span>
+</span><span class='line'>          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;bar&quot;</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="nl">LambdaTest:</span><span class="o">:</span><span class="n">bar</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>看懂了么？这里<code>LambdaTest::bar</code>代表一个函数(用C++的同学笑了)，而new Thread(Runnable runnable)的参数，可以接受是一个函数作为参数！</p>
+
+<p>是不是觉得很神奇，颠覆了Java思维？在剖析原理以前，博主暂且卖个关子，我们先来讲讲什么是lambda表达式。</p>
+
+<h2>什么是lambda表达式</h2>
+
+<h3>lambda表达式的由来</h3>
+
+<p>絮叨几句，现代编程语言的lamdba表达式都来自1930年代初，阿隆佐·邱奇(Alonzo Church)提出的λ演算(Lambda calculus)理论。λ演算的核心思想就是“万物皆函数”。一个λ算子即一个函数，其一般形式是<code>λx.x + 2</code>。一个λ算子可以作为另一个λ算子的输入，从而构建一个高阶的函数。λ演算是函数式编程的鼻祖，大名鼎鼎的编程语言Lisp就是基于λ演算而建立。用过Lisp的应该都清楚，它的语法很简单，但是却有包容万物的能力。</p>
+
+<p>可能搞计算机的对邱奇比较陌生，但是提起和邱奇同时代的另外一个人，大家就会觉得如雷贯耳了，那就是阿兰·图灵。邱奇成名的时候，图灵还是个大学生。邱奇和图灵一起发表了邱奇-图灵论题，并分别提出了λ演算和图灵机，加上哥德尔提出的递归函数一起，在理论上确定了什么是可计算性。至于什么是可计算性，其实博主也说不清楚，但是现代所有计算机程序语言，都可以认为是从三种之一发展而来，并与之等价的。仅此一点，其影响深远，可想而知。当年教我们《计算理论》的是一个德高望重的教授，人称宋公，每次讲到那个辉煌的年代，总是要停下来，神情专注的感叹一句：“伟大啊！”想想确实挺伟大，人家图灵大学时候就奠定了现代计算机的基础，而我们那会大概还在打DOTA…</p>
+
+<p>附上大神们的照片，大家感受一下：</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2013/0914/160058_HLj3_190591.png" alt="turing etc." /></p>
+
+<h3>现代编程语言中的lambda表达式</h3>
+
+<p>好了扯远了，神游过了那个伟大的时代，我们继续思考如何编代码做需求吧…</p>
+
+<p>现代语言的lambda表达式，大概具备几个特征(博主自己归纳的，如有不严谨，欢迎指正)：</p>
+
+<ol>
+<li>函数可作为输入；</li>
+<li>函数可作为输出；</li>
+<li>函数可作用在函数上，形成高阶函数。</li>
+<li>函数支持lambda格式的定义。</li>
+</ol>
+
+
+<p>其实有了1、2，3也就是顺水推舟的事情，而4其实没有太大的必要性，因为一般语言都有自己的函数定义方式，4仅仅是作为一种补充。当然实现了4的语言，一般都会说：“你看我实现了lambda表达式！”(望向Java8和Python同学)</p>
+
+<h2>在Java8中使用lambda表达式</h2>
+
+<h3>FunctionalInterface</h3>
+
+<p>Java中的lambda无法单独出现，它需要一个接口来盛放。这个接口必须使用@FunctionalInterface作为注解，并且只有一个未实现的方法。等等，什么叫接口中未实现的方法？恭喜你，猜对了！Java8的接口也可以写实现了。是不是觉得Interface和AbstractClass更加傻傻分不清楚了？但是AbstractClass是无法使用@FunctionalInterface注解的，官方的解释是为了防止AbstractClass的构造函数做一些事情，可能会导致一些调用者意料不到的事情发生。</p>
+
+<p>好了，我们来看一点代码，Runnable接口现在变成了这个样子：</p>
+
+<figure class='code'><figcaption><span>Runnable接口新定义 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="nd">@FunctionalInterface</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Runnable</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里我们可以将任意无参数的lambda表达式赋值给Runnable:</p>
+
+<figure class='code'><figcaption><span>向runnable传递闭包 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hello lambda!&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">};</span>
+</span><span class='line'>  <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>lambda表达式本质上是一个函数，所以我们还可以用更加神奇的赋值：</p>
+
+<figure class='code'><figcaption><span>向runnable传递闭包 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloLambda</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">hellolambda</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hello lambda!&quot;</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="nl">HelloLambda:</span><span class="o">:</span><span class="n">hellolambda</span><span class="o">;</span>
+</span><span class='line'>          <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里看到这里，大家大概明白了，lambda表达式其实只是个幌子，更深层次的含义是：函数在Java里面可以作为一个实体进行表示了。这就意味着，在Java8里，函数既可以作为函数的参数，也可以作为函数的返回值，即具有了lambda演算的所有特性。</p>
+
+<h3>Function系列API</h3>
+
+<p>看到这里，可能大家会有疑问？什么样的函数和什么样的lambda表达式属于同一类型？答案是参数和返回值的类型共同决定函数的类型。例如Runnable的run方法不接受参数，也没有返回值，那么Runnable接口则可以用任意没有参数且没有返回值的函数来赋值。这样概念上来说，Runnable表示的含义就<strong>从一个对象变成了一个方法</strong>。</p>
+
+<p>这一点在Java8中的java.util.function包里的代码得到了验证。以最具有代表性的Function接口为例：</p>
+
+<figure class='code'><figcaption><span>Function接口 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="nd">@FunctionalInterface</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">R</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">R</span> <span class="nf">apply</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>有了Function，我们可以这样写：</p>
+
+<figure class='code'><figcaption><span>Function接口的赋值 </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">convert</span> <span class="o">=</span> <span class="nl">String:</span><span class="o">:</span><span class="n">valueOf</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个东东是不是很像Javascript中的函数对象？</p>
+
+<p>可惜的是，这里的Function算是个半成品，它只能表示一个有单个参数，并有非void返回值的函数。像System.out.println()这种方法，因为返回值为void，是无法赋值为Function的！</p>
+
+<p>怎么办？java.util.function包提供了一个不那么完美的解决方案：多定义几个FunctionalInterface呗！</p>
+
+<p>于是，在Java8里有了：</p>
+
+<ul>
+<li>Supplier: 没有参数，只有返回值的函数</li>
+<li>Consumer: 一个参数，返回值为void的函数</li>
+<li>BiFunction: 两个参数，一个返回值的函数</li>
+<li>BiConsumer: 两个参数，没有返回值的函数</li>
+<li>&hellip;</li>
+</ul>
+
+
+<p>对于这些个API，我也没有什么力气吐槽了，反正我也想不出更好的方法…大家趁机，多学几个单词吧，嗯。</p>
+
+<h2>总结：名词王国的新政</h2>
+
+<p>相信很多同学都看过这篇著名的文章：<a href="http://lcwangchao.github.io/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/2012/07/02/excution_in_the_kingdom_of_nouns/">名词王国里的死刑</a>。这篇文章吐槽了Java里，动词(方法)在Java里总是要依附于某个名词(对象/类)存在。</p>
+
+<p>现在动词在名词王国终于有了一个身份了。当然这个动词需要先取得一个名词的身份(FunctionInterface)，然后才能名正言顺的幸存下来。好在Oracle国王预先为他们留了一些身份(Function、Consumer、Supplier、BiFunction&hellip;)，所以大多数动词都已经找到了自己的位置。System.out.println(String)现在是Consumer<String>了，String.valueOf(Integer)现在是Function&lt;Integer,String>了，Collection.size()现在是Supplier<Integer>了…。要为一些较长参数的方法获取一个身份，也是挺容易的(定义一个新的FunctionInterface接口)。</p>
+
+<p>我相信这个影响是深远的。例如下面一段代码，可以同一行代码将一个List<Integer>转换成一个List<String>：</p>
+
+<figure class='code'><figcaption><span>List<Integer>转换成List<String> </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strings</span> <span class="o">=</span> <span class="n">intList</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">String:</span><span class="o">:</span><span class="n">valueOf</span><span class="o">).</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="n">toList</span><span class="o">());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当然问题也存在。因为包含了闭包等因素，FunctionInterface的序列化/反序列化会是一个相当复杂的事情。熟悉Java的开发者，也会因为lambda的引入，带来了一些困惑。俗话说活到老学到老，我倒是不介意这个新功能，你说呢？</p>
+
+<p>本系列文章还有余下几部分，敬请期待：</p>
+
+<p><a href="">lambda表达式与闭包</a></p>
+
+<p><a href="">Java8 lambda表达式原理分析</a></p>
+
+<h2>参考文献：</h2>
+
+<ol>
+<li><a href="http://blog.sciencenet.cn/blog-414166-628109.html">http://blog.sciencenet.cn/blog-414166-628109.html</a></li>
+<li><a href="http://www.global-sci.org/mc/issues/3/no2/freepdf/80s.pdf">http://www.global-sci.org/mc/issues/3/no2/freepdf/80s.pdf</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Lambda_calculus">http://en.wikipedia.org/wiki/Lambda_calculus</a></li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">黄亿华</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-15T08:36:00+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/lambda/'>lambda</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/09/15/ming-ci-wang-guo-li-de-xin-zheng-jie-du-java8zhi-lambdabiao-da-shi/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/09/15/ming-ci-wang-guo-li-de-xin-zheng-jie-du-java8zhi-lambdabiao-da-shi/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/" title="Previous Post: 体验到了open-source的魅力">&laquo; 体验到了open-source的魅力</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/15/ming-ci-wang-guo-li-de-xin-zheng-jie-du-java8zhi-lambdabiao-da-shi/">名词王国里的新政-解读Java8之lambda表达式</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/">体验到了open-source的魅力</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/03/sum/">工作满两年时候的总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">webmagic的设计机制及原理-如何开发一个Java爬虫</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/07/monkeysocks-arch/">monkeysocks架构规划</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - 黄亿华 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
