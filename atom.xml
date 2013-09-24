@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-09-15T13:48:08+08:00</updated>
+  <updated>2013-09-24T20:22:55+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[今天把mou整崩溃了]]></title>
+    <link href="http://code4craft.github.com/blog/2013/09/24/jin-tian-ba-mouzheng-beng-kui-liao/"/>
+    <updated>2013-09-24T20:17:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/09/24/jin-tian-ba-mouzheng-beng-kui-liao</id>
+    <content type="html"><![CDATA[<p>一直觉得Mou写markdown，小巧灵活，久而久之也喜欢把一些临时文本放在里面。</p>
+
+<p>结果晚上回来的时候打不开了，内存飙到1.6G，CPU跑到200%多，死活打不开。作为markdown重度患者，简直要崩溃了。</p>
+
+<!---more--->
+
+
+<p>怀疑是打开了非法的文件导致。删了App重新装，问题依旧，不知道是把临时文件存在哪的。用进程管理器找到打开的文件，将疑似缓存的文件都删了(<code>~/Library</code>下面几个)，依然没有用！</p>
+
+<p>后来都要绝望的时候，竟然蹦出来了，原来是之前随便贴了一些数据，估计是有markdown的保留字，导致Mou解析出错了！下次还是不要乱拷数据到Mou里了吧！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[名词王国里的新政-解读Java8之lambda表达式]]></title>
@@ -1622,43 +1640,6 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 
 
 <p>经过这番折腾，BlackHole之前一直存在的一个问题也算是解决了。有人把它应用到企业内网，还是挺令人鼓舞的。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mac使用ssh socks代理翻墙]]></title>
-    <link href="http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/"/>
-    <updated>2013-01-05T21:46:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang</id>
-    <content type="html"><![CDATA[<p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
-
-<!-- more -->
-
-
-<p>使用ssh作为socks proxy：</p>
-
-<p>有很多软件都可以实现这个功能，例如Secret Socks，SSH Tunnerl Manager。Secret Socks不支持自动连接，同时每次都要输入密码，太麻烦了。SSH Tunnerl Manager也是要输入密码。不过SSH Tunnerl Manager有个好处，更改配置后它会把SSH命令都显示出来。原来Mac下SSH直接就可以支持socks代理，大概这样配置：</p>
-
-<pre><code>ssh -N -p 22 -C -c -D 7070 username@hostname
-</code></pre>
-
-<p>但是这样依然无法保存密码，后来搜索到一个软件sshpass，下载编译之，运行却提示找不到/usr/libexec/ssh-askpass，后来从网上找到一个人的解决方案，发现其实这就是提供密码的脚本，于是直接在里面敲上：</p>
-
-<pre><code>#! /bin/sh 
-
-echo yourpassword
-</code></pre>
-
-<p>然后使用</p>
-
-<pre><code>sshpass -pyourpassword ssh -N -p 22 -C -c -D 7070 username@hostname
-</code></pre>
-
-<p>就可以了！sshpass貌似自带断线重连功能，相当给力！</p>
-
-<p>还有就是autoproxy的配置，在Chrome下使用SwitchySharp，在规则列表里加上<a href="https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt">https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt</a>，选择AutoProxy兼容列表即可，当然对应情景模式别忘了选成你配好的本地代理！</p>
-
-<p>最后将启动脚本ln -s到/Library/StartupItems/，至此大功告成。</p>
 ]]></content>
   </entry>
   
