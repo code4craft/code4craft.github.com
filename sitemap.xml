@@ -129,15 +129,21 @@
         <lastmod>2013-09-24T20:22:25+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://code4craft.github.com/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/
+        </loc>
+        <lastmod>2013-10-20T16:29:30+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://code4craft.github.com/about/</loc>
         <lastmod>2013-06-22T08:55:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2013-09-24T20:22:25+08:00</lastmod>
+        <lastmod>2013-10-20T16:29:30+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2013-09-24T20:22:25+08:00</lastmod>
+        <lastmod>2013-10-20T16:29:30+08:00</lastmod>
     </url>
 </urlset>

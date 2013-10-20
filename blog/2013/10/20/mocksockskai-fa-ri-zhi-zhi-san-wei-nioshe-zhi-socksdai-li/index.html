@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>2013年半年总结及计划 - 代码人生</title>
+  <title>MockSocks开发日志之三-为NIO设置Socks代理 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="2013年前半年搞Scrum，工作忙了不少，但是却是瞎忙的多。 持续维护BlackHole半年时间，github上有了 24 个star，半年来最大的成果。 看了 3 本书，比较少： 《git权威指南》、《硝烟中的Scrum和XP》、《七周七语言》 又写了两个项目： webmagic(爬虫框架) &hellip;">
+  <meta name="description" content="回顾 时隔3个月，MockSocks终于又能继续开发了。这个项目是目前为止做过的最有技术挑战的一个，目标是做成一个后端应用的fiddler，可以监控应用对外的网络流量、分析协议、重定向、并针对每个协议进行修改，同时可以录制和回放。项目也得到了部门总监和其他leader的肯定，可以多花心思弄弄好。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">2013年半年总结及计划</h1>
+      <h1 class="entry-title">MockSocks开发日志之三-为NIO设置Socks代理</h1>
     
     
       <p class="meta">
@@ -83,57 +83,47 @@
   
 
 
-<time datetime="2013-06-07T07:08:00+08:00" pubdate data-updated="true">Jun 7<span>th</span>, 2013</time>
+<time datetime="2013-10-20T16:28:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>2013年前半年搞Scrum，工作忙了不少，但是却是瞎忙的多。</p>
+<div class="entry-content"><h2>回顾</h2>
 
-<p>持续维护<code>BlackHole</code>半年时间，github上有了 <strong>24</strong> 个star，半年来最大的成果。</p>
+<p>时隔3个月，MockSocks终于又能继续开发了。这个项目是目前为止做过的最有技术挑战的一个，目标是做成一个后端应用的fiddler，可以监控应用对外的网络流量、分析协议、重定向、并针对每个协议进行修改，同时可以录制和回放。项目也得到了部门总监和其他leader的肯定，可以多花心思弄弄好。</p>
 
-<!-- more -->
+<p>因为项目的核心是一个Socks代理，通过这个代理捕获双方的流量，并进行继续的操作。</p>
+
+<!---more--->
 
 
-<p>看了 <strong> 3 </strong> 本书，比较少：</p>
+<h2>Server</h2>
 
-<p>《git权威指南》、《硝烟中的Scrum和XP》、《七周七语言》</p>
+<p>Socks Server方面使用netty构建了一个，原本觉得无比复杂的东西，借助netty倒是变得很简单了，具体实现方式在这篇博客：<a href="http://my.oschina.net/flashsword/blog/169361">http://my.oschina.net/flashsword/blog/169361</a>。学习netty期间用心写了几篇文章，也结交了一些朋友，倒是挺开心的。可惜netty系列文章没有完成，估计要等我MockSocks开发完才能继续了。</p>
 
-<p>又写了两个项目：</p>
+<h2>配置Client</h2>
 
-<p><code>webmagic</code>(爬虫框架)和<code>hostd</code>(BlackHole衍生管理工具)</p>
+<p>server端开发完后，就轮到client端了。JDK的OIO是支持全局代理的，只需在JVM参数中配置<code>-DsocksProxyHost=xxx -DsocksProxyPort=xxx</code>即可。遗憾的是，这个配置对NIO是不起作用的。</p>
 
-<p>阅读代码：</p>
+<p>后来考虑过几种办法：</p>
 
-<p>读了公司的JMS框架swallow、RPC框架Pigeon。</p>
+<ol>
+<li><p>因为公司项目用到NIO的部分，主要也是通过netty做的。那么改netty的API，使其支持代理，是最简单的做法。使用netty构建一个socks client也是得心应手。但是这种做法不够彻底，且不具有通用性。</p></li>
+<li><p>修改NIO的接口SocketChannel.open()的实现，使其返回一个可以使用代理的SocketChannel。这种方法最彻底，但是涉及到JDK一些底层API，有些还没有暴露出来，实现难度有点大。</p></li>
+</ol>
 
-<p>尝试阅读Jetty源码，未果。</p>
 
-<p>学些了一门新语言：</p>
+<p>后来决定采用方法2，顺便学习一下。</p>
 
-<p><code>Javascript</code></p>
+<p><code>SelectorProviderImpl</code>、<code>SocketChannelImpl</code>都是VM的私有API，只有下载JDK源码才能看到。下载openjdk源码后，在<code>jdk/src/share/classes/</code>目录可找到。</p>
 
-<p>写了20篇技术博客，有一篇上了oschina首页。</p>
+<p><code>SelectorProvider.provider()</code>是JDK自己的一个扩展点，会根据不同的OS选择不同的SelectorProvider，OSX是KQueue。尝试自己写了一个SocketChannel的子类，做一个全局代理，结果被SelectorImpl摆了一道，里面要求必须实现<code>sun.nio.ch.SelChImpl</code>接口，而这个接口是包级可见的。</p>
 
-<p>在微博上做了个<code>每天学点新工具</code>系列，发了 <strong> 7 </strong> 条微博。</p>
+<p>抱着侥幸心理，尝试将自己的新类写到<code>sun.nio.ch</code>包下，结果编译通过，加载提示无法访问其父类接口<code>sun.nio.ch.SelChImpl</code>，看来sun对自家的包是做了一些保留的。</p>
 
-<p>量上有所下降，特别是读书一项。</p>
-
-<p>玩新东西多了，钻研少了。</p>
-
-<p>下半年的计划是找一个Web服务器进行深入研究。</p>
-
-<p>Jetty、Tomcat、Netty、nginx选一个吧。</p>
-
-<p>Jetty最简单，看到一半了，学习的应该是架构、设计的东西。</p>
-
-<p>Tomcat比较复杂，据说代码可读性也不太好，但是毕竟是目前使用的容器，可以试试。</p>
-
-<p>Netty，学好这个，做个中间件是信手拈来的事，这方面需求挺多的。难处是用的比较少，难以把握其原理。</p>
-
-<p>nginx源码挑战最大，但是收获应该最多，进入c世界？BlackHole自认为也是一个高性能服务器了，跟nginx比比，这样会对高性能Web服务有个全面的认识。</p>
+<p>后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</p>
 </div>
 
 
@@ -156,15 +146,21 @@
   
 
 
-<time datetime="2013-06-07T07:08:00+08:00" pubdate data-updated="true">Jun 7<span>th</span>, 2013</time>
+<time datetime="2013-10-20T16:28:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bytecode/'>bytecode,</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/nio/'>nio,</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/" >Tweet</a>
   
   
   
@@ -173,10 +169,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/17/intellijshi-yong-xin-de/" title="Previous Post: IntelliJ使用心得">&laquo; IntelliJ使用心得</a>
+        <a class="basic-alignment left" href="/blog/2013/09/24/jin-tian-ba-mouzheng-beng-kui-liao/" title="Previous Post: 今天把mou整崩溃了">&laquo; 今天把mou整崩溃了</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/" title="Next Post: 使用webmagic抓取页面并保存为wordpress文件">使用webmagic抓取页面并保存为wordpress文件 &raquo;</a>
       
     </p>
   </footer>

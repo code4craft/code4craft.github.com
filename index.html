@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="一直觉得Mou写markdown，小巧灵活，久而久之也喜欢把一些临时文本放在里面。 结果晚上回来的时候打不开了，内存飙到1.6G，CPU跑到200%多，死活打不开。作为markdown重度患者，简直要崩溃了。 怀疑是打开了非法的文件导致。删了App重新装，问题依旧，不知道是把临时文件存在哪的。 &hellip;">
+  <meta name="description" content="回顾 时隔3个月，MockSocks终于又能继续开发了。这个项目是目前为止做过的最有技术挑战的一个，目标是做成一个后端应用的fiddler，可以监控应用对外的网络流量、分析协议、重定向、并针对每个协议进行修改，同时可以录制和回放。项目也得到了部门总监和其他leader的肯定，可以多花心思弄弄好。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,75 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T16:28:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>回顾</h2>
+
+<p>时隔3个月，MockSocks终于又能继续开发了。这个项目是目前为止做过的最有技术挑战的一个，目标是做成一个后端应用的fiddler，可以监控应用对外的网络流量、分析协议、重定向、并针对每个协议进行修改，同时可以录制和回放。项目也得到了部门总监和其他leader的肯定，可以多花心思弄弄好。</p>
+
+<p>因为项目的核心是一个Socks代理，通过这个代理捕获双方的流量，并进行继续的操作。</p>
+
+<!---more--->
+
+
+<h2>Server</h2>
+
+<p>Socks Server方面使用netty构建了一个，原本觉得无比复杂的东西，借助netty倒是变得很简单了，具体实现方式在这篇博客：<a href="http://my.oschina.net/flashsword/blog/169361">http://my.oschina.net/flashsword/blog/169361</a>。学习netty期间用心写了几篇文章，也结交了一些朋友，倒是挺开心的。可惜netty系列文章没有完成，估计要等我MockSocks开发完才能继续了。</p>
+
+<h2>配置Client</h2>
+
+<p>server端开发完后，就轮到client端了。JDK的OIO是支持全局代理的，只需在JVM参数中配置<code>-DsocksProxyHost=xxx -DsocksProxyPort=xxx</code>即可。遗憾的是，这个配置对NIO是不起作用的。</p>
+
+<p>后来考虑过几种办法：</p>
+
+<ol>
+<li><p>因为公司项目用到NIO的部分，主要也是通过netty做的。那么改netty的API，使其支持代理，是最简单的做法。使用netty构建一个socks client也是得心应手。但是这种做法不够彻底，且不具有通用性。</p></li>
+<li><p>修改NIO的接口SocketChannel.open()的实现，使其返回一个可以使用代理的SocketChannel。这种方法最彻底，但是涉及到JDK一些底层API，有些还没有暴露出来，实现难度有点大。</p></li>
+</ol>
+
+
+<p>后来决定采用方法2，顺便学习一下。</p>
+
+<p><code>SelectorProviderImpl</code>、<code>SocketChannelImpl</code>都是VM的私有API，只有下载JDK源码才能看到。下载openjdk源码后，在<code>jdk/src/share/classes/</code>目录可找到。</p>
+
+<p><code>SelectorProvider.provider()</code>是JDK自己的一个扩展点，会根据不同的OS选择不同的SelectorProvider，OSX是KQueue。尝试自己写了一个SocketChannel的子类，做一个全局代理，结果被SelectorImpl摆了一道，里面要求必须实现<code>sun.nio.ch.SelChImpl</code>接口，而这个接口是包级可见的。</p>
+
+<p>抱着侥幸心理，尝试将自己的新类写到<code>sun.nio.ch</code>包下，结果编译通过，加载提示无法访问其父类接口<code>sun.nio.ch.SelChImpl</code>，看来sun对自家的包是做了一些保留的。</p>
+
+<p>后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -486,47 +555,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">写了个快捷保存文本的shell工具</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -559,6 +587,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/09/24/jin-tian-ba-mouzheng-beng-kui-liao/">今天把mou整崩溃了</a>
       </li>
     
@@ -572,10 +604,6 @@
     
       <li class="post">
         <a href="/blog/2013/08/03/sum/">工作满两年时候的总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">webmagic的设计机制及原理-如何开发一个Java爬虫</a>
       </li>
     
   </ul>
