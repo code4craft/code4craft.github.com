@@ -132,7 +132,11 @@
         <loc>
             http://code4craft.github.com/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/
         </loc>
-        <lastmod>2013-10-20T16:29:30+08:00</lastmod>
+        <lastmod>2013-10-21T07:49:03+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://code4craft.github.com/blog/2013/10/20/java-bytecode/</loc>
+        <lastmod>2013-10-21T07:48:52+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/about/</loc>
@@ -140,10 +144,10 @@
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2013-10-20T16:29:30+08:00</lastmod>
+        <lastmod>2013-10-21T07:49:03+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2013-10-20T16:29:30+08:00</lastmod>
+        <lastmod>2013-10-21T07:49:03+08:00</lastmod>
     </url>
 </urlset>

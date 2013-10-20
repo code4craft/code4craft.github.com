@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="回顾 时隔3个月，MockSocks终于又能继续开发了。这个项目是目前为止做过的最有技术挑战的一个，目标是做成一个后端应用的fiddler，可以监控应用对外的网络流量、分析协议、重定向、并针对每个协议进行修改，同时可以录制和回放。项目也得到了部门总监和其他leader的肯定，可以多花心思弄弄好。 &hellip;">
+  <meta name="description" content="十问： 什么是Java字节码？ ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +70,52 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/10/20/java-bytecode/">Java字节码织入技术概述</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T16:52:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>十问：</p>
+
+<ul>
+<li>什么是Java字节码？</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/20/java-bytecode/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a></h1>
     
     
@@ -97,9 +143,9 @@
 
 <p>时隔3个月，MockSocks终于又能继续开发了。这个项目是目前为止做过的最有技术挑战的一个，目标是做成一个后端应用的fiddler，可以监控应用对外的网络流量、分析协议、重定向、并针对每个协议进行修改，同时可以录制和回放。项目也得到了部门总监和其他leader的肯定，可以多花心思弄弄好。</p>
 
-<p>因为项目的核心是一个Socks代理，通过这个代理捕获双方的流量，并进行继续的操作。</p>
+<p>因为项目的核心是一个Socks代理，通过这个代理捕获双方的流量，并进行后续的操作。</p>
 
-<!---more--->
+<!--- more --->
 
 
 <h2>Server</h2>
@@ -126,7 +172,7 @@
 
 <p>抱着侥幸心理，尝试将自己的新类写到<code>sun.nio.ch</code>包下，结果编译通过，加载提示无法访问其父类接口<code>sun.nio.ch.SelChImpl</code>，看来sun对自家的包是做了一些保留的。</p>
 
-<p>后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</p>
+<p>尝试用agent修改代码。后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</p>
 </div>
   
   
@@ -510,51 +556,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/28/todolist/">一个shell下的todolist</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-28T10:17:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>使用和文件保存都挺简单，试试看吧！</p>
-
-<p><a href="http://todotxt.com/">http://todotxt.com/</a>貌似还能同步到手机端？</p>
-
-<p>下载之后，</p>
-
-<pre><code>ln -s xxx/todo.sh /usr/local/bin/todo
-</code></pre>
-
-<p>貌似这样会把东西存到/usr/local/bin/todo.txt里？不管了！</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -587,6 +588,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/20/java-bytecode/">Java字节码织入技术概述</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a>
       </li>
     
@@ -600,10 +605,6 @@
     
       <li class="post">
         <a href="/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/">体验到了open-source的魅力</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/03/sum/">工作满两年时候的总结</a>
       </li>
     
   </ul>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: 爬虫 - 代码人生</title>
+  <title>Java字节码织入技术概述 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="Category: 爬虫">
+  <meta name="description" content="十问： 什么是Java字节码？ Class文件的结构： ClassFile { u4 magic; u2 minor_version; u2 major_version; u2 constant_pool_count; cp_info constant_pool[ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.comblog/categories/pa-chong/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/10/20/java-bytecode/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,50 +63,160 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: 爬虫</h1>
+    
+      <h1 class="entry-title">Java字节码织入技术概述</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T16:52:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>十问：</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">webmagic的设计机制及原理-如何开发一个Java爬虫</a></h1>
-<time datetime="2013-07-18T14:52:00+08:00" pubdate><span class='month'>Jul</span> <span class='day'>18</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/pa-chong/'>爬虫</a></span>
-</footer>
+<ul>
+<li>什么是Java字节码？</li>
+</ul>
 
 
-</article>
+<!-- more -->
 
 
+<p>Class文件的结构：</p>
 
-<article>
-  
-<h1><a href="/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/">使用webmagic抓取页面并保存为wordpress文件</a></h1>
-<time datetime="2013-06-10T18:05:00+08:00" pubdate><span class='month'>Jun</span> <span class='day'>10</span> <span class='year'>2013</span></time>
+<pre><code>   ClassFile {
+          u4             magic;
+          u2             minor_version;
+          u2             major_version;
+          u2             constant_pool_count;
+          cp_info        constant_pool[constant_pool_count-1];
+          u2             access_flags;
+          u2             this_class;
+          u2             super_class;
+          u2             interfaces_count;
+          u2             interfaces[interfaces_count];
+          u2             fields_count;
+          field_info     fields[fields_count];
+          u2             methods_count;
+          method_info    methods[methods_count];
+          u2             attributes_count;
+          attribute_info attributes[attributes_count];
+   }
+</code></pre>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/webmagic/'>webmagic</a>, <a class='category' href='/blog/categories/pa-chong/'>爬虫</a></span>
-</footer>
+<p><img src="http://static.oschina.net/uploads/space/2013/1020/193328_GPX0_190591.png" alt="在此输入图片描述" /></p>
+
+<pre><code>javap -verbose Downloader
+</code></pre>
+
+<p>最开始是常量池，保存类名/方法/字面量等信息。</p>
+
+<ul>
+<li>Java字节码在JVM里如何保存？</li>
+<li><p>字节码和ClassLoader的关系？</p>
+
+<p>  -XX:+TraceClassLoading</p></li>
+<li><p>字节码修改能做的事？</p></li>
+<li><p>字节码修改不能做的事？</p>
+
+<p>  Java加载Class文件后会做&#8221;连接&#8221;操作，就是把符号表的彼此引用连接起来。</p></li>
+<li><p>常用的字节码修改工具？</p></li>
+</ul>
 
 
-</article>
+<h2>参考书目</h2>
 
+<p>《深入理解Java虚拟机》</p>
+
+<p>《The Java® Virtual Machine Specification-Java SE 7 Edition》</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">黄亿华</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T16:52:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java-bytecode/'>java,bytecode</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/10/20/java-bytecode/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/10/20/java-bytecode/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/" title="Previous Post: MockSocks开发日志之三-为NIO设置Socks代理">&laquo; MockSocks开发日志之三-为NIO设置Socks代理</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
 
 </div>
 
