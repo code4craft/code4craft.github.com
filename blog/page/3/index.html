@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="原文地址：http://dbanotes.net/mylife/ten_years_it_road.html 作者冯大辉@fenng ">
+  <meta name="description" content="DNS污染原理 DNS污染是比DNS劫持更加难以防御的一种攻击，受攻击者访问网站时可被导向其他域名，例如某“不存在的网站”被导向了一个“不存在的IP地址”。 DNS污染的原理如下： DNS查询也是一个经典的请求-回答模式。首先，客户端发起DNS查询，这是一个UDP包。路由器在转发IP包时， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/25/blackhole-anti-dns-poison/">BlackHole开发日志&#8211;防止DNS污染</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-25T21:13:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3></h3>
+
+<hr />
+
+<h3>DNS污染原理</h3>
+
+<p>DNS污染是比DNS劫持更加难以防御的一种攻击，受攻击者访问网站时可被导向其他域名，例如某“不存在的网站”被导向了一个“不存在的IP地址”。</p>
+
+<p>DNS污染的原理如下：</p>
+
+<p>DNS查询也是一个经典的请求-回答模式。首先，客户端发起DNS查询，这是一个UDP包。路由器在转发IP包时，对其内容做解析，若发现其是使用53端口的UDP包，并且其内容符合某些特征(普通的DNS请求都是明文)，则从旁路直接返回一个伪造的应答，将其应答指向某个特定IP。因为这个返回速度非常快，所以先于正常请求到达客户端。而客户端收到一个返回包，就认为得到了答案，不再继续接收，而正确的请求结果就被忽略了！</p>
+
+<p><img src="/images/posts/dns-poison.png" alt="image" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/02/25/blackhole-anti-dns-poison/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -479,6 +532,10 @@ rake是个好东西。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/30/ji-zhu-lu-xian-de-xuan-ze/">技术路线的选择</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/20/java-bytecode/">Java字节码织入技术概述</a>
       </li>
     
@@ -492,10 +549,6 @@ rake是个好东西。</p>
     
       <li class="post">
         <a href="/blog/2013/09/15/ming-ci-wang-guo-li-de-xin-zheng-jie-du-java8zhi-lambdabiao-da-shi/">名词王国里的新政-解读Java8之lambda表达式</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/">体验到了open-source的魅力</a>
       </li>
     
   </ul>

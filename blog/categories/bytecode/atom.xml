@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bytecode, | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/bytecode/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-10-21T09:52:05+08:00</updated>
+  <updated>2013-10-30T22:43:57+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -50,6 +50,8 @@
 <p><code>SelectorProvider.provider()</code>是JDK自己的一个扩展点，会根据不同的OS选择不同的SelectorProvider，OSX是KQueue。尝试自己写了一个SocketChannel的子类，做一个全局代理，结果被SelectorImpl摆了一道，里面要求必须实现<code>sun.nio.ch.SelChImpl</code>接口，而这个接口是包级可见的。</p>
 
 <p>抱着侥幸心理，尝试将自己的新类写到<code>sun.nio.ch</code>包下，结果编译通过，加载提示无法访问其父类接口<code>sun.nio.ch.SelChImpl</code>，看来sun对自家的包是做了一些保留的。</p>
+
+<p>看了一遍《深入理解Java虚拟机》关于ClassLoader那章，确定</p>
 
 <p>尝试用agent修改代码。后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</p>
 ]]></content>
