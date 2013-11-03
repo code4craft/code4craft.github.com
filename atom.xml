@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-03T19:24:22+08:00</updated>
+  <updated>2013-11-03T19:33:17+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -27,7 +27,7 @@
 
 <p>会议人依然很多，各个赞助商都在门口签到发送礼品，领了两个娃娃，正好给女儿。不得不说七牛在社区方面的工作还是很到位的，娃娃做的很用心，还送了一件挺不错的T恤。</p>
 
-<p>人很多，按说Qcon已经算是面向“中高端”的码农了，还是感觉到了浓浓的屌丝气息。一群不修边幅、其貌不扬、或沉默寡言、或满口说着不明术语的人，就是码农了。一直在想从中找出几个大牛来，可惜IT界的大牛，估计从外在看不出来。</p>
+<p><img src="http://static.oschina.net/uploads/space/2013/1101/211210_rzYo_190591.jpeg" alt="toy" /></p>
 
 <p>上午的keynote全部是英文演讲，虽然来的都是twitter、github的大牛，但是演讲内容太泛，除了瞻仰了风采之外，收获不算很大。twitter讲到了他们的RPC框架finagle，倒是可以研究一下。twitter的开源项目还是很受欢迎的，既有bootstrap，又有storm，这个finagle应该也不错。</p>
 
