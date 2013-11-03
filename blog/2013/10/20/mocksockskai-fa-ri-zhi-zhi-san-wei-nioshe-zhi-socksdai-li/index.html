@@ -121,11 +121,13 @@
 
 <p><code>SelectorProvider.provider()</code>是JDK自己的一个扩展点，会根据不同的OS选择不同的SelectorProvider，OSX是KQueue。尝试自己写了一个SocketChannel的子类，做一个全局代理，结果被SelectorImpl摆了一道，里面要求必须实现<code>sun.nio.ch.SelChImpl</code>接口，而这个接口是包级可见的。</p>
 
-<p>抱着侥幸心理，尝试将自己的新类写到<code>sun.nio.ch</code>包下，结果编译通过，加载提示无法访问其父类接口<code>sun.nio.ch.SelChImpl</code>，看来sun对自家的包是做了一些保留的。</p>
+<p>抱着侥幸心理，尝试将自己的新类写到<code>sun.nio.ch</code>包下，结果编译通过，加载提示无法访问其父类接口<code>sun.nio.ch.SelChImpl</code>，<s>看来sun对自家的包是做了一些保留的</p>
 
 <p>看了一遍《深入理解Java虚拟机》关于ClassLoader那章，确定</p>
 
-<p>尝试用agent修改代码。后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</p>
+<p>尝试用agent修改代码。后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</s></p>
+
+<p>后来跟RednaxelaFX提问之后，确认了JVM是根据ClassCloader+package来确定一个包的，所以要使自己写的类能访问<code>sun.nio</code>包的内容，必须使用Boostrap Classloader来加载。后来在javaagent里配置了相应参数，搞定！</p>
 </div>
 
 
