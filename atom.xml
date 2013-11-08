@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-03T19:46:48+08:00</updated>
+  <updated>2013-11-08T20:29:24+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[无责任励志一则-成功就是把你做的事做精致]]></title>
+    <link href="http://code4craft.github.com/blog/2013/11/08/wu-ze-ren-li-zhi/"/>
+    <updated>2013-11-08T20:27:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/11/08/wu-ze-ren-li-zhi</id>
+    <content type="html"><![CDATA[<p>我们常说，这个世界太浮躁。实际上也是如此，今年小孩出生，同时又买了房子，生活上的压力顿时压下来，差点趴下了。但是我是个老实人，急躁又有什么用呢，还不是每天上班下班，下班看书写代码，没有那个业余找钱的能力，于是也就算了，安心搞点好玩的。</p>
+
+<!--more-->
+
+
+<p>记得去年给自己定了个目标，今年要在技术上有所进步，并且能够在一流的开源项目里贡献代码。于是我尝试了读tomcat和spring的源码，结果根本没能坚持下去。因为根本没那么多时间去阅读代码，也坚持不下去，最后都是不了了之。现在想来，根本不是对这些项目感兴趣，其实平时用到的功能也不全，完全是因为觉得它们很牛逼。</p>
+
+<p>但是或许是无心插柳吧，之前写了一个爬虫框架webmagic，随便放到了github上。我这个人比较喜欢分享，因为都是自己趟过的坑，也不希望别人再进去，所以就写了一两篇文章介绍了下。结果喜欢的人不少，还有了一些粉丝了。后来收集了一些反馈意见，就开始了开源的旅程。我以前在点点做抓博客文章的事情，具体就是写正则去抽取网页内容，其实是很没意思的活，但是至少积累了不少领域经验，于是对写webmagic产生了很大的影响。webmagic现在star和fork都过百了，在github Java项目中排800名左右，虽然不算很厉害，但是对我来说已经是超出预料了。</p>
+
+<p>维护开源软件是枯燥的，因为有很多问题需要回答，无论是专业的不专业的，下至maven的使用，上至设计思想。但是我也知道用户的宝贵，所以基本上事无巨细，我都会一一回答。我把webmagic当成一个产品来做，希望更多人了解它和喜欢它。</p>
+
+<p>从个人角度，确实也希望树立自己的知名度(工资高点=.=)，但是生活在这个时代，谁有那么崇高呢。你产生价值，得到回馈，也是应该的。</p>
+
+<p>意外的惊喜是，因为webmagic需要写一些demo，结果写demo时遇到一个HttpClient的bug，后来反馈到了Apache，并提交了patch，结果就这么被接收了。虽然这个项目不如Apache其他项目那么知名，但是就跟它名字一样，在Java界基本是Http客户端的不二之选。于是我终于在快年底完成了今年的目标了。</p>
+
+<p>今天在看Hadoop的东西，看到其实HDFS是Nutch为了保存海量文件而开发的，而Hadoop本身也是起源于项目需要。</p>
+
+<p>现在的工作，我一直在做一些跑job的事情，大家都觉得挺无聊。但是想想，其实那么高端大气的Hadoop也是从跑job开始的。何不好好干呢？</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[qcon见闻]]></title>
@@ -1489,111 +1515,6 @@ live template还有一个surround的用法，选中某个变量，键入ctl+alt+
 <p>说到这里好像就认定IntelliJ好了？其实也未必，因为《大教堂与集市》也提到，开源带来的生产力是教堂式开发远不能比的，所以IntelliJ要收费，而Eclipse可以免费。Eclipse庞大的插件群，功能的全面性，个人觉得也是IntelliJ比不了的。</p>
 
 <p>最后说一句，说到学习成本，其实IntelliJ是要比Eclipse低的，至少省去了很多配置插件、理清依赖、处理问题的功夫，同时设置也比Eclipse要简单不少。没有说越高级的IDE越复杂的说法，只是Eclipse作为最常用的Java IDE，让大家先入为主了罢了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器]]></title>
-    <link href="http://code4craft.github.com/blog/2013/04/12/blackhole-io-model/"/>
-    <updated>2013-04-12T22:16:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/04/12/blackhole-io-model</id>
-    <content type="html"><![CDATA[<p>BlackHoleJ是一个DNS服务器。他的一个功能是，对于它解析不了的DNS请求，它将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端，起到一个DNS代理的作用。</p>
-
-<p><img src="http://code4craft.github.com/images/posts/forward.png" alt="image" /></p>
-
-<p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
-
-<!-- more -->
-
-
-<h3>BIO模型(Blocking I/O)</h3>
-
-<p>BlackHoleJ代理模式最开始的IO模型，实现很简单，当client请求过来时，新建一个线程处理，然后再线程中调用DatagramChannel发送UDP包，同时阻塞等待，最后接收到结果后返回。</p>
-
-<pre><code>public byte[] forward(byte[] query) throws IOException {
-    DatagramChannel dc = null;
-    dc = DatagramChannel.open();
-    SocketAddress address = new InetSocketAddress(configure.getDnsHost(),
-            Configure.DNS_PORT);
-    dc.connect(address);
-    ByteBuffer bb = ByteBuffer.allocate(512);
-    bb.put(query);
-    bb.flip();
-    dc.send(bb, address);
-    bb.clear();
-    dc.receive(bb);
-    bb.flip();
-    byte[] copyOfRange = Arrays.copyOfRange(bb.array(), 0, 512);
-    return copyOfRange;
-}
-</code></pre>
-
-<p>其中dc.receive(bb)一步是阻塞的。因为请求外部DNS服务器往往耗时较长，所以为了达到快速响应，不得不开很多线程进行处理。同时每个线程都需要进行轮询dc.receive(bb)是否可用，会消耗更多CPU资源。</p>
-
-<h3>Select模型(I/O multiplexing)</h3>
-
-<p>BlackHoleJ 1.1开始使用的IO模型。因为DNS使用UDP协议，而UDP其实是无连接的，所以所有请求以及响应复用一个DatagramChannel也毫无问题。同时预先使用DatagramChannel.bind(port)绑定某端口，那么对外部DNS服务器的转发和接收都可以使用这个端口。唯一需要做的就是通过DNS包的特征，来判断到底是哪个客户端的请求！而这个特征也很好选择，DNS包的headerId和question域即可满足需求。</p>
-
-<p>发送方的伪代码大概是这样：</p>
-
-<pre><code>public byte[] forward(byte[] queryBytes) {
-    multiUDPReceiver.putForwardAnswer(query, forwardAnswer);
-    forward(queryBytes);
-    forwardAnswer.getLock.getCondition().await();
-    return answer.getAnswer();
-}
-</code></pre>
-
-<p>接收方是一个独立的线程，代码大概是这样的：</p>
-
-<pre><code>public void receive() {
-    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
-    while (true) {
-        datagramChannel.receive(byteBuffer);
-        final byte[] answer = Arrays.copyOfRange(byteBuffer.array(), 0, 512);
-        getForwardAnswer(answer).setAnswer(answer);
-        getForwardAnswer(answer).getLock.getCondition().notify();
-    }
-}
-</code></pre>
-
-<p>这里forwardAnswer是一个包含了响应结果和一个锁的对象(这里用到了Java的Condition.wait&amp;notify机制，从而使阻塞线程交出控制权，避免更多CPU轮询)。还有一部分是multiUDPReceiver。这里multiUDPReceiver.putForwardAnswer(query, forwardAnswer)实际上是把forwardAnswer注册到一个Map里。</p>
-
-<p>这样做的好处是仅仅在一个线程检查原本的多路I/O是否就绪，也就是I/O multiplexing。这跟Linux下select模型是一样的。</p>
-
-<h3>AIO模型(Asynchronous I/O)</h3>
-
-<p>BlackHoleJ 1.1.3开始，使用了基于回调的AIO模型。这里建立了UDPConnectionResponser对象，里面封装了client的IP和来源端口号。每次收到外部DNS响应时，再根据响应内容找到这个client的IP和来源端口号，重新发送即可。</p>
-
-<p>这实际上就是封装了callback的异步IO。</p>
-
-<p><img src="http://code4craft.github.com/images/posts/aio.png" alt="image" /></p>
-
-<p>发送方的伪代码大概是这样：</p>
-
-<pre><code>public void forward(byte[] queryBytes) {
-    multiUDPReceiver.putForwardAnswer(query, forwardAnswer);
-    forward(queryBytes);
-}
-</code></pre>
-
-<p>接收方的代码大概是这样：</p>
-
-<pre><code>public void receive() {
-    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
-    while (true) {
-        datagramChannel.receive(byteBuffer);
-        final byte[] answer = Arrays.copyOfRange(byteBuffer.array(), 0, 512);
-        getForwardAnswer(answer).getResponser().response(answer);
-    }
-}
-</code></pre>
-
-<p>这里getResponser().response()直接将结果返回给客户端。</p>
-
-<h3>测试：</h3>
-
-<p>使用queryperf进行了测试，使用AIO模型之后，仅仅单线程就达到了40000qps，比1.1.2效率高出了25%，而CPU开销却有了降低。</p>
 ]]></content>
   </entry>
   
