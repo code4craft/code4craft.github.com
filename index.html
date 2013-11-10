@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="我们常说，这个世界太浮躁。实际上也是如此，今年小孩出生，同时又买了房子，生活上的压力顿时压下来，差点趴下了。但是我是个老实人，急躁又有什么用呢，还不是每天上班下班，下班看书写代码，没有那个业余找钱的能力，于是也就算了，安心搞点好玩的。 ">
+  <meta name="description" content="一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！ 双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！ ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-11T07:50:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！</p>
+
+<p>双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/11/webmagic-avalon-start/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -485,71 +528,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">webmagic的设计机制及原理-如何开发一个Java爬虫</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-18T14:52:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://code4craft.github.io/images/posts/spider.jpeg" alt="image" /></p>
-
-<p>之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。</p>
-
-<h2>webmagic的目标</h2>
-
-<p>一般来说，一个爬虫包括几个部分：</p>
-
-<ul>
-<li><p>页面下载</p>
-
-<p> 页面下载是一个爬虫的基础。下载页面之后才能进行其他后续操作。</p></li>
-<li><p>链接提取</p>
-
-<p> 一般爬虫都会有一些初始的种子URL，但是这些URL对于爬虫是远远不够的。爬虫在爬页面的时候，需要不断发现新的链接。</p></li>
-<li><p>URL管理</p>
-
-<p> 最基础的URL管理，就是对已经爬过的URL和没有爬的URL做区分，防止重复爬取。</p></li>
-<li><p>内容分析和持久化</p>
-
-<p> 一般来说，我们最终需要的都不是原始的HTML页面。我们需要对爬到的页面进行分析，转化成结构化的数据，并存储下来。</p></li>
-</ul>
-
-
-<p>不同的爬虫，对这几部分的要求是不一样的。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -582,6 +560,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/11/08/wu-ze-ren-li-zhi/">无责任励志一则-成功就是把你做的事做精致</a>
       </li>
     
@@ -595,10 +577,6 @@
     
       <li class="post">
         <a href="/blog/2013/10/20/java-bytecode/">Java字节码织入技术概述</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a>
       </li>
     
   </ul>

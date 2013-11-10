@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。 jsocks的改造 首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。 今天把jsocks修改了下， &hellip;">
+  <meta name="description" content="之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。 webmagic的目标 一般来说，一个爬虫包括几个部分： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,71 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">webmagic的设计机制及原理-如何开发一个Java爬虫</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-18T14:52:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://code4craft.github.io/images/posts/spider.jpeg" alt="image" /></p>
+
+<p>之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。</p>
+
+<h2>webmagic的目标</h2>
+
+<p>一般来说，一个爬虫包括几个部分：</p>
+
+<ul>
+<li><p>页面下载</p>
+
+<p> 页面下载是一个爬虫的基础。下载页面之后才能进行其他后续操作。</p></li>
+<li><p>链接提取</p>
+
+<p> 一般爬虫都会有一些初始的种子URL，但是这些URL对于爬虫是远远不够的。爬虫在爬页面的时候，需要不断发现新的链接。</p></li>
+<li><p>URL管理</p>
+
+<p> 最基础的URL管理，就是对已经爬过的URL和没有爬的URL做区分，防止重复爬取。</p></li>
+<li><p>内容分析和持久化</p>
+
+<p> 一般来说，我们最终需要的都不是原始的HTML页面。我们需要对爬到的页面进行分析，转化成结构化的数据，并存储下来。</p></li>
+</ul>
+
+
+<p>不同的爬虫，对这几部分的要求是不一样的。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -472,47 +537,6 @@ jhat -J-Xmx512m dumpfile
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/17/intellijshi-yong-xin-de/">IntelliJ使用心得</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-17T21:18:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近尝鲜试用了一下IntelliJ，使用下来还是比较爽的，最后我这个很少花钱买软件的人，也在oschina上买了个人版。IDE毕竟是码农干活的家伙，想想也值了。使用的时候有一些心得，记录下来。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/17/intellijshi-yong-xin-de/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -547,6 +571,10 @@ jhat -J-Xmx512m dumpfile
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/11/08/wu-ze-ren-li-zhi/">无责任励志一则-成功就是把你做的事做精致</a>
       </li>
     
@@ -560,10 +588,6 @@ jhat -J-Xmx512m dumpfile
     
       <li class="post">
         <a href="/blog/2013/10/20/java-bytecode/">Java字节码织入技术概述</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a>
       </li>
     
   </ul>

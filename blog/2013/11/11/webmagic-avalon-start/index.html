@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>一个shell下的todolist - 代码人生</title>
+  <title>WebMagic-Avalon计划启动 - 代码人生</title>
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="使用和文件保存都挺简单，试试看吧！ http://todotxt.com/貌似还能同步到手机端？ 下载之后， ln -s xxx/todo.sh /usr/local/bin/todo 貌似这样会把东西存到/usr/local/bin/todo.txt里？不管了！
-">
+  <meta name="description" content="一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！ 双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！ 1. 将爬虫脚本化 用尽量自然，简单的语言达到爬虫配置的目的， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/28/todolist/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/11/11/webmagic-avalon-start/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -68,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">一个shell下的todolist</h1>
+      <h1 class="entry-title">WebMagic-Avalon计划启动</h1>
     
     
       <p class="meta">
@@ -84,23 +83,58 @@
   
 
 
-<time datetime="2013-06-28T10:17:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2013</time>
+<time datetime="2013-11-11T07:50:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>使用和文件保存都挺简单，试试看吧！</p>
+<div class="entry-content"><p>一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！</p>
 
-<p><a href="http://todotxt.com/">http://todotxt.com/</a>貌似还能同步到手机端？</p>
+<p>双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！</p>
 
-<p>下载之后，</p>
+<!--more-->
 
-<pre><code>ln -s xxx/todo.sh /usr/local/bin/todo
-</code></pre>
 
-<p>貌似这样会把东西存到/usr/local/bin/todo.txt里？不管了！</p>
+<h3>1. 将爬虫脚本化</h3>
+
+<p>用尽量自然，简单的语言达到爬虫配置的目的，初定使用JRuby，雏形大概是这样子：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">title</span> <span class="o">=</span> <span class="n">css</span> <span class="s">&quot;div.BlogTitle h1&quot;</span>
+</span><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="n">css</span> <span class="s">&quot;div.BlogContent&quot;</span>
+</span><span class='line'><span class="n">urls</span> <span class="s">&quot;http://my\\.oschina\\.net/flashsword/blog/\\d+&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>见博客：<a href="http://my.oschina.net/flashsword/blog/175349">在webmagic中加入了自定义语言</a></p>
+
+<h3>2. 完整的管理后台</h3>
+
+<p>完整的管理后台，包括：</p>
+
+<ul>
+<li><p>规则的选择</p></li>
+<li><p>爬虫的管理</p></li>
+<li><p>爬虫的监控</p></li>
+</ul>
+
+
+<h3>3. 脚本分享</h3>
+
+<p>一个脚本要做到可分享，可能包括几个描述性内容：</p>
+
+<ul>
+<li><p>适配的URL</p></li>
+<li><p>简单描述</p></li>
+<li><p>抽取结果</p></li>
+</ul>
+
+
+<p>最后做到一个平台，可以自由发布和搜索脚本。</p>
 </div>
 
 
@@ -123,7 +157,7 @@
   
 
 
-<time datetime="2013-06-28T10:17:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2013</time>
+<time datetime="2013-11-11T07:50:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
       
 
 
@@ -131,7 +165,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/28/todolist/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/28/todolist/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/11/11/webmagic-avalon-start/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/11/11/webmagic-avalon-start/" >Tweet</a>
   
   
   
@@ -140,10 +174,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" title="Previous Post: 写了个快捷保存文本的shell工具">&laquo; 写了个快捷保存文本的shell工具</a>
+        <a class="basic-alignment left" href="/blog/2013/11/08/wu-ze-ren-li-zhi/" title="Previous Post: 无责任励志一则-成功就是把你做的事做精致">&laquo; 无责任励志一则-成功就是把你做的事做精致</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/03/show-in-github/" title="Next Post: 玩转github之--神啊满足我的虚荣心吧">玩转github之--神啊满足我的虚荣心吧 &raquo;</a>
       
     </p>
   </footer>
