@@ -9,7 +9,7 @@ categories:
 
 当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重，大部分时间都要花费在web的配置上，最终还要使用一个容器去启动它，程序流程也无法由我来控制了。
 
-其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架[exrepss.java](https://github.com/code4craft/express.java)。
+其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架[express.java](https://github.com/code4craft/express.java)。
 
 本来开始雄心勃勃的要用netty自己写一个，但是后来遇到尴尬的地方：自己写一套HttpMessage类，设计API其实挺麻烦的，设计得好更是需要时间。如果要重用HttpServletRequest/Response呢，实现起来又太费劲。于是后来还是直接用Jetty写了，就不重复造轮子了。
 
