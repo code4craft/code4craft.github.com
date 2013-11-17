@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>小轮子一枚-高仿express的Java服务器 - 代码人生</title>
+  <meta name="author" content="黄亿华">
+
+  
+  <meta name="description" content="之前做了个Java项目MockSocks，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。 当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2013/11/17/express-dot-java/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="代码人生" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">代码人生</a></h1>
+  
+    <h2>人生就是不断探索的过程.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">小轮子一枚-高仿express的Java服务器</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-17T18:36:00+08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>之前做了个Java项目<a href="https://github.com/code4craft/mocksocks">MockSocks</a>，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。</p>
+
+<p>当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重，大部分时间都要花费在web的配置上，最终还要使用一个容器去启动它，程序流程也无法由我来控制了。</p>
+
+<p>其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架<a href="https://github.com/code4craft/express.java">exrepss.java</a>。</p>
+
+<p>Web框架已经到了汗牛充栋的地步，所以也没想跟谁谁比，完成的是自己的需求就够了。</p>
+
+<p>这个WebServer可以在程序内启动，由<code>UrlRouter</code>来完成路由，并路由到对应的<code>Controller</code>上。比较大的特色就是支持动态增加Controller和映射，这样对于新增是非常方便的。例如我有个service里有个状态<code>count</code>，那么我可以这么写：</p>
+
+<figure class='code'><figcaption><span>ServiceMonitor </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceMonitor</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">count</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">WebServer</span> <span class="n">webServer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">ServiceMonitor</span><span class="o">(</span><span class="n">WebServer</span> <span class="n">webServer</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">webServer</span> <span class="o">=</span> <span class="n">webServer</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">monitor</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">monitor</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">webServer</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;/service/count&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">AjaxController</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          <span class="nd">@Override</span>
+</span><span class='line'>          <span class="kd">public</span> <span class="n">Object</span> <span class="nf">ajax</span><span class="o">(</span><span class="n">ParamMap</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="n">ResultMap</span><span class="o">.</span><span class="na">create</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">,</span> <span class="n">count</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">});</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">WebServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">WebServer</span><span class="o">.</span><span class="na">jettyServer</span><span class="o">().</span><span class="na">port</span><span class="o">(</span><span class="mi">8080</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">ServiceMonitor</span> <span class="n">serviceMonitor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServiceMonitor</span><span class="o">(</span><span class="n">server</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">serviceMonitor</span><span class="o">.</span><span class="na">count</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当然这样分散式分配其实会带来一些url的管理问题，不过小项目呢，应该是更方便了。没有想过用这个写web应用，所以目前的定位就是这样子了。</p>
+
+<p><a href="http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/">http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">黄亿华</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-17T18:36:00+08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/11/17/express-dot-java/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/11/17/express-dot-java/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/11/11/webmagic-avalon-start/" title="Previous Post: WebMagic-Avalon计划启动">&laquo; WebMagic-Avalon计划启动</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/17/express-dot-java/">小轮子一枚-高仿express的Java服务器</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/08/wu-ze-ren-li-zhi/">无责任励志一则-成功就是把你做的事做精致</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/03/qconjian-wen/">qcon见闻</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/30/ji-zhu-lu-xian-de-xuan-ze/">技术路线的选择</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - 黄亿华 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

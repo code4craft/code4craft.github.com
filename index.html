@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！ 双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！ ">
+  <meta name="description" content="之前做了个Java项目MockSocks，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。 当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -37,7 +37,7 @@
   <header role="banner"><hgroup>
   <h1><a href="/">代码人生</a></h1>
   
-    <h2>A blog for coder lost in career.</h2>
+    <h2>人生就是不断探索的过程.</h2>
   
 </hgroup>
 
@@ -64,6 +64,118 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/17/express-dot-java/">小轮子一枚-高仿express的Java服务器</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-17T18:36:00+08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前做了个Java项目<a href="https://github.com/code4craft/mocksocks">MockSocks</a>，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。</p>
+
+<p>当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重，大部分时间都要花费在web的配置上，最终还要使用一个容器去启动它，程序流程也无法由我来控制了。</p>
+
+<p>其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架<a href="https://github.com/code4craft/express.java">exrepss.java</a>。</p>
+
+<p>Web框架已经到了汗牛充栋的地步，所以也没想跟谁谁比，完成的是自己的需求就够了。</p>
+
+<p>这个WebServer可以在程序内启动，由<code>UrlRouter</code>来完成路由，并路由到对应的<code>Controller</code>上。比较大的特色就是支持动态增加Controller和映射，这样对于新增是非常方便的。例如我有个service里有个状态<code>count</code>，那么我可以这么写：</p>
+
+<figure class='code'><figcaption><span>ServiceMonitor </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceMonitor</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">count</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">WebServer</span> <span class="n">webServer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">ServiceMonitor</span><span class="o">(</span><span class="n">WebServer</span> <span class="n">webServer</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">webServer</span> <span class="o">=</span> <span class="n">webServer</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">monitor</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">monitor</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">webServer</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;/service/count&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">AjaxController</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          <span class="nd">@Override</span>
+</span><span class='line'>          <span class="kd">public</span> <span class="n">Object</span> <span class="nf">ajax</span><span class="o">(</span><span class="n">ParamMap</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="n">ResultMap</span><span class="o">.</span><span class="na">create</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">,</span> <span class="n">count</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">});</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">WebServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">WebServer</span><span class="o">.</span><span class="na">jettyServer</span><span class="o">().</span><span class="na">port</span><span class="o">(</span><span class="mi">8080</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">ServiceMonitor</span> <span class="n">serviceMonitor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServiceMonitor</span><span class="o">(</span><span class="n">server</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">serviceMonitor</span><span class="o">.</span><span class="na">count</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当然这样分散式分配其实会带来一些url的管理问题，不过小项目呢，应该是更方便了。没有想过用这个写web应用，所以目前的定位就是这样子了。</p>
+
+<p><a href="http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/">http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -483,51 +595,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/03/sum/">工作满两年时候的总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-03T15:15:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近工作处于低靡状态。公司玩转型，但是也没转出个啥效果。组里转到前端开发了，产品方向不定，至今也没做出个啥玩意来。工作内容缺少挑战性，更多是跟产品形态打交道了。不是很喜欢这个领域。升职的事也说不准，虽然自己只有两年工作经验，但是由于读书太久，岁数却接近30了，有点危机感。</p>
-
-<p>生活上丰富多彩。女儿出生了，开始操心起来了。压力也大了些，要计划买房了。老婆工作不顺利，不过她自己也没太大所谓，随遇而安吧。</p>
-
-<p>业余项目也挺丰富。BlackHoleJ和webmagic有了不少star了，都有了公司级用户，也得到了不少赞扬。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/03/sum/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -560,6 +627,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/11/17/express-dot-java/">小轮子一枚-高仿express的Java服务器</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a>
       </li>
     
@@ -573,10 +644,6 @@
     
       <li class="post">
         <a href="/blog/2013/10/30/ji-zhu-lu-xian-de-xuan-ze/">技术路线的选择</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/20/java-bytecode/">Java字节码织入技术概述</a>
       </li>
     
   </ul>

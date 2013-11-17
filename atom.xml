@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-11T07:51:47+08:00</updated>
+  <updated>2013-11-17T21:18:12+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[小轮子一枚-高仿express的Java服务器]]></title>
+    <link href="http://code4craft.github.com/blog/2013/11/17/express-dot-java/"/>
+    <updated>2013-11-17T18:36:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/11/17/express-dot-java</id>
+    <content type="html"><![CDATA[<p>之前做了个Java项目<a href="https://github.com/code4craft/mocksocks">MockSocks</a>，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。</p>
+
+<p>当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重，大部分时间都要花费在web的配置上，最终还要使用一个容器去启动它，程序流程也无法由我来控制了。</p>
+
+<p>其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架<a href="https://github.com/code4craft/express.java">exrepss.java</a>。</p>
+
+<p>Web框架已经到了汗牛充栋的地步，所以也没想跟谁谁比，完成的是自己的需求就够了。</p>
+
+<p>这个WebServer可以在程序内启动，由<code>UrlRouter</code>来完成路由，并路由到对应的<code>Controller</code>上。比较大的特色就是支持动态增加Controller和映射，这样对于新增是非常方便的。例如我有个service里有个状态<code>count</code>，那么我可以这么写：</p>
+
+<figure class='code'><figcaption><span>ServiceMonitor </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceMonitor</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">count</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">WebServer</span> <span class="n">webServer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">ServiceMonitor</span><span class="o">(</span><span class="n">WebServer</span> <span class="n">webServer</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">webServer</span> <span class="o">=</span> <span class="n">webServer</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">monitor</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">monitor</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">webServer</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;/service/count&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">AjaxController</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          <span class="nd">@Override</span>
+</span><span class='line'>          <span class="kd">public</span> <span class="n">Object</span> <span class="nf">ajax</span><span class="o">(</span><span class="n">ParamMap</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="n">ResultMap</span><span class="o">.</span><span class="na">create</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">,</span> <span class="n">count</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">});</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">WebServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">WebServer</span><span class="o">.</span><span class="na">jettyServer</span><span class="o">().</span><span class="na">port</span><span class="o">(</span><span class="mi">8080</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">ServiceMonitor</span> <span class="n">serviceMonitor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServiceMonitor</span><span class="o">(</span><span class="n">server</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">serviceMonitor</span><span class="o">.</span><span class="na">count</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当然这样分散式分配其实会带来一些url的管理问题，不过小项目呢，应该是更方便了。没有想过用这个写web应用，所以目前的定位就是这样子了。</p>
+
+<p><a href="http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/">http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[WebMagic-Avalon计划启动]]></title>
@@ -1435,58 +1520,6 @@ S0     S1     E      O      P     YGC     YGCT    FGC    FGCT     GCT
 <p>跑一遍之后，将所有输出的文件，合并到一起，并加上wp的<a href="https://github.com/code4craft/webmagic/tree/master/webmagic-samples/src/main/resources">头尾</a>，就是wordpress-backup.xml了！</p>
 
 <p>代码已开源<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a><strike>有什么邪恶用途你懂的…</strike></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[2013年半年总结及计划]]></title>
-    <link href="http://code4craft.github.com/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua/"/>
-    <updated>2013-06-07T07:08:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/06/07/2013nian-ban-nian-zong-jie-ji-ji-hua</id>
-    <content type="html"><![CDATA[<p>2013年前半年搞Scrum，工作忙了不少，但是却是瞎忙的多。</p>
-
-<p>持续维护<code>BlackHole</code>半年时间，github上有了 <strong>24</strong> 个star，半年来最大的成果。</p>
-
-<!-- more -->
-
-
-<p>看了 <strong> 3 </strong> 本书，比较少：</p>
-
-<p>《git权威指南》、《硝烟中的Scrum和XP》、《七周七语言》</p>
-
-<p>又写了两个项目：</p>
-
-<p><code>webmagic</code>(爬虫框架)和<code>hostd</code>(BlackHole衍生管理工具)</p>
-
-<p>阅读代码：</p>
-
-<p>读了公司的JMS框架swallow、RPC框架Pigeon。</p>
-
-<p>尝试阅读Jetty源码，未果。</p>
-
-<p>学些了一门新语言：</p>
-
-<p><code>Javascript</code></p>
-
-<p>写了20篇技术博客，有一篇上了oschina首页。</p>
-
-<p>在微博上做了个<code>每天学点新工具</code>系列，发了 <strong> 7 </strong> 条微博。</p>
-
-<p>量上有所下降，特别是读书一项。</p>
-
-<p>玩新东西多了，钻研少了。</p>
-
-<p>下半年的计划是找一个Web服务器进行深入研究。</p>
-
-<p>Jetty、Tomcat、Netty、nginx选一个吧。</p>
-
-<p>Jetty最简单，看到一半了，学习的应该是架构、设计的东西。</p>
-
-<p>Tomcat比较复杂，据说代码可读性也不太好，但是毕竟是目前使用的容器，可以试试。</p>
-
-<p>Netty，学好这个，做个中间件是信手拈来的事，这方面需求挺多的。难处是用的比较少，难以把握其原理。</p>
-
-<p>nginx源码挑战最大，但是收获应该最多，进入c世界？BlackHole自认为也是一个高性能服务器了，跟nginx比比，这样会对高性能Web服务有个全面的认识。</p>
 ]]></content>
   </entry>
   
