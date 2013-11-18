@@ -65,7 +65,7 @@ XWork包括Action/Interceptor/Result几个大部分，还有用于执行流程�
 
 当Struts捕获到参数时，会交由ognl进行参数转换。我们都知道Struts是通过setter方法进行的参数注入，更进一步的，它是通过ognl表达式来查找方法，并进行属性注入，代码在`OgnlRuntime.setProperty`里。
 
-那么如果注入不成功呢？`OgnlRuntime`会抛出`MethodFailedException`，然后`ConversionErrorInterceptor`会将`原始参数`注入到`invocation.getStack()`中去，而最终freemarker会读取这个原始数据，并打印到页面上(`FreemarkerResult`)！这个时候，无论字段最终值是什么都不重要了，因为在ognl的Stack里，它已经被原始值给override了！
+那么如果注入不成功呢？`OgnlRuntime`会抛出`MethodFailedException`，然后`ConversionErrorInterceptor`会将`原始参数`注入到`invocation.getStack()`中去，而最终freemarker会读取这个原始数据，并打印到页面上(`FreemarkerResult`)！这个时候，无论字段最终值是什么都不重要了，因为在ognl的Stack里，它已经用原始值给override了！插一句，其实这个值貌似是为了debug用的，会返回名字为"input"的result，这样会返回找不到方法的404页面，但是公司使用的貌似不太好用，仍然会正常返回！
 
 {% codeblock lang:java ConversionErrorInterceptor %}
 if (fakie != null) {
@@ -90,11 +90,11 @@ if (fakie != null) {
 
 ![lukasz][2]
 
+![s][3]
+
 被lead亮瞎了！亲力亲为，这才是开源项目的氛围嘛！
 
-不过呢，我还是希望自己定义interceptor，或许去掉`ConversionErrorInterceptor`是个不错的主意？怎么自定义呢？貌似没办法自定义单个interceptor，但是可以定义一个stack。
-
-怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。
+不过呢，即使大神&作者都发话了，我还是希望有框架内的方案，或许去掉`ConversionErrorInterceptor`是个不错的主意？怎么自定义呢？貌似没办法自定义单个interceptor，但是可以定义一个stack。怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。修改过的代码：[https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml](https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml)
 
 本文中的解决方案存在风险，请使用之前先进行测试！
 
@@ -104,3 +104,4 @@ if (fakie != null) {
 
 [1]: http://static.oschina.net/uploads/space/2013/1115/001209_ikf2_190591.jpg
 [2]: http://static.oschina.net/uploads/space/2013/1118/212211_F15d_190591.jpg
+[3]: http://static.oschina.net/uploads/space/2013/1118/215911_jxug_190591.jpeg
