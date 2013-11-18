@@ -25,7 +25,8 @@
 14
 15
 16
-17 public class DemoAction extends ActionSupport { private &hellip;">
+17
+public class DemoAction extends ActionSupport { private &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -131,78 +132,34 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAction</span> <span class="kd">extends</span> <span class="n">ActionSupport</span> <span class="o">{</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAction</span> <span class="kd">extends</span> <span class="n">ActionSupport</span> <span class="o">{</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>            <span class="nd">@Override</span>
-</span><span class='line'>            <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>                    <span class="k">return</span> <span class="s">&quot;success&quot;</span><span class="o">;</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="s">&quot;success&quot;</span><span class="o">;</span>
 </span><span class='line'>        <span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>模板用的是freemarker，大致是这样子：</p>
 
-<figure class='code'><figcaption><span>demo.ftl </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">&quot;G_N&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;body</span> <span class="na">id=</span><span class="s">&quot;top&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    ${id}
-</span><span class='line'>    <span class="nt">&lt;/body&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果我们访问url<code>/demo?id=&lt;script&gt;alert("xss!")&lt;/script&gt;</code>，会发现id的参数原封不动的打印到了页面上，就会出现反射型xss!</p>
-
-<h2>二：struts2概览</h2>
-
-<p>struts2结构图如下(自己画的，可能不严谨)：</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2013/1115/001209_ikf2_190591.jpg" alt="struts2" /></p>
-
-<p>OGNL是底层的表达式引擎，也是安全方面广为诟病的地方。</p>
-
-<p>XWork是个什么东西呢？它可以理解为一个请求-响应模式的通用框架(不仅仅局限于Web)，这个Action就是一个命令。而struts2可以说是XWork在web领域的一个特定实现。</p>
-
-<p>XWork是包括Action/Interceptor/Result几个大部分，还有用于执行流程的ActionProxy和ActionInvoker，以及处理数据的ActionContext和ValueStack。XWork的执行流程如下(这里引用了《Struts2技术内幕》的图)：</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2013/1115/002314_eEkN_190591.png" alt="xwork" /></p>
-
-<h2>三：详情</h2>
-
-<p>参考资料：</p>
-
-<ol>
-<li>《Struts2技术内幕》<a href="http://book.douban.com/subject/7154446/">http://book.douban.com/subject/7154446/</a></li>
-</ol>
 
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/18/struts2/">Read on &rarr;</a>
+    </footer>
   
 
 
