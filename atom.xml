@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-17T21:35:02+08:00</updated>
+  <updated>2013-11-18T09:51:12+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,106 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Struts2一个[安全问题]的分析报告]]></title>
+    <link href="http://code4craft.github.com/blog/2013/11/18/struts2/"/>
+    <updated>2013-11-18T09:42:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/11/18/struts2</id>
+    <content type="html"><![CDATA[<h2>一：起因</h2>
+
+<p>最近公司代码被扫出有一个xss漏洞，检查之后，发现大致是这样一个页面：</p>
+
+<figure class='code'><figcaption><span>DemoAction </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAction</span> <span class="kd">extends</span> <span class="n">ActionSupport</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nd">@Override</span>
+</span><span class='line'>            <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="k">return</span> <span class="s">&quot;success&quot;</span><span class="o">;</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>模板用的是freemarker，大致是这样子：</p>
+
+<figure class='code'><figcaption><span>demo.ftl </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">&quot;G_N&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;body</span> <span class="na">id=</span><span class="s">&quot;top&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    ${id}
+</span><span class='line'>    <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果我们访问url<code>/demo?id=&lt;script&gt;alert("xss!")&lt;/script&gt;</code>，会发现id的参数原封不动的打印到了页面上，就会出现反射型xss!</p>
+
+<h2>二：struts2概览</h2>
+
+<p>struts2结构图如下(自己画的，可能不严谨)：</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2013/1115/001209_ikf2_190591.jpg" alt="struts2" /></p>
+
+<p>OGNL是底层的表达式引擎，也是安全方面广为诟病的地方。</p>
+
+<p>XWork是个什么东西呢？它可以理解为一个请求-响应模式的通用框架(不仅仅局限于Web)，这个Action就是一个命令。而struts2可以说是XWork在web领域的一个特定实现。</p>
+
+<p>XWork是包括Action/Interceptor/Result几个大部分，还有用于执行流程的ActionProxy和ActionInvoker，以及处理数据的ActionContext和ValueStack。XWork的执行流程如下(这里引用了《Struts2技术内幕》的图)：</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2013/1115/002314_eEkN_190591.png" alt="xwork" /></p>
+
+<h2>三：详情</h2>
+
+<p>参考资料：</p>
+
+<ol>
+<li>《Struts2技术内幕》<a href="http://book.douban.com/subject/7154446/">http://book.douban.com/subject/7154446/</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[小轮子一枚-高仿express的Java服务器]]></title>
@@ -1450,82 +1550,6 @@ S0     S1     E      O      P     YGC     YGCT    FGC    FGCT     GCT
 <p>换到AIR最不习惯的是屏幕，PRO的屏幕是1280*800，AIR的屏幕是1440x900，所以字总是特小，原来12pt的字体非要14pt才能显示出来，MAC还没法设置默认字体，只能装了个Tinker Tool。设置之后，各种丑和切边…没办法，办公用，眼睛不累是原则！</p>
 
 <p>换电脑之后，得把老的东西弄过来。这次RVM倒是一次成功了，换了gem的source为淘宝的，更新还挺快的。octpress又重新装了一次，好像ruby的包好多都是安装到一个目录下可用的？最后只能把原来的octpress连同博客一起拷贝过来了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用webmagic抓取页面并保存为wordpress文件]]></title>
-    <link href="http://code4craft.github.com/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/"/>
-    <updated>2013-06-10T18:05:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian</id>
-    <content type="html"><![CDATA[<p>之前做过一年的爬虫，当年功力不够，写的代码都是一点一点往上加。后来看了下据说是最优秀的爬虫<a href="http://www.oschina.net/p/scrapy"><code>scrapy</code></a>的结构，山寨了一个Java版的爬虫框架。</p>
-
-<p>这个框架也分为Spider、Schedular、Downloader、Pipeline几个模块。此外有一个Selector，整合了常用的抽取技术(正则、xpath)，支持链式调用以及单复数切换，因为受够了各种抽取的正则，在抽取上多下了一点功夫。</p>
-
-<!-- more -->
-
-
-<p>废话不多，上代码。在webmagic里直接实现PageProcessor接口，即可实现一个爬虫。例如对我的点点博客<a href="http://progressdaily.diandian.com/">http://progressdaily.diandian.com/</a>进行抓取：</p>
-
-<pre><code>    public class DiandianBlogProcessor implements PageProcessor {
-
-        private Site site;
-
-        @Override
-        public void process(Page page) {
-            //a()表示提取链接，as()表示提取所有链接
-            //getHtml()返回Html对象，支持链式调用
-            //r()表示用正则表达式提取一条内容，rs()表示提取多条内容
-            //toString()表示取单条结果，toStrings()表示取多条
-            List&lt;String&gt; requests = page.getHtml().as().rs("(.*/post/.*)").toStrings();
-            //使用page.addTargetRequests()方法将待抓取的链接加入队列
-            page.addTargetRequests(requests);
-            //page.putField(key,value)将抽取的内容加入结果Map
-            //x()和xs()使用xpath进行抽取
-            page.putField("title", page.getHtml().x("//title").r("(.*?)\\|"));
-            //sc()使用readability技术直接抽取正文，对于规整的文本有比较好的抽取正确率
-            page.putField("content", page.getHtml().sc());
-            page.putField("date", page.getUrl().r("post/(\\d+-\\d+-\\d+)/"));
-            page.putField("id", page.getUrl().r("post/\\d+-\\d+-\\d+/(\\d+)"));
-        }
-
-        @Override
-        public Site getSite() {
-            //site定义抽取配置，以及开始url等
-            if (site == null) {
-                site = Site.me().setDomain("progressdaily.diandian.com").setStartUrl("http://progressdaily.diandian.com/").
-                        setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
-            }
-            return site;
-        }
-    }
-</code></pre>
-
-<p>然后实现抓取代码：</p>
-
-<pre><code>    public class DiandianProcessorTest {
-
-        @Test
-        public void test() throws IOException {
-            DiandianBlogProcessor diandianBlogProcessor = new DiandianBlogProcessor();
-            //pipeline是抓取结束后的处理
-            //ftl文件放到classpath:ftl/文件夹下
-            //默认放到/data/temp/webmagic/ftl/[domain]目录下
-            FreemarkerPipeline pipeline = new FreemarkerPipeline("wordpress.ftl");
-            //Spider.me()是简化写法，其实就是new一个啦
-            //Spider.pipeline()设定一个pipeline，支持链式调用
-            //ConsolePipeline输出结果到控制台
-            //FileCacheQueueSchedular保存url，支持断点续传，临时文件输出到/data/temp/webmagic/cache目录
-            //Spider.run()执行
-            Spider.me().pipeline(new ConsolePipeline()).pipeline(pipeline).schedular(new FileCacheQueueSchedular(diaoyuwengProcessor.getSite(), "/data/temp/webmagic/cache/")).
-                    processor(diaoyuwengProcessor).run();
-        }
-    }
-</code></pre>
-
-<p>跑一遍之后，将所有输出的文件，合并到一起，并加上wp的<a href="https://github.com/code4craft/webmagic/tree/master/webmagic-samples/src/main/resources">头尾</a>，就是wordpress-backup.xml了！</p>
-
-<p>代码已开源<a href="https://github.com/code4craft/webmagic">https://github.com/code4craft/webmagic</a><strike>有什么邪恶用途你懂的…</strike></p>
 ]]></content>
   </entry>
   
