@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-18T21:43:44+08:00</updated>
+  <updated>2013-11-18T22:01:00+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -109,7 +109,7 @@
 
 <p>当Struts捕获到参数时，会交由ognl进行参数转换。我们都知道Struts是通过setter方法进行的参数注入，更进一步的，它是通过ognl表达式来查找方法，并进行属性注入，代码在<code>OgnlRuntime.setProperty</code>里。</p>
 
-<p>那么如果注入不成功呢？<code>OgnlRuntime</code>会抛出<code>MethodFailedException</code>，然后<code>ConversionErrorInterceptor</code>会将<code>原始参数</code>注入到<code>invocation.getStack()</code>中去，而最终freemarker会读取这个原始数据，并打印到页面上(<code>FreemarkerResult</code>)！这个时候，无论字段最终值是什么都不重要了，因为在ognl的Stack里，它已经被原始值给override了！</p>
+<p>那么如果注入不成功呢？<code>OgnlRuntime</code>会抛出<code>MethodFailedException</code>，然后<code>ConversionErrorInterceptor</code>会将<code>原始参数</code>注入到<code>invocation.getStack()</code>中去，而最终freemarker会读取这个原始数据，并打印到页面上(<code>FreemarkerResult</code>)！这个时候，无论字段最终值是什么都不重要了，因为在ognl的Stack里，它已经用原始值给override了！插一句，其实这个值貌似是为了debug用的，会返回名字为&#8221;input&#8221;的result，这样会返回找不到方法的404页面，但是公司使用的貌似不太好用，仍然会正常返回！</p>
 
 <figure class='code'><figcaption><span>ConversionErrorInterceptor </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -149,11 +149,11 @@
 
 <p><img src="http://static.oschina.net/uploads/space/2013/1118/212211_F15d_190591.jpg" alt="lukasz" /></p>
 
+<p><img src="http://static.oschina.net/uploads/space/2013/1118/215911_jxug_190591.jpeg" alt="s" /></p>
+
 <p>被lead亮瞎了！亲力亲为，这才是开源项目的氛围嘛！</p>
 
-<p>不过呢，我还是希望自己定义interceptor，或许去掉<code>ConversionErrorInterceptor</code>是个不错的主意？怎么自定义呢？貌似没办法自定义单个interceptor，但是可以定义一个stack。</p>
-
-<p>怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。</p>
+<p>不过呢，即使大神&amp;作者都发话了，我还是希望有框架内的方案，或许去掉<code>ConversionErrorInterceptor</code>是个不错的主意？怎么自定义呢？貌似没办法自定义单个interceptor，但是可以定义一个stack。怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。修改过的代码：<a href="https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml">https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml</a></p>
 
 <p>本文中的解决方案存在风险，请使用之前先进行测试！</p>
 
