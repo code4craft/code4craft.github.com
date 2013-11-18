@@ -1,0 +1,106 @@
+---
+layout: post
+title: "Struts2一个[安全问题]的分析报告"
+date: 2013-11-18 09:42
+comments: true
+categories: 
+---
+
+## 一：起因
+
+最近公司代码被扫出有一个xss漏洞，检查之后，发现大致是这样一个页面：
+
+{% codeblock lang:java DemoAction %}
+public class DemoAction extends ActionSupport {
+
+    private int id;
+
+        @Override
+        public String execute() throws Exception {
+                return "success";
+        }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+{% endcodeblock %}
+
+<!--more-->
+
+模板用的是freemarker，大致是这样子：
+
+{% codeblock lang:html demo.ftl %}
+<html class="G_N">
+<head>
+
+
+</head>
+<body id="top">
+
+${id}
+</body>
+</html>
+{% endcodeblock %}
+
+如果我们访问url`/demo?id=<script>alert("xss!")</script>`，会发现id的参数原封不动的打印到了页面上，就会出现反射型xss!
+
+## 二：问题流程
+
+分析漏洞原因前，先要稍微看一下struts结构(自己画的，可能不严谨)：
+
+![struts2][1]
+
+OGNL是底层的表达式引擎，是联系起上下文和模板输出的桥梁。
+
+XWork是个什么东西呢？它可以理解为一个请求-响应模式的通用框架(不仅仅局限于Web)，这个Action就是一个命令。而struts2可以说是XWork在web领域的一个特定实现。
+
+XWork包括Action/Interceptor/Result几个大部分，还有用于执行流程的ActionProxy和ActionInvoker，以及处理数据的ActionContext和ValueStack。
+
+所以参数的转换和注入是在XWork里进行。Struts的主要执行流程在`DefaultActionInvocation`里。大致解释一下流程：
+
+当Struts捕获到参数时，会交由ognl进行参数转换。我们都知道Struts是通过setter方法进行的参数注入，更进一步的，它是通过ognl表达式来查找方法，并进行属性注入，代码在`OgnlRuntime.setProperty`里。
+
+那么如果注入不成功呢？`OgnlRuntime`会抛出`MethodFailedException`，然后`ConversionErrorInterceptor`会将`原始参数`注入到`invocation.getStack()`中去，而最终freemarker会读取这个原始数据，并打印到页面上(`FreemarkerResult`)！这个时候，无论字段最终值是什么都不重要了，因为在ognl的Stack里，它已经被原始值给override了！
+
+{% codeblock lang:java ConversionErrorInterceptor %}
+if (fakie != null) {
+    // if there were some errors, put the original (fake) values in place right before the result
+    stack.getContext().put(ORIGINAL_PROPERTY_OVERRIDE, fakie);
+    invocation.addPreResultListener(new PreResultListener() {
+        public void beforeResult(ActionInvocation invocation, String resultCode) {
+            Map<Object, Object> fakie = (Map<Object, Object>) invocation.getInvocationContext().get(ORIGINAL_PROPERTY_OVERRIDE);
+
+            if (fakie != null) {
+            	   //注入
+                invocation.getStack().setExprOverrides(fakie);
+            }
+        }
+    });
+}
+{% endcodeblock %}
+
+## 三：求解
+
+那么怎么解决这个问题呢？本着回馈社区的精神，给Struts2官方发了一封邮件，并上传了demo到[https://github.com/code4craft/xssdemo](https://github.com/code4craft/xssdemo)。然后过了一天有个叫Lukasz Lenart的大叔程序员回复我了，老外还是很客气的，回答也很及时(算上时差)。首先确认了问题的存在，然后说这不是一个bug，你可以用${id?html}来进行输出转义。我觉得这个解决方案虽然work，但是是比较反直观的，因为一般人都会直觉上因为这里只是读取Action中的getter取值，既然是基本类型，哪会还需要转义？本来想喷回去的，又搜了一下这个Lukasz Lenart的来历，然后出来这么个：
+
+![lukasz][2]
+
+被lead亮瞎了！亲力亲为，这才是开源项目的氛围嘛！
+
+不过呢，我还是希望自己定义interceptor，或许去掉`ConversionErrorInterceptor`是个不错的主意？怎么自定义呢？貌似没办法自定义单个interceptor，但是可以定义一个stack。
+
+怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。
+
+本文中的解决方案存在风险，请使用之前先进行测试！
+
+参考资料：
+
+1. 《Struts2技术内幕》[http://book.douban.com/subject/7154446/](http://book.douban.com/subject/7154446/)
+
+[1]: http://static.oschina.net/uploads/space/2013/1115/001209_ikf2_190591.jpg
+[2]: http://static.oschina.net/uploads/space/2013/1118/212211_F15d_190591.jpg
