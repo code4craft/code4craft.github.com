@@ -86,7 +86,7 @@ if (fakie != null) {
 
 ## 三：求解
 
-那么怎么解决这个问题呢？本着回馈社区的精神，给Struts2官方发了一封邮件，并上传了demo到[https://github.com/code4craft/xssdemo](https://github.com/code4craft/xssdemo)。然后过了一天有个叫Lukasz Lenart的大叔程序员回复我了，老外还是很客气的，回答也很及时(算上时差)。首先确认了问题的存在，然后说这不是一个bug，你可以用${id?html}来进行输出转义。我觉得这个解决方案虽然work，但是是比较反直观的，因为一般人都会直觉上因为这里只是读取Action中的getter取值，既然是基本类型，哪会还需要转义？本来想喷回去的，又搜了一下这个Lukasz Lenart的来历，然后出来这么个：
+那么怎么解决这个问题呢？本着回馈社区的精神，给Struts2官方发了一封邮件，并上传了demo到[https://github.com/code4craft/xssdemo](https://github.com/code4craft/xssdemo)。然后过了一天有个叫Lukasz Lenart的大叔程序员回复我了，老外还是很客气的，回答也很及时(算上时差)。首先确认了问题的存在，然后说这不是一个bug，你可以用${id?html}来进行输出转义。我觉得这个解决方案虽然管用，但是是比较反直观的，因为一般人都会直觉上因为这里只是读取Action中的getter取值，既然是基本类型，哪会还需要转义？本来想喷回去的，又搜了一下这个Lukasz Lenart的来历，然后出来这么个：
 
 ![lukasz][2]
 
