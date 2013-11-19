@@ -7,7 +7,7 @@ categories:
 ---
 # 第一天
 
-之前在并发编程网[http://ifeve.com](http://ifeve.com)发过两篇关于netty的文章，就混进了编辑群，正好群主有两站Qcon上海的票，我又刚好在上海，就拿了一张票，请了天假，奔赴现场了。
+之前在并发编程网[http://ifeve.com](http://ifeve.com)发过两篇关于netty的文章，就混进了编辑群，正好群主有两张Qcon上海的票，我又刚好在上海，就拿了一张票，请了天假，奔赴现场了。
 
 <!--more-->
 
