@@ -272,6 +272,8 @@ public class DemoAction extends ActionSupport { private &hellip;">
 
 <p>然后在项目里将默认的<code>converionError</code>替换为我们的新类就可以了！怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。修改过的代码：<a href="https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml">https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml</a></p>
 
+<p>当然还有一种办法，就是直接在request参数中过滤。但是这里就要区分哪些需要过滤，哪些不要过滤。我们公司使用了一套在字段上加注解的方法，解决了这个问题，也是可行的，不过就需要修改代码了。</p>
+
 <p>参考资料：</p>
 
 <ol>
