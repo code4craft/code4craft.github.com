@@ -94,9 +94,22 @@ if (fakie != null) {
 
 被lead亮瞎了！亲力亲为，这才是开源项目的氛围嘛！
 
-不过呢，即使大神&作者都发话了，我还是希望有框架内的方案，或许去掉`ConversionErrorInterceptor`是个不错的主意？怎么自定义呢？貌似没办法自定义单个interceptor，但是可以定义一个stack。怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。修改过的代码：[https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml](https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml)
+不过呢，即使大神&作者都发话了，我还是希望有框架内的方案，或许默认对`ConversionErrorInterceptor`注入时进行HtmlEscape是个不错的主意？于是有了`EscapedStrutsConversionErrorInterceptor`:
 
-本文中的解决方案存在风险，请使用之前先进行测试！
+{% codeblock lang:java EscapedStrutsConversionErrorInterceptor %}
+public class EscapedStrutsConversionErrorInterceptor extends StrutsConversionErrorInterceptor{
+
+    @Override
+    protected String escape(Object value) {
+        String s = StringEscapeUtils.escapeHtml4(String.valueOf(value));
+        String escape = super.escape(s);
+        System.out.println("escape "+value+" to "+ s);
+        return escape;
+    }
+}
+{% endcodeblock %}
+
+然后在项目里将默认的`converionError`替换为我们的新类就可以了！怎么定义stack?看看struts-core包里的struts-default.xml就知道了！(PS:自定义interceptor是Struts里很有用的技巧，大家不妨自己研究一下)。修改过的代码：[https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml](https://github.com/code4craft/xssdemo/blob/master/src/main/resources/config/struts/struts.xml)
 
 参考资料：
 
