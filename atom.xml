@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-19T11:51:45+08:00</updated>
+  <updated>2013-11-19T11:54:36+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -92,6 +92,8 @@
 
 
 <p>如果我们访问url<code>/demo?id=&lt;script&gt;alert("xss!")&lt;/script&gt;</code>，会发现id的参数原封不动的打印到了页面上，就会出现反射型xss!</p>
+
+<p>代码在<a href="https://github.com/code4craft/xssdemo">https://github.com/code4craft/xssdemo</a>里的xss-demo tag下。</p>
 
 <h2>二：问题流程</h2>
 
