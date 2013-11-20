@@ -23,7 +23,7 @@
   };
 
   load_repos = function(callback) {
-    return $.getJSON(api_url + username + "/repos" + "?callback=?", callback);
+    return $.getJSON(api_url + username + "/repos" + "?per_page=100&callback=?", callback);
   };
 
   write_user_info = function(response) {
