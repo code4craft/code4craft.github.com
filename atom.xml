@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-11-22T20:45:06+08:00</updated>
+  <updated>2013-12-15T23:42:39+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2013年总结]]></title>
+    <link href="http://code4craft.github.com/blog/2013/12/15/2013-review/"/>
+    <updated>2013-12-15T23:41:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2013/12/15/2013-review</id>
+    <content type="html"><![CDATA[<p>今年是我跟老婆结婚第二年，也是工作第三年，女儿出生、买了房、工作顺利，一切都走上了正轨。</p>
+
+<!--more-->
+
+
+<h2>生活</h2>
+
+<p>女儿出生是我今年第一大事。老婆一直想要我陪护，但是因为病房不足，所以还是一个人进了产房。7月21号下午4点，老婆被推进产房，当时她脸上满是焦急，和痛苦。期间我忐忑不安，但是老婆非常坚强的完成了顺产。当宝宝被推出来的时候，我的眼泪都忍不住了，只有感觉到浓浓的血缘之情。老婆你真棒！</p>
+
+<p>宝宝出生之后，工作的动力更大了，可能自己也成熟了不少吧。</p>
+
+<p>生活上的事情我做的也不多，还好有父母以及岳母的帮忙。宝宝到现在很健康，多亏了他们，当然，还有老婆。</p>
+
+<p>在父母的资助下，10月份的时候开始了买房之旅，折腾一个月终于敲定，每个月9k的房租，也是个不小的压力。</p>
+
+<p>今年的生活上，我做的能打个70分，为我老婆打个90分。</p>
+
+<p>=======</p>
+
+<h2>工作</h2>
+
+<p>今年工作算是持续进步的一年，也有了一些成果。</p>
+
+<p>今年读的书不多，但是读了好几个项目的源码：jafka、httpclient、jsoup、netty、struts、spring，最重要的是积累了一套自己阅读源码的方式。代码写的更漂亮了，也有一些深层思考了。</p>
+
+<p>写了84篇博客，几个源码解读系列博客，都得到不少朋友的支持，能给人创造价值，感觉是很不错的。其中自我感觉最好的是Netty系列，还没写完，可以继续完善。</p>
+
+<p>5月份开源的webmagic在oschina上收获了不少人气，在完善过程中也认识了不少朋友。现在都有一点知名了呢。这个项目明年会继续完善，并做一些大动作。</p>
+
+<p>为开源项目HttpClient提交patch成功，虽然难度不大，但是毕竟是个好的开始。</p>
+
+<p>工作上得到了领导的肯定，邮件项目和一些日常工作都有了比较好的成绩，应该能得到进一步发展。</p>
+
+<p>长期的目标是能自己出本书，但是自己积累还远远不够，需要继续坚持。</p>
+
+<p>今年的工作和学习能打个90分。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[开始使用hive]]></title>
@@ -1618,19 +1662,6 @@ S0     S1     E      O      P     YGC     YGCT    FGC    FGCT     GCT
 <p>140,000个请求只产生了3次YGC，但是qps变化并不明显。看来新生代设置大之后，虽然YGC少了，但是一次回收的时间多了，最终其实没啥影响啊，那还是弄小一点好了。</p>
 
 <p>看来折腾JVM效果不明显，除了内存开销之外，其他没有明显变化。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[换电脑了]]></title>
-    <link href="http://code4craft.github.com/blog/2013/06/22/huan-dian-nao-liao/"/>
-    <updated>2013-06-22T08:57:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/06/22/huan-dian-nao-liao</id>
-    <content type="html"><![CDATA[<p>公司政策，每个人给6500软妹币报销，可以买电脑。因为刚好WWDC开完，老AIR降价，本着好用和省钱的标准，就买了老AIR一台，7388包发票。</p>
-
-<p>换到AIR最不习惯的是屏幕，PRO的屏幕是1280*800，AIR的屏幕是1440x900，所以字总是特小，原来12pt的字体非要14pt才能显示出来，MAC还没法设置默认字体，只能装了个Tinker Tool。设置之后，各种丑和切边…没办法，办公用，眼睛不累是原则！</p>
-
-<p>换电脑之后，得把老的东西弄过来。这次RVM倒是一次成功了，换了gem的source为淘宝的，更新还挺快的。octpress又重新装了一次，好像ruby的包好多都是安装到一个目录下可用的？最后只能把原来的octpress连同博客一起拷贝过来了。</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="黄亿华">
 
   
-  <meta name="description" content="【引自等你 我的朋友的博客】作为一个合格程序员每天该做的事 ">
+  <meta name="description" content="起因 最近公司在做一个邮件系统的项目，涉及到测试对外发送的环节。开始构思是这样：建立一个接收服务器，并将所有请求导向该服务器。这里面就涉及到一个DNS拦截的问题。这个问题其实在开发和测试环境中很常见，但是单是绑hosts或者使用传统DNS都不太能满足需要(不支持通配符)。 后来调研DNS工具也烦了 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/17/blackhole-develop-diary/">BlackHole开发日记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-17T23:04:00+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>起因</h3>
+
+<p>最近公司在做一个邮件系统的项目，涉及到测试对外发送的环节。开始构思是这样：建立一个接收服务器，并将所有请求导向该服务器。这里面就涉及到一个DNS拦截的问题。这个问题其实在开发和测试环境中很常见，但是单是绑hosts或者使用传统DNS都不太能满足需要(不支持通配符)。</p>
+
+<p>后来调研DNS工具也烦了，于是想自己写一个，实现简单的功能。找到一个Java的开源项目EagleDNS看了下，把UDP连接模块看了看，发现还是比较简单的。于是就构思着开发一个简单的DNS服务器吧！</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/17/blackhole-develop-diary/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -303,6 +348,10 @@ rake是个好东西。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/15/2013-review/">2013年总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/11/21/kai-shi-shi-yong-hive/">开始使用hive</a>
       </li>
     
@@ -316,10 +365,6 @@ rake是个好东西。</p>
     
       <li class="post">
         <a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/08/wu-ze-ren-li-zhi/">无责任励志一则-成功就是把你做的事做精致</a>
       </li>
     
   </ul>
