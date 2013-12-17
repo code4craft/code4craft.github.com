@@ -4,7 +4,7 @@
   <title><![CDATA[代码人生]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-12-16T07:21:57+08:00</updated>
+  <updated>2013-12-17T14:09:30+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -266,6 +266,9 @@
 <p>当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重，大部分时间都要花费在web的配置上，最终还要使用一个容器去启动它，程序流程也无法由我来控制了。</p>
 
 <p>其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架<a href="https://github.com/code4craft/express.java">express.java</a>。</p>
+
+<!--more-->
+
 
 <p>本来开始雄心勃勃的要用netty自己写一个，但是后来遇到尴尬的地方：自己写一套HttpMessage类，设计API其实挺麻烦的，设计得好更是需要时间。如果要重用HttpServletRequest/Response呢，实现起来又太费劲。于是后来还是直接用Jetty写了，就不重复造轮子了。</p>
 
@@ -599,7 +602,7 @@
 
 <p>因为项目的核心是一个Socks代理，通过这个代理捕获双方的流量，并进行后续的操作。</p>
 
-<!--- more --->
+<!--more-->
 
 
 <h2>Server</h2>
@@ -972,6 +975,9 @@
 
 <p>之前就有网友在博客里留言，觉得webmagic的实现比较有意思，想要借此研究一下爬虫。最近终于集中精力，花了三天时间，终于写完了这篇文章。之前垂直爬虫写了一年多，webmagic框架写了一个多月，这方面倒是有一些心得，希望对读者有帮助。</p>
 
+<!--more-->
+
+
 <h2>webmagic的目标</h2>
 
 <p>一般来说，一个爬虫包括几个部分：</p>
@@ -993,9 +999,6 @@
 
 
 <p>不同的爬虫，对这几部分的要求是不一样的。</p>
-
-<!--more-->
-
 
 <p>对于通用型的爬虫，例如搜索引擎蜘蛛，需要指对互联网大部分网页无差别进行抓取。这时候难点就在于页面下载和链接管理上&mdash;如果要高效的抓取更多页面，就必须进行更快的下载；同时随着链接数量的增多，需要考虑如果对大规模的链接进行去重和调度，就成了一个很大的问题。一般这些问题都会在大公司有专门的团队去解决，比如这里有一篇来自淘宝的<a href="http://www.searchtb.com/2011/07/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%8A%93%E5%8F%96%E9%9B%86%E7%BE%A4.html?spm=0.0.0.0.hHzGxv">快速构建实时抓取集群</a>。</p>
 

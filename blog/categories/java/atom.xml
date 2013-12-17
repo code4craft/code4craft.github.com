@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | 代码人生]]></title>
   <link href="http://code4craft.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-12-16T07:21:57+08:00</updated>
+  <updated>2013-12-17T14:09:30+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[黄亿华]]></name>
@@ -24,7 +24,7 @@
 
 <p>因为项目的核心是一个Socks代理，通过这个代理捕获双方的流量，并进行后续的操作。</p>
 
-<!--- more --->
+<!--more-->
 
 
 <h2>Server</h2>
