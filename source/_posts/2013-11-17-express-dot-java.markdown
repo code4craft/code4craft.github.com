@@ -11,6 +11,8 @@ categories:
 
 其实挺喜欢JMX的控制方式，只是用其他语言连接它成本有点高。于是就想仿照JMX的方式写一个Web Server，同时可嵌入到应用中。直接使用Jetty又太原生态了，URL路由/参数映射和转换总是要做的，于是参考了express的语法，就有了一个非常小的Web框架[express.java](https://github.com/code4craft/express.java)。
 
+<!--more-->
+
 本来开始雄心勃勃的要用netty自己写一个，但是后来遇到尴尬的地方：自己写一套HttpMessage类，设计API其实挺麻烦的，设计得好更是需要时间。如果要重用HttpServletRequest/Response呢，实现起来又太费劲。于是后来还是直接用Jetty写了，就不重复造轮子了。
 
 Web框架已经到了汗牛充栋的地步，所以也没想跟谁谁比，完成的是自己的需求就够了。这东西不支持任何servlet规范(HttpServletRequest/Response两个对象基于servlet 3.0)，要的就是简单。
