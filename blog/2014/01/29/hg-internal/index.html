@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>代码管理进入大数据时代 - 非典型代码强迫症</title>
+  <meta name="author" content="code4craft">
+
+  
+  <meta name="description" content="最近Facebook在它们的博客中发布了文章，说到它们扩展了Mercurial（一种代码管理工具），以管理它们日渐庞大的代码。Facebook的代码量有多大？informationisbeautiful这个网站发布过可视化一个软件代码量的介绍，Facebook的代码量大约是6000万行， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/01/29/hg-internal/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="非典型代码强迫症" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">非典型代码强迫症</a></h1>
+  
+    <h2>Coding and hacking!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">代码管理进入大数据时代</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-29T14:01:00+08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近Facebook在它们的博客中发布了文章，说到它们扩展了Mercurial（一种代码管理工具），以管理它们日渐庞大的代码。Facebook的代码量有多大？<a href="http://www.informationisbeautiful.net/visualizations/million-lines-of-code/">informationisbeautiful</a>这个网站发布过可视化一个软件代码量的介绍，Facebook的代码量大约是6000万行，超过了Windows Vista和Visual Studio 2012。</p>
+
+<p>当然这6000万行代码并没有保存在同一个仓库里。根据Facebook的文章，它们主代码仓库，大概有1700万行代码和44000个文件，并且每周有数千的提交。这样大的数据量下，我们常用的版本控制工具，包括git都不好使了，为什么呢？</p>
+
+<p>我们先了解一下版本控制工具的原理。版本控制工具（Version Control System，以下简称VCS，请与CVS分开）从早期的集中式版本控制（CVS，SVN）发展到现在的分布式版本控制（git，Mercurial），使用方式、版本策略变化了很多，但是底层的原理变化并不大。VCS的底层大概可以分为两部分：元数据（版本信息）的管理和变更集（变更文件）的管理。</p>
+
+<p>当我们进行一次提交的时候，首先VCS会产生一个版本号来唯一标记这次提交，在SVN里，这个版本号是一个自增整数，而在git里，它是一个40个字符的SHA1值，而在Mercurial则更复杂一点，它既有自增ID，又有SHA1值。然后VCS会扫描文件，看看哪些文件内容进行了修改，并把这次修改的索引信息保存下来，这就是这次提交的元数据。</p>
+
+<p>而这次被修改的文件，它也会保存下来，在git中，整个项目一次提交的内容都会被压缩并存成一个文件，以该次提交的SHA1值作为文件名，并以树形结构保存下来，又叫tree object。在Mercurial里，它会把该项目的所有提交都打包压缩到changlog文件里，并以版本号来区分，这种格式又叫Revlog。相比之下，git的文件组织更加松耦合一点，所以甚至有人认为git是一种nosql数据库 :D</p>
+
+<p>这里有点意思的是，代码君一直以为VCS对于单个文件的修改是“增量存储”的，而实际上，它是一个全量快照，但是经过了压缩的。后来想想也容易理解，如果是增量存储，那么切换版本的时候，需要把改变一个个摞上去，这个时间是难以接受的！在空间与时间之间，大家都一致选择了浪费空间换取时间！</p>
+
+<p>那么当文件数量大的时候，会出现什么问题呢？</p>
+
+<p>首先，每次提交的速度会变慢，因为每次提交都需要扫描所有文件系统，来判断是否有文件变更。如何解决呢？Facebook之前自己开发过一套监控文件变更的工具WatchMan。它会保存一个目录的文件树，并在操作系统那里注册-每当有文件改变时都会通知它，然后它会维护一个“是否更改”的记录。又是一个典型的“用空间换时间”的做法！然后它们定制了Mercurial，与WatchMan做了适配，于是每次提交的时候，Mercurial就无需扫描文件更改，只需要接收一个“变更文件列表”就行了！</p>
+
+<p>其次，随着版本数增加，因为包含了所有历史文件，整个代码库会变得很巨大。用过git的朋友都知道，clone一个大项目的时间会很漫长，而有的时候，我们只需要最新的一个版本。其实大家都能想到做法是什么了吧？没错，定制过的Mercurial在clone和pull的时候，都只会复制最新版本以及元数据到本地，变更文件是不复制的，而在checkout到指定版本的时候，才会进行复制！有点意思的是，它们觉得这个复制都有点慢，于是使用了Memecached作为文件缓存。</p>
+
+<p>另外，Mercurial大部分代码都是用Python开发，进行定制会比git方便不少，大家是不是有点想试一试呢？Mercurial的意思是“水银“，所以它又叫hg，它的代码地址是<a href="http://selenic.com/repo/hg/">http://selenic.com/repo/hg/</a>。大家这就开始自己的VCS hack之旅吧！</p>
+
+<p>参考资料：</p>
+
+<ul>
+<li><a href="https://code.google.com/p/support/wiki/DVCSAnalysis">https://code.google.com/p/support/wiki/DVCSAnalysis</a></li>
+<li><a href="http://mercurial.selenic.com/wiki/DeveloperInfo">http://mercurial.selenic.com/wiki/DeveloperInfo</a></li>
+<li><a href="http://git-scm.com/book/en/Git-Internals-Git-Objects">http://git-scm.com/book/en/Git-Internals-Git-Objects</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">code4craft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-29T14:01:00+08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/01/29/hg-internal/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/01/29/hg-internal/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/15/2013-review/" title="Previous Post: 2013年总结">&laquo; 2013年总结</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/29/hg-internal/">代码管理进入大数据时代</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/15/2013-review/">2013年总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/21/kai-shi-shi-yong-hive/">开始使用hive</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/18/struts2/">Struts2一个[安全问题]的分析报告</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/17/express-dot-java/">小轮子一枚-高仿express的Java服务器</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - code4craft -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

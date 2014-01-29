@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="公司政策，每个人给6500软妹币报销，可以买电脑。因为刚好WWDC开完，老AIR降价，本着好用和省钱的标准，就买了老AIR一台，7388包发票。 换到AIR最不习惯的是屏幕，PRO的屏幕是1280*800，AIR的屏幕是1440x900，所以字总是特小，原来12pt的字体非要14pt才能显示出来， &hellip;">
+  <meta name="description" content="BlackHole开发很久了，目前稳定性、性能都还可以了，但是作为一个Java程序，内存开销一直是硬伤，动不动100M内存下去了，对于单机用户实在是不太友好。 怎么办？优化先从分析开始！ 获取内存信息 获取内存信息一般使用jmap。 jmap -histo pid 这种方式获取到得比较简略， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/">BlackHole开发日记-一次压力测试及JVM调优的经过</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-23T06:44:00+08:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>BlackHole开发很久了，目前稳定性、性能都还可以了，但是作为一个Java程序，内存开销一直是硬伤，动不动100M内存下去了，对于单机用户实在是不太友好。</p>
+
+<p>怎么办？优化先从分析开始！</p>
+
+<h3>获取内存信息</h3>
+
+<p>获取内存信息一般使用jmap。</p>
+
+<pre><code>jmap -histo pid
+</code></pre>
+
+<p>这种方式获取到得比较简略，我们可以先把内存dump下来，再进行离线分析。jhat是一个离线内存分析工具，会开启一个web服务以供展示。</p>
+
+<pre><code>jmap -dump:file=dumpfile pid
+jhat -J-Xmx512m dumpfile
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -465,47 +521,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">Mac使用ssh Socks代理翻墙</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-05T21:46:00+08:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -540,6 +555,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/29/hg-internal/">代码管理进入大数据时代</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/15/2013-review/">2013年总结</a>
       </li>
     
@@ -553,10 +572,6 @@
     
       <li class="post">
         <a href="/blog/2013/11/17/express-dot-java/">小轮子一枚-高仿express的Java服务器</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/11/webmagic-avalon-start/">WebMagic-Avalon计划启动</a>
       </li>
     
   </ul>
