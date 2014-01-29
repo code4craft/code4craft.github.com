@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-01-29T17:03:03+08:00</updated>
+  <updated>2014-01-29T17:09:11+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -41,6 +41,7 @@
 <p>参考资料：</p>
 
 <ul>
+<li><a href="https://code.facebook.com/posts/218678814984400/scaling-mercurial-at-facebook/">https://code.facebook.com/posts/218678814984400/scaling-mercurial-at-facebook/</a></li>
 <li><a href="https://code.google.com/p/support/wiki/DVCSAnalysis">https://code.google.com/p/support/wiki/DVCSAnalysis</a></li>
 <li><a href="http://mercurial.selenic.com/wiki/DeveloperInfo">http://mercurial.selenic.com/wiki/DeveloperInfo</a></li>
 <li><a href="http://git-scm.com/book/en/Git-Internals-Git-Objects">http://git-scm.com/book/en/Git-Internals-Git-Objects</a></li>
