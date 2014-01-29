@@ -27,6 +27,7 @@ categories:
 
 参考资料：
 
+* [https://code.facebook.com/posts/218678814984400/scaling-mercurial-at-facebook/](https://code.facebook.com/posts/218678814984400/scaling-mercurial-at-facebook/)
 * [https://code.google.com/p/support/wiki/DVCSAnalysis](https://code.google.com/p/support/wiki/DVCSAnalysis)
 * [http://mercurial.selenic.com/wiki/DeveloperInfo](http://mercurial.selenic.com/wiki/DeveloperInfo)
 * [http://git-scm.com/book/en/Git-Internals-Git-Objects](http://git-scm.com/book/en/Git-Internals-Git-Objects)
