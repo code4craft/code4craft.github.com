@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: 爬虫 | 代码人生]]></title>
+  <title><![CDATA[Category: 爬虫 | 非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/blog/categories/pa-chong/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2013-12-17T14:09:30+08:00</updated>
+  <updated>2014-01-29T13:24:55+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
-    <name><![CDATA[黄亿华]]></name>
+    <name><![CDATA[code4craft]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
