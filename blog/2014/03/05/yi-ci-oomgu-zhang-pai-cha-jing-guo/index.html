@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="本文是一次线上OOM故障排查的经过，内容比较基础但是真实，主要是记录一下，没有OOM排查经验的同学也可以参考。 现象 我们之前有一个计算作业。最近一直不稳定，经常出现不稳定，无法正常响应的情况。具体表现是：各种连接超时，从mysql、mongodb和zookeeper到netty， &hellip;">
+  <meta name="description" content="本文是一次线上OOM故障排查的经过，内容比较基础但是真实，主要是记录一下，没有OOM排查经验的同学也可以参考。 现象 我们之前有一个计算作业。最近经常出现不稳定，无法正常响应的情况。具体表现是：各种连接超时，从mysql、mongodb和zookeeper到netty，能超时的都超时过了。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,7 +94,7 @@
 
 <h2>现象</h2>
 
-<p>我们之前有一个计算作业。最近一直不稳定，经常出现不稳定，无法正常响应的情况。具体表现是：各种连接超时，从mysql、mongodb和zookeeper到netty，能超时的都超时过了。其他看不到太多有效的异常。</p>
+<p>我们之前有一个计算作业。最近经常出现不稳定，无法正常响应的情况。具体表现是：各种连接超时，从mysql、mongodb和zookeeper到netty，能超时的都超时过了。其他看不到太多有效的异常。</p>
 
 <p>所以我们首先怀疑的是网络问题，打电话跟运维确认，运维说网络问题的可能性几乎为0，因为我们的机器是虚机，宿主机上的其他设备都运转正常。程序问题的可能性更大。继续从应用日志和tomcat的catalina.out中查找日志，发现有一些OutOfMemoryError异常。实际上，出现这个异常就代表内存不够了。</p>
 
