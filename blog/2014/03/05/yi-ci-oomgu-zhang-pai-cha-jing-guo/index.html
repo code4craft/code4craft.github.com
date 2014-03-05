@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>换电脑了 - 非典型代码强迫症</title>
+  <title>一次OOM故障排查经过 - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="公司政策，每个人给6500软妹币报销，可以买电脑。因为刚好WWDC开完，老AIR降价，本着好用和省钱的标准，就买了老AIR一台，7388包发票。 换到AIR最不习惯的是屏幕，PRO的屏幕是1280*800，AIR的屏幕是1440x900，所以字总是特小，原来12pt的字体非要14pt才能显示出来， &hellip;">
+  <meta name="description" content="本文是一次线上OOM故障排查的经过，内容比较基础但是真实，主要是记录一下，没有OOM排查经验的同学也可以参考。 现象 我们之前有一个计算作业。最近一直不稳定，经常出现不稳定，无法正常响应的情况。具体表现是：各种连接超时，从mysql、mongodb和zookeeper到netty， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/22/huan-dian-nao-liao/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/03/05/yi-ci-oomgu-zhang-pai-cha-jing-guo/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">换电脑了</h1>
+      <h1 class="entry-title">一次OOM故障排查经过</h1>
     
     
       <p class="meta">
@@ -83,18 +83,58 @@
   
 
 
-<time datetime="2013-06-22T08:57:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2013</time>
+<time datetime="2014-03-05T10:00:00+08:00" pubdate data-updated="true">Mar 5<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>公司政策，每个人给6500软妹币报销，可以买电脑。因为刚好WWDC开完，老AIR降价，本着好用和省钱的标准，就买了老AIR一台，7388包发票。</p>
+<div class="entry-content"><p>本文是一次线上OOM故障排查的经过，内容比较基础但是真实，主要是记录一下，没有OOM排查经验的同学也可以参考。</p>
 
-<p>换到AIR最不习惯的是屏幕，PRO的屏幕是1280*800，AIR的屏幕是1440x900，所以字总是特小，原来12pt的字体非要14pt才能显示出来，MAC还没法设置默认字体，只能装了个Tinker Tool。设置之后，各种丑和切边…没办法，办公用，眼睛不累是原则！</p>
+<h2>现象</h2>
 
-<p>换电脑之后，得把老的东西弄过来。这次RVM倒是一次成功了，换了gem的source为淘宝的，更新还挺快的。octpress又重新装了一次，好像ruby的包好多都是安装到一个目录下可用的？最后只能把原来的octpress连同博客一起拷贝过来了。</p>
+<p>我们之前有一个计算作业。最近一直不稳定，经常出现不稳定，无法正常响应的情况。具体表现是：各种连接超时，从mysql、mongodb和zookeeper到netty，能超时的都超时过了。其他看不到太多有效的异常。</p>
+
+<p>所以我们首先怀疑的是网络问题，打电话跟运维确认，运维说网络问题的可能性几乎为0，因为我们的机器是虚机，宿主机上的其他设备都运转正常。程序问题的可能性更大。继续从应用日志和tomcat的catalina.out中查找日志，发现有一些OutOfMemoryError异常。实际上，出现这个异常就代表内存不够了。</p>
+
+<p>我们使用cat（公司的Java监控平台，已开源<a href="https://github.com/dianping/cat">https://github.com/dianping/cat</a>）查看堆使用的情况，看到如下的东西：</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0305/093930_DljD_190591.png" alt="cat oom" /></p>
+
+<p>Memory Free已经接近了0，同时产生了大量的fullgc。</p>
+
+<p>回到之前的连接timeout，我们知道，Java的连接timeout，除了网络传输的时间，也包括了Java程序处理的时间，所以OOM导致timeout也不奇怪了。</p>
+
+<h2>工具和排查</h2>
+
+<p>之前JVM分析做的很少，在同事的帮助下，结合一点资料，完成了基本的分析。</p>
+
+<p>首先可用的是</p>
+
+<pre><code>jmap -histo PID
+</code></pre>
+
+<p>这个命令会将内存中最终保存的对象列出来。</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0305/095032_407L_190591.png" alt="jmap-histo" /></p>
+
+<p>其中&#8221;[&ldquo;表示数组，例如&rdquo;[B&#8221;是byte[]，具体可以看<code>Class.getName()</code>的Javadoc。</p>
+
+<p>但是这个只能粗略定位原因，如果要仔细分析，需要知道是哪些个对象持有了它，这个时候，就需要dump内存下来，再离线分析了。</p>
+
+<p>dump内存的命令是：</p>
+
+<pre><code>jmap -dump:format=b,file=/home/admin/dump.bin PID
+</code></pre>
+
+<p>此操作异常耗时，我跟运维在假死的机器上尝试了几次，竟然把tomcat进程干掉了，使用时还是小心为妙…</p>
+
+<p>我这里使用<code>VisualVM</code>进行分析，大致效果如下：</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0305/095802_NpnZ_190591.png" alt="visual-vm" /></p>
+
+<p>最后排查出的结果，是公司的RPC中间件使用了ThreadLocal来保存一个context，但是最后却没有释放。按照架构组的说明，升级了版本，问题解决！</p>
 </div>
 
 
@@ -117,15 +157,21 @@
   
 
 
-<time datetime="2013-06-22T08:57:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2013</time>
+<time datetime="2014-03-05T10:00:00+08:00" pubdate data-updated="true">Mar 5<span>th</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jvm/'>JVM</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/22/huan-dian-nao-liao/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/22/huan-dian-nao-liao/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/03/05/yi-ci-oomgu-zhang-pai-cha-jing-guo/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/03/05/yi-ci-oomgu-zhang-pai-cha-jing-guo/" >Tweet</a>
   
   
   
@@ -134,10 +180,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/06/10/shi-yong-webmagiczhua-qu-ye-mian-bing-bao-cun-wei-wordpresswen-jian/" title="Previous Post: 使用webmagic抓取页面并保存为wordpress文件">&laquo; 使用webmagic抓取页面并保存为wordpress文件</a>
+        <a class="basic-alignment left" href="/blog/2014/02/16/yi-dian-zi-wo-fen-xi/" title="Previous Post: 一点自我分析">&laquo; 一点自我分析</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/" title="Next Post: BlackHole开发日记-一次压力测试及JVM调优的经过">BlackHole开发日记-一次压力测试及JVM调优的经过 &raquo;</a>
       
     </p>
   </footer>
