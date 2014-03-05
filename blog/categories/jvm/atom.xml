@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JVM | 非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/blog/categories/jvm/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-03-05T10:20:30+08:00</updated>
+  <updated>2014-03-05T23:16:20+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -64,6 +64,10 @@
 <p>我这里使用<code>VisualVM</code>进行分析，大致效果如下：</p>
 
 <p><img src="http://static.oschina.net/uploads/space/2014/0305/095802_NpnZ_190591.png" alt="visual-vm" /></p>
+
+<p>这里选择“计算保留大小”。这个保留大小是递归计算实例之间的依赖，得到的总大小。因为去掉了循环依赖，所以并不完全准确，但是用于排查够了。</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0305/231519_981J_190591.png" alt="visual-vm2" /></p>
 
 <p>最后排查出的结果，是公司的RPC中间件使用了ThreadLocal来保存一个context，但是最后却没有释放。按照架构组的说明，升级了版本，问题解决！</p>
 ]]></content>
