@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JVM | 非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/blog/categories/jvm/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-03-05T10:13:24+08:00</updated>
+  <updated>2014-03-05T10:18:41+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-03-05T10:00:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2014/03/05/yi-ci-oomgu-zhang-pai-cha-jing-guo</id>
     <content type="html"><![CDATA[<p>本文是一次线上OOM故障排查的经过，内容比较基础但是真实，主要是记录一下，没有OOM排查经验的同学也可以参考。</p>
+
+<!--more-->
+
 
 <h2>现象</h2>
 

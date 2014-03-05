@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-03-05T10:13:24+08:00</updated>
+  <updated>2014-03-05T10:18:41+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-03-05T10:00:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2014/03/05/yi-ci-oomgu-zhang-pai-cha-jing-guo</id>
     <content type="html"><![CDATA[<p>本文是一次线上OOM故障排查的经过，内容比较基础但是真实，主要是记录一下，没有OOM排查经验的同学也可以参考。</p>
+
+<!--more-->
+
 
 <h2>现象</h2>
 
@@ -72,6 +75,9 @@
     <updated>2014-02-16T08:34:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2014/02/16/yi-dian-zi-wo-fen-xi</id>
     <content type="html"><![CDATA[<p>毕业也有两年多了，昨天跟一个老同学打了个电话，他说的混的不行如何如何，我觉得自己倒是混得还好。但是当他说到混得不好依然工资比我多一半时，我陷入了深深的思考…</p>
+
+<!--more-->
+
 
 <p>从小我就不擅长与人交流。本科四年，大潮流都是享受自由，安心学习的人并不多。不同的是我学业荒废得更多。后来勉强考上研，读研的时候，应该说我是很认真的了，每天大部分时间都在看论文，就这自己的一亩三分地往里钻。可惜导师一直也不怎么管我们，学术方向也是迟迟未定，最后也没做出个名堂。</p>
 
