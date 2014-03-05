@@ -92,6 +92,9 @@
 
 <div class="entry-content"><p>最近Facebook在它们的博客中发布了文章，说到它们扩展了Mercurial（一种代码管理工具），以管理它们日渐庞大的代码。Facebook的代码量有多大？<a href="http://www.informationisbeautiful.net/visualizations/million-lines-of-code/">informationisbeautiful</a>这个网站发布过可视化一个软件代码量的介绍，Facebook的代码量大约是6000万行，超过了Windows Vista和Visual Studio 2012。</p>
 
+<!--more-->
+
+
 <p>当然这6000万行代码并没有保存在同一个仓库里。根据Facebook的文章，它们主代码仓库，大概有1700万行代码和44000个文件，并且每周有数千的提交。这样大的数据量下，我们常用的版本控制工具，包括git都不好使了，为什么呢？</p>
 
 <p>我们先了解一下版本控制工具的原理。版本控制工具（Version Control System，以下简称VCS，请与CVS分开）从早期的集中式版本控制（CVS，SVN）发展到现在的分布式版本控制（git，Mercurial），使用方式、版本策略变化了很多，但是底层的原理变化并不大。VCS的底层大概可以分为两部分：元数据（版本信息）的管理和变更集（变更文件）的管理。</p>
