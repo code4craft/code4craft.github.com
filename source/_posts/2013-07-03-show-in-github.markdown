@@ -16,4 +16,4 @@ categories:
 
 每天看太麻烦了，干脆做成一个chrome插件，带桌面通知，有新star提醒，岂不开心？
 
-于是有了[**exciting**](https://github.com/code4craft/exciting)！ 哥也会做chrome插件了！液！
+于是有了[**exciting**](https://github.com/code4craft/exciting)！ 哥也会做chrome插件了！液！ 
