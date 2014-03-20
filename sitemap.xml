@@ -185,15 +185,21 @@
         <lastmod>2014-03-05T23:16:08+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://code4craft.github.com/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-%28h2he-mysql%29de-qie-huan/
+        </loc>
+        <lastmod>2014-03-20T09:46:48+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://code4craft.github.com/about/</loc>
         <lastmod>2013-06-22T08:55:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2014-03-07T11:38:45+08:00</lastmod>
+        <lastmod>2014-03-20T09:46:48+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2014-03-07T11:38:45+08:00</lastmod>
+        <lastmod>2014-03-20T09:46:48+08:00</lastmod>
     </url>
 </urlset>

@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-03-07T11:38:58+08:00</updated>
+  <updated>2014-03-20T09:46:57+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,313 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[使用SpringProfile和Mybatis进行多个数据源（H2和Mysql）的切换]]></title>
+    <link href="http://code4craft.github.com/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-%28h2he-mysql%29de-qie-huan/"/>
+    <updated>2014-03-20T09:45:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-(h2he-mysql)de-qie-huan</id>
+    <content type="html"><![CDATA[<p>最近在做WebMagic的后台，遇到一个问题：后台用到了数据库，本来理想情况下是用Mysql，但是为了做到开箱即用，也整合了一个嵌入式数据库H2。这里面就有个问题了，如何用一套代码，提供对Mysql和H2两种方案的支持？博主收集了一些资料，也调试了很久，终于找到一套可行方案，记录下来。代码贴的有点多，主要是为了以后方便自己查找。</p>
+
+<!--more-->
+
+
+<h2>H2的使用</h2>
+
+<p>H2是一个嵌入式，纯Java实现的数据库，它各方面都要好于Java的sqlitejdbc。它可以使用内存模式，也可以使用磁盘模式。具体使用可以看攻略：</p>
+
+<p><a href="http://www.cnblogs.com/gao241/p/3480472.html">http://www.cnblogs.com/gao241/p/3480472.html</a></p>
+
+<h2>为MyBatis同时配置两套数据源</h2>
+
+<p>我们希望达到的效果是，不同的数据源使用不同的sql，并且这个切换最好只在配置中体现，与代码无关。所以我们选择xml的方式编写sql语句。</p>
+
+<h3>MyBatis Spring的使用</h3>
+
+<p>同时使用Mybatis-Spring插件，这样Mybatis可以将Mapper（也就是DAO）自动配置成Bean，非常方便。它的一个完整示例可以看这个项目：<a href="https://github.com/mybatis/jpetstore-6">https://github.com/mybatis/jpetstore-6</a>。这里我配置如下：</p>
+
+<h4>配置Bean</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'> <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;basePackage&quot;</span> <span class="na">value=</span><span class="s">&quot;us.codecraft.webmagic.dao&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;sqlSessionFactory&quot;</span> <span class="na">class=</span><span class="s">&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;dataSource&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;mapperLocations&quot;</span> <span class="na">value=</span><span class="s">&quot;classpath*:/config/mapper/**/*.xml&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/bean&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>配置Mapper</h4>
+
+<p>对应的DAO和配置文件如下：</p>
+
+<ul>
+<li>us.codecraft.webmagic.dao.DynamicClassDao:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DynamicClassDao</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">add</span><span class="o">(</span><span class="n">DynamicClass</span> <span class="n">dynamicClass</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>DynamicClassDao.xml</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;mapper</span> <span class="na">namespace=</span><span class="s">&quot;us.codecraft.webmagic.dao.DynamicClassDao&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;insert</span> <span class="na">id=</span><span class="s">&quot;add&quot;</span> <span class="na">parameterType=</span><span class="s">&quot;us.codecraft.webmagic.model.DynamicClass&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      insert into DynamicClass (`ClassName`,`SourceCode`,`AddTime`,`UpdateTime`)
+</span><span class='line'>      values (#{className},#{sourceCode},now(),now())
+</span><span class='line'>    <span class="nt">&lt;/insert&gt;</span>
+</span><span class='line'><span class="nt">&lt;/mapper&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用databaseIdProvider进行多个数据源的SQL切换</h3>
+
+<p>MyBatis支持根据不同的数据库名来进行SQL语句的切换。做法是初始化<code>SqlSessionFactoryBean</code>的时候，配置一个<code>databaseIdProvider</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;vendorProperties&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.beans.factory.config.PropertiesFactoryBean&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;properties&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;props&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;SQL Server&quot;</span><span class="nt">&gt;</span>sqlserver<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;DB2&quot;</span><span class="nt">&gt;</span>db2<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;Oracle&quot;</span><span class="nt">&gt;</span>oracle<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;MySQL&quot;</span><span class="nt">&gt;</span>mysql<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;H2&quot;</span><span class="nt">&gt;</span>h2<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/props&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/property&gt;</span>
+</span><span class='line'><span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;databaseIdProvider&quot;</span> <span class="na">class=</span><span class="s">&quot;org.apache.ibatis.mapping.VendorDatabaseIdProvider&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;properties&quot;</span> <span class="na">ref=</span><span class="s">&quot;vendorProperties&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;sqlSessionFactory&quot;</span> <span class="na">class=</span><span class="s">&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;dataSource&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;databaseIdProvider&quot;</span> <span class="na">ref=</span><span class="s">&quot;databaseIdProvider&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;mapperLocations&quot;</span> <span class="na">value=</span><span class="s">&quot;classpath*:/config/mapper/**/*.xml&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/bean&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后在Mapper的xml里，把相应的语句加上<code>databaseId="xxx"</code>就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span>
+</span><span class='line'><span class="cp">        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;mapper</span> <span class="na">namespace=</span><span class="s">&quot;us.codecraft.webmagic.dao.DynamicClassDao&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;insert</span> <span class="na">id=</span><span class="s">&quot;add&quot;</span> <span class="na">parameterType=</span><span class="s">&quot;us.codecraft.webmagic.model.DynamicClass&quot;</span> <span class="na">databaseId=</span><span class="s">&quot;mysql&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      insert into DynamicClass (`ClassName`,`SourceCode`,`AddTime`,`UpdateTime`)
+</span><span class='line'>      values (#{className},#{sourceCode},now(),now())
+</span><span class='line'>    <span class="nt">&lt;/insert&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;insert</span> <span class="na">id=</span><span class="s">&quot;add&quot;</span> <span class="na">parameterType=</span><span class="s">&quot;us.codecraft.webmagic.model.DynamicClass&quot;</span> <span class="na">databaseId=</span><span class="s">&quot;h2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      insert into DynamicClass (`ClassName`,`SourceCode`,`AddTime`,`UpdateTime`)
+</span><span class='line'>      values (#{className},#{sourceCode},now(),now())
+</span><span class='line'>    <span class="nt">&lt;/insert&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/mapper&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Spring Profile</h2>
+
+<p>Profile是Spring 3.1后新增的特性，简单来说，就是根据不同的环境，读取不同的配置。这些配置可以放在一起，但是单独生效。贴个代码吧，很容易说明问题了：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+</span><span class='line'>       <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns:jdbc=</span><span class="s">&quot;http://www.springframework.org/schema/jdbc&quot;</span>
+</span><span class='line'>       <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://www.springframework.org/schema/beans</span>
+</span><span class='line'><span class="s">      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">class=</span><span class="s">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span>
+</span><span class='line'>          <span class="na">destroy-method=</span><span class="s">&quot;close&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;driverClassName&quot;</span> <span class="na">value=</span><span class="s">&quot;com.mysql.jdbc.Driver&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;url&quot;</span> <span class="na">value=</span><span class="s">&quot;jdbc:mysql://127.0.0.1:3306/WebMagic?characterEncoding=UTF-8&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;username&quot;</span> <span class="na">value=</span><span class="s">&quot;webmagic&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span> <span class="na">value=</span><span class="s">&quot;webmagic&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;beans</span> <span class="na">profile=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">class=</span><span class="s">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span>
+</span><span class='line'>              <span class="na">destroy-method=</span><span class="s">&quot;close&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;driverClassName&quot;</span> <span class="na">value=</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;url&quot;</span> <span class="na">value=</span><span class="s">&quot;jdbc:h2:mem:WebMagic;DB_CLOSE_DELAY=-1&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>        <span class="c">&lt;!--Refer to https://github.com/springside/springside4/wiki/H2-Database --&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;jdbc:initialize-database</span> <span class="na">data-source=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ignore-failures=</span><span class="s">&quot;ALL&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;jdbc:script</span> <span class="na">location=</span><span class="s">&quot;classpath:sql/h2/schema.sql&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="c">&lt;!--&lt;jdbc:script location=&quot;classpath:data/h2/import-data.sql&quot; encoding=&quot;UTF-8&quot;/&gt;--&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/jdbc:initialize-database&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/beans&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;beans</span> <span class="na">profile=</span><span class="s">&quot;standalone&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">class=</span><span class="s">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span>
+</span><span class='line'>              <span class="na">destroy-method=</span><span class="s">&quot;close&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;driverClassName&quot;</span> <span class="na">value=</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;url&quot;</span> <span class="na">value=</span><span class="s">&quot;jdbc:h2:file:~/.h2/WebMagic;AUTO_SERVER=TRUE&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>        <span class="c">&lt;!--Refer to https://github.com/springside/springside4/wiki/H2-Database --&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;jdbc:initialize-database</span> <span class="na">data-source=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ignore-failures=</span><span class="s">&quot;ALL&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;jdbc:script</span> <span class="na">location=</span><span class="s">&quot;classpath:sql/h2/schema.sql&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="c">&lt;!--&lt;jdbc:script location=&quot;classpath:data/h2/import-data.sql&quot; encoding=&quot;UTF-8&quot;/&gt;--&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/jdbc:initialize-database&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/beans&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/beans&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>设置Profile有不同的方式。</p>
+
+<p>在JUnit里面，使用注解@ActiveProfile即可。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">SpringJUnit4ClassRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@ContextConfiguration</span><span class="o">(</span><span class="n">locations</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;classpath*:/config/spring/applicationContext*.xml&quot;</span><span class="o">})</span>
+</span><span class='line'><span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@Transactional</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractTest</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Web项目则是在web.xml里设置：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;init-param&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;param-name&gt;</span>spring.profiles.active<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;param-value&gt;</span>product<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'><span class="nt">&lt;/init-param&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如此配置，就可以达到在不同的环境使用不同bean的目的！</p>
+
+<h2>参考资料</h2>
+
+<ul>
+<li>H2数据库攻略 <a href="http://www.cnblogs.com/gao241/p/3480472.html">http://www.cnblogs.com/gao241/p/3480472.html</a></li>
+<li>spring+mybatis 多数据源整合 <a href="http://blog.csdn.net/fhx007/article/details/12530735">http://blog.csdn.net/fhx007/article/details/12530735</a></li>
+<li>如何用Spring 3.1的Environment和Profile简化工作 <a href="http://www.importnew.com/1099.html">http://www.importnew.com/1099.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[一次OOM故障排查经过]]></title>
@@ -1472,97 +1779,6 @@
 <li><p>确定持久化以及报文对应的策略。</p></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[monkeysocks开发日志]]></title>
-    <link href="http://code4craft.github.com/blog/2013/07/06/monkeysocks/"/>
-    <updated>2013-07-06T16:09:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/07/06/monkeysocks</id>
-    <content type="html"><![CDATA[<blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。</p></blockquote>
-
-<h4>2013-7-5 动机</h4>
-
-<p>前几天听说公司的测试团队在鼓捣数据固化的东西，说白了就是在测试启动时构建一个临时性的数据库，操作完之后再销毁，这样的好处是不造成测试副作用，同时屏蔽环境的差异。</p>
-
-<!--more-->
-
-
-<p>但是目前公司内部SOA用的太多了，仅仅靠数据库固化明显不现实，公司的架构团队做了一个将所有remote service放到本地启动的东西，但是这样子启动开销有点难以接受。有没有更可行的方案？</p>
-
-<p>之前也有人做过一个单测的东西，可以将所有RPC调用的结果序列化成文本文件，下次调用时再序列化出来，这样其实就屏蔽了远程调用。但是Java语言层面的机制导致要把千奇八怪的对象序列化下来，本来就是不可完成的任务(有些对象本身就不是POJO，还有在getter、setter写逻辑的)。</p>
-
-<p>于是我有一个大胆的设想：其实Java的外部依赖无非是网络IO，就是TCP/UDP包嘛，那我能不能做一个工具，录制一个稳定环境的网络流量，然后固化下来，最终在调用时进行重放，岂不是一劳永逸？</p>
-
-<p>但是TCP/UDP毕竟是系统底层的东西，而且我想对每个Java进程单独做重放，所以只能从Java内部机制入手了。</p>
-
-<p>有两个方法：</p>
-
-<p>用cglib改写所有网络IO相关的接口，改用固化调用。</p>
-
-<p>设置Java全局socks代理，并启动socks server，在socks server里做代理。</p>
-
-<p>显然第二种方法更简单，有四两拨千斤的感觉！</p>
-
-<p>找到一个Java socks server，jsocks，最初版本比较老，google code上有一个改进版，用的是ant，因为以后要集成肯定要用maven，于是就做了点maven化的处理，考虑以后单独做成一个项目，现在先改了测试下可行性吧。<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a></p>
-
-<p>Java里面设置全局socksProxy的方法见<a href="http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html">http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html</a>。</p>
-
-<p>鼓捣一下，成功启动起来，明天先对公司的项目进行试用。</p>
-
-<h4>2013-7-6</h4>
-
-<p>今天开始了对socks的摸索。</p>
-
-<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
-
-<p>想到咱这个不就是个TCP重放攻击么？了解了一下一些协议防重放攻击的机制，发现大多是在server端做，那么其实client端的请求并无不同，希望是这样！</p>
-
-<p>研究了一下http协议，response竟然有date项，希望不会作为判断依据，要不然还要做http解析，那就纠结了！怎么觉得自己老是在研究怎么实现一个gfw呢？</p>
-
-<p>在测试中，遇到了问题：</p>
-
-<p>很多协议里都自带了版本号，比如<a href="http://www.hoterran.info/mysql-protocol-soucecode-2">mysql</a>、zookeeper，这样就给识别请求和伪造响应带来了难度。幸好公司内部用的工具不是太多，理论上还是在可控状态。</p>
-
-<p>最终决定结构大概是这样子：</p>
-
-<p><img src="http://code4craft.github.io/images/posts/mocksocks-flow-in.png" alt="image" /></p>
-
-<p><img src="http://code4craft.github.io/images/posts/mocksocks-flow-out.png" alt="image" /></p>
-
-<p>晚上尝试了一下，jsocks的流程写的过于凌乱，最终缓存结构也没定好，不说了，碎觉！</p>
-
-<h4>2013-7-7</h4>
-
-<p>鼓捣了下架构的事情，文章单独整理了下，链接：<a href="http://code4craft.github.io/blog/2013/07/07/monkeysocks-arch/">http://code4craft.github.io/blog/2013/07/06/monkeysocks-arch/</a></p>
-
-<h4>2013-7-8</h4>
-
-<p>今天跟水哥讨论起两个问题，假设拿到一个报文byte[]，存在两个难点，一个是对于可变部分的判断和伪造，另一个是对于包结构的近似匹配。</p>
-
-<p>可变部分的的判断，水哥说可以用录两次，去掉不同的部分，就变成一个不变的基和一个过滤器，然后对于以后的包，就用过滤器过滤后找到这个基。</p>
-
-<p>包结构的近似匹配，水哥提议对包的所有字节进行求和，过滤掉位置信息，似乎也是可行的方向？</p>
-
-<p>用Java实现一个流管道：</p>
-
-<p><a href="http://ostermiller.org/convert_java_outputstream_inputstream.html">http://ostermiller.org/convert_java_outputstream_inputstream.html</a></p>
-
-<h4>2013-7-9</h4>
-
-<p>使用byte和条件变量实现了一个Java流的管道，线程安全的，debug了好久终于成功，当年操作系统的知识还是没还给老师！<a href="https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java">https://github.com/code4craft/monkeysocks/blob/master/monkeysocks-server/src/main/java/com/dianping/monkeysocks/socket/StreamBuffer.java</a></p>
-
-<p>这个东东使得伪造一个Socket成为了可能，下面就是使用Socket API实现fake servers的逻辑了。</p>
-
-<h4>2013-7-11</h4>
-
-<p>昨天太累了，项目又比较忙，先休息一天。</p>
-
-<p>今天早上考虑用自己写的TCP server框架把jsocks的连接部分重写一遍(那堆代码全部在一个类中，实在是太复杂了)，想到
-今天早上想了下InputStream这些玩意，觉得这样总会占用一个线程去把Stream转来转去的，弄成onReceive()这样的异步调用的话，就很容易做到链式调用了。</p>
-
-<p>这东西太费脑子了，先休息一天半天再说。</p>
 ]]></content>
   </entry>
   

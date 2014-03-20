@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Web | 非典型代码强迫症]]></title>
+  <link href="http://code4craft.github.com/blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2014-03-20T09:46:57+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[code4craft]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用SpringProfile和Mybatis进行多个数据源（H2和Mysql）的切换]]></title>
+    <link href="http://code4craft.github.com/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-%28h2he-mysql%29de-qie-huan/"/>
+    <updated>2014-03-20T09:45:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-(h2he-mysql)de-qie-huan</id>
+    <content type="html"><![CDATA[<p>最近在做WebMagic的后台，遇到一个问题：后台用到了数据库，本来理想情况下是用Mysql，但是为了做到开箱即用，也整合了一个嵌入式数据库H2。这里面就有个问题了，如何用一套代码，提供对Mysql和H2两种方案的支持？博主收集了一些资料，也调试了很久，终于找到一套可行方案，记录下来。代码贴的有点多，主要是为了以后方便自己查找。</p>
+
+<!--more-->
+
+
+<h2>H2的使用</h2>
+
+<p>H2是一个嵌入式，纯Java实现的数据库，它各方面都要好于Java的sqlitejdbc。它可以使用内存模式，也可以使用磁盘模式。具体使用可以看攻略：</p>
+
+<p><a href="http://www.cnblogs.com/gao241/p/3480472.html">http://www.cnblogs.com/gao241/p/3480472.html</a></p>
+
+<h2>为MyBatis同时配置两套数据源</h2>
+
+<p>我们希望达到的效果是，不同的数据源使用不同的sql，并且这个切换最好只在配置中体现，与代码无关。所以我们选择xml的方式编写sql语句。</p>
+
+<h3>MyBatis Spring的使用</h3>
+
+<p>同时使用Mybatis-Spring插件，这样Mybatis可以将Mapper（也就是DAO）自动配置成Bean，非常方便。它的一个完整示例可以看这个项目：<a href="https://github.com/mybatis/jpetstore-6">https://github.com/mybatis/jpetstore-6</a>。这里我配置如下：</p>
+
+<h4>配置Bean</h4>
+
+<p>```xml
+ <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"></p>
+
+<pre><code>    &lt;property name="basePackage" value="us.codecraft.webmagic.dao" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource" /&gt;
+    &lt;property name="mapperLocations" value="classpath*:/config/mapper/**/*.xml" /&gt;
+&lt;/bean&gt;
+</code></pre>
+
+<p>```</p>
+
+<h4>配置Mapper</h4>
+
+<p>对应的DAO和配置文件如下：</p>
+
+<ul>
+<li>us.codecraft.webmagic.dao.DynamicClassDao:</li>
+</ul>
+
+
+<p>```java
+public interface DynamicClassDao {</p>
+
+<pre><code>public int add(DynamicClass dynamicClass);
+</code></pre>
+
+<p>}
+```</p>
+
+<ul>
+<li>DynamicClassDao.xml</li>
+</ul>
+
+
+<p>```xml
+<mapper namespace="us.codecraft.webmagic.dao.DynamicClassDao"></p>
+
+<pre><code>&lt;insert id="add" parameterType="us.codecraft.webmagic.model.DynamicClass"&gt;
+  insert into DynamicClass (`ClassName`,`SourceCode`,`AddTime`,`UpdateTime`)
+  values (#{className},#{sourceCode},now(),now())
+&lt;/insert&gt;
+</code></pre>
+
+<p></mapper>
+```</p>
+
+<h3>使用databaseIdProvider进行多个数据源的SQL切换</h3>
+
+<p>MyBatis支持根据不同的数据库名来进行SQL语句的切换。做法是初始化<code>SqlSessionFactoryBean</code>的时候，配置一个<code>databaseIdProvider</code>。</p>
+
+<p>```xml</p>
+
+<pre><code>&lt;bean id="vendorProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"&gt;
+    &lt;property name="properties"&gt;
+        &lt;props&gt;
+            &lt;prop key="SQL Server"&gt;sqlserver&lt;/prop&gt;
+            &lt;prop key="DB2"&gt;db2&lt;/prop&gt;
+            &lt;prop key="Oracle"&gt;oracle&lt;/prop&gt;
+            &lt;prop key="MySQL"&gt;mysql&lt;/prop&gt;
+            &lt;prop key="H2"&gt;h2&lt;/prop&gt;
+        &lt;/props&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider"&gt;
+    &lt;property name="properties" ref="vendorProperties"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource" /&gt;
+    &lt;property name="databaseIdProvider" ref="databaseIdProvider" /&gt;
+    &lt;property name="mapperLocations" value="classpath*:/config/mapper/**/*.xml" /&gt;
+&lt;/bean&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>然后在Mapper的xml里，把相应的语句加上<code>databaseId="xxx"</code>就可以了。</p>
+
+<p>```xml
+&lt;!DOCTYPE mapper PUBLIC &ldquo;&ndash;//mybatis.org//DTD Mapper 3.0//EN&rdquo;</p>
+
+<pre><code>    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+</code></pre>
+
+<p><mapper namespace="us.codecraft.webmagic.dao.DynamicClassDao"></p>
+
+<pre><code>&lt;insert id="add" parameterType="us.codecraft.webmagic.model.DynamicClass" databaseId="mysql"&gt;
+  insert into DynamicClass (`ClassName`,`SourceCode`,`AddTime`,`UpdateTime`)
+  values (#{className},#{sourceCode},now(),now())
+&lt;/insert&gt;
+
+&lt;insert id="add" parameterType="us.codecraft.webmagic.model.DynamicClass" databaseId="h2"&gt;
+  insert into DynamicClass (`ClassName`,`SourceCode`,`AddTime`,`UpdateTime`)
+  values (#{className},#{sourceCode},now(),now())
+&lt;/insert&gt;
+</code></pre>
+
+<p></mapper>
+```</p>
+
+<h2>Spring Profile</h2>
+
+<p>Profile是Spring 3.1后新增的特性，简单来说，就是根据不同的环境，读取不同的配置。这些配置可以放在一起，但是单独生效。贴个代码吧，很容易说明问题了：</p>
+
+<p>```xml
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?>
+&lt;beans xmlns=&ldquo;<a href="http://www.springframework.org/schema/beans">http://www.springframework.org/schema/beans</a>&rdquo;</p>
+
+<pre><code>   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"&gt;
+
+&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+      destroy-method="close"&gt;
+    &lt;property name="driverClassName" value="com.mysql.jdbc.Driver"/&gt;
+    &lt;property name="url" value="jdbc:mysql://127.0.0.1:3306/WebMagic?characterEncoding=UTF-8"/&gt;
+    &lt;property name="username" value="webmagic"/&gt;
+    &lt;property name="password" value="webmagic"/&gt;
+&lt;/bean&gt;
+
+&lt;beans profile="test"&gt;
+    &lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close"&gt;
+        &lt;property name="driverClassName" value="org.h2.Driver"/&gt;
+        &lt;property name="url" value="jdbc:h2:mem:WebMagic;DB_CLOSE_DELAY=-1"/&gt;
+    &lt;/bean&gt;
+    &lt;!--Refer to https://github.com/springside/springside4/wiki/H2-Database --&gt;
+    &lt;jdbc:initialize-database data-source="dataSource" ignore-failures="ALL"&gt;
+        &lt;jdbc:script location="classpath:sql/h2/schema.sql" /&gt;
+        &lt;!--&lt;jdbc:script location="classpath:data/h2/import-data.sql" encoding="UTF-8"/&gt;--&gt;
+    &lt;/jdbc:initialize-database&gt;
+&lt;/beans&gt;
+
+&lt;beans profile="standalone"&gt;
+    &lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close"&gt;
+        &lt;property name="driverClassName" value="org.h2.Driver"/&gt;
+        &lt;property name="url" value="jdbc:h2:file:~/.h2/WebMagic;AUTO_SERVER=TRUE"/&gt;
+    &lt;/bean&gt;
+    &lt;!--Refer to https://github.com/springside/springside4/wiki/H2-Database --&gt;
+    &lt;jdbc:initialize-database data-source="dataSource" ignore-failures="ALL"&gt;
+        &lt;jdbc:script location="classpath:sql/h2/schema.sql" /&gt;
+        &lt;!--&lt;jdbc:script location="classpath:data/h2/import-data.sql" encoding="UTF-8"/&gt;--&gt;
+    &lt;/jdbc:initialize-database&gt;
+&lt;/beans&gt;
+</code></pre>
+
+<p></beans>
+```</p>
+
+<p>设置Profile有不同的方式。</p>
+
+<p>在JUnit里面，使用注解@ActiveProfile即可。</p>
+
+<p><code>java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:/config/spring/applicationContext*.xml"})
+@ActiveProfiles("test")
+@Transactional
+public abstract class AbstractTest {
+}
+</code></p>
+
+<p>Web项目则是在web.xml里设置：</p>
+
+<p><code>xml
+&lt;init-param&gt;
+  &lt;param-name&gt;spring.profiles.active&lt;/param-name&gt;
+  &lt;param-value&gt;product&lt;/param-value&gt;
+&lt;/init-param&gt;
+</code></p>
+
+<p>如此配置，就可以达到在不同的环境使用不同bean的目的！</p>
+
+<h2>参考资料</h2>
+
+<ul>
+<li>H2数据库攻略 <a href="http://www.cnblogs.com/gao241/p/3480472.html">http://www.cnblogs.com/gao241/p/3480472.html</a></li>
+<li>spring+mybatis 多数据源整合 <a href="http://blog.csdn.net/fhx007/article/details/12530735">http://blog.csdn.net/fhx007/article/details/12530735</a></li>
+<li>如何用Spring 3.1的Environment和Profile简化工作 <a href="http://www.importnew.com/1099.html">http://www.importnew.com/1099.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
