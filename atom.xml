@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-03-20T09:46:57+08:00</updated>
+  <updated>2014-03-30T22:40:25+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[淡然]]></title>
+    <link href="http://code4craft.github.com/blog/2014/03/30/dan-ran/"/>
+    <updated>2014-03-30T22:36:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/03/30/dan-ran</id>
+    <content type="html"><![CDATA[<p>马上就是29岁生日了，家里的小家伙也开始会逗我玩了，会求抱抱了。</p>
+
+<p>因为毕业晚，一直都是以新人自居，做事也带着学生那会的习气，有些事情没有承担起相应的责任，比如带宝宝。这一点老婆承担了很多，我虽然也会去配合，但是终归没有那么情愿。</p>
+
+<p>晚上把头像改成了和女儿的合照，以后以老爸自居了。虽然工作经验也有些不足，但是决定不再装嫩了，多一点责任心，年龄的事就随他去吧。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用SpringProfile和Mybatis进行多个数据源（H2和Mysql）的切换]]></title>
@@ -1715,70 +1728,6 @@
 <h2>结语</h2>
 
 <p>webmagic确实是一个山寨的框架，本身也没有太多创新的东西，但是确实对Java爬虫的实现有了一些简化。在强大便利的功能和较高的灵活性中间，webmagic选择了后者，目标就是要打造一个熟练的Java开发者也用的比较顺手的工具，并且可以集成到自己的业务系统中，这一点我自己开发了不少这样的业务，对其灵活性还是比较有信心的。webmagic目前的代码实现还比较简单(不到2000行)，如果有兴趣的阅读代码可能也会有一些收获，也非常欢迎建议和指正。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[monkeysocks架构规划]]></title>
-    <link href="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/"/>
-    <updated>2013-07-07T21:35:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch</id>
-    <content type="html"><![CDATA[<blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。</p></blockquote>
-
-<h2>jsocks的改造</h2>
-
-<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
-
-<p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
-
-<!--more-->
-
-
-<p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。</p>
-
-<h2>TCP协议分析</h2>
-
-<p>后来使用wiredshark结合程序日志来进行分析。</p>
-
-<p>TCP协议栈大概是这样子：
-<img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
-
-<p>下面是wiredshark抓包的截图，从ea开始才是应用层协议的内容。</p>
-
-<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
-
-<h2>应用层协议分析</h2>
-
-<p>实现replay后，拿HTTP协议做了测试，自己用程序写了个URLConnection，倒是能够实现replay，但是换到浏览器里就很难了，因为cookie总是会有些不一样(现在基本上所有站点都会写cookie吧)。如果不对应用层协议本身进行分析，那么进行包的伪造就很难了。</p>
-
-<p>https协议对于重放攻击做了处理，每次的请求包都不一样，也无法replay成功，暂时略过。</p>
-
-<p>后来对于测试中得重点协议&mdash;mysql的协议，进行了研究。</p>
-
-<p>这是一个有状态的协议，状态转移图如下：</p>
-
-<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
-
-<p>详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>，有点hold不住的感觉啊！</p>
-
-<p>看了Authentication部分，会由server端发送一个随机数，来避免重放攻击。这个东西启发了我，因为主动权一般都是在server端，而我们要对client进行欺骗，难度就小了很多。</p>
-
-<h2>架构设计</h2>
-
-<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
-
-<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
-
-<p>fake servers的实现必定是个大坑，不过能把常用协议都了解一遍，本身也很有意思不是么？</p>
-
-<h2>开发计划：</h2>
-
-<ul>
-<li><p>实现fake servers的TCP框架。</p></li>
-<li><p>研究并实现常用协议的fake server。</p></li>
-<li><p>确定持久化以及报文对应的策略。</p></li>
-</ul>
-
 ]]></content>
   </entry>
   

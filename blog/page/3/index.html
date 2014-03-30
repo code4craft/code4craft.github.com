@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="monkeysocks的目标是为开发以及测试提供一个稳定的环境。 2013-7-5 动机 前几天听说公司的测试团队在鼓捣数据固化的东西，说白了就是在测试启动时构建一个临时性的数据库，操作完之后再销毁，这样的好处是不造成测试副作用，同时屏蔽环境的差异。 ">
+  <meta name="description" content="monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。 jsocks的改造 首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。 今天把jsocks修改了下， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/07/monkeysocks-arch/">Monkeysocks架构规划</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-07T21:35:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。</p></blockquote>
+
+<h2>jsocks的改造</h2>
+
+<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
+
+<p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/07/monkeysocks-arch/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -466,51 +513,6 @@ jhat -J-Xmx512m dumpfile
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/12/blackhole-io-model/">BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-12T22:16:00+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>BlackHoleJ是一个DNS服务器。他的一个功能是，对于它解析不了的DNS请求，它将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端，起到一个DNS代理的作用。</p>
-
-<p><img src="/images/posts/forward.png" alt="image" /></p>
-
-<p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/12/blackhole-io-model/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -545,6 +547,10 @@ jhat -J-Xmx512m dumpfile
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/30/dan-ran/">淡然</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-%28h2he-mysql%29de-qie-huan/">使用SpringProfile和Mybatis进行多个数据源（H2和Mysql）的切换</a>
       </li>
     
@@ -558,10 +564,6 @@ jhat -J-Xmx512m dumpfile
     
       <li class="post">
         <a href="/blog/2014/02/12/good-to-you/">对自己好一点</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/29/hg-internal/">代码管理进入大数据时代</a>
       </li>
     
   </ul>
