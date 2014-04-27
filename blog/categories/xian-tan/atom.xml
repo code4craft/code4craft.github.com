@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 闲谈 | 非典型代码强迫症]]></title>
+  <link href="http://code4craft.github.com/blog/categories/xian-tan/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2014-04-27T21:40:30+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[code4craft]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[平静]]></title>
+    <link href="http://code4craft.github.com/blog/2014/04/27/ping-jing/"/>
+    <updated>2014-04-27T21:36:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/04/27/ping-jing</id>
+    <content type="html"><![CDATA[<p>最近工作有些变动，有点忙。加上WebMagic也发展了一些用户，做了不少支持的工作，也发布了一些版本。终于前几天累倒了，感冒头痛，只能休息。</p>
+
+<p>晚上买了个优酷的一年会员，又看了遍《勇敢的心》。之前因为太长没有看完，这次看的时候，听着平静的苏格兰风笛，有种恍若隔世的感觉。之前做事情太急躁，走得慢一点，才能看更多的风景。</p>
+]]></content>
+  </entry>
+  
+</feed>
