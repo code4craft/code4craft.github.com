@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>monkeysocks架构规划 - 非典型代码强迫症</title>
+  <title>减肥中 - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。 jsocks的改造 首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。 今天把jsocks修改了下， &hellip;">
+  <meta name="description" content="Github马拉松进行了78天了，希望也以同样的毅力坚持减肥。 今天看了一篇文章：http://www.panghufei.com/?p=11163，以及BBC的纪录片视频: BBC 关于减肥你应该知道的十件事。 纪录片很好，总结出来几点： 用更小的盘子吃；
+用高蛋白的食物、用粥类防止饥饿； &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/05/12/ondiet/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Monkeysocks架构规划</h1>
+      <h1 class="entry-title">减肥中</h1>
     
     
       <p class="meta">
@@ -83,68 +84,27 @@
   
 
 
-<time datetime="2013-07-07T21:35:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
+<time datetime="2014-05-12T23:04:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。</p></blockquote>
-
-<h2>jsocks的改造</h2>
-
-<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
-
-<p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
+<div class="entry-content"><p>Github马拉松进行了78天了，希望也以同样的毅力坚持减肥。</p>
 
 <!--more-->
 
 
-<p>replay时候，如何知道哪个请求对应响应包是个大问题。开始的方式是把request报文的md5作为key，response作为value。</p>
+<p>今天看了一篇文章：<a href="http://www.panghufei.com/?p=11163">http://www.panghufei.com/?p=11163</a>，以及BBC的纪录片<a href="http://v.youku.com/v_show/id_XNTYyODM5MjE2.html">视频: BBC 关于减肥你应该知道的十件事</a>。</p>
 
-<h2>TCP协议分析</h2>
+<p>纪录片很好，总结出来几点：</p>
 
-<p>后来使用wiredshark结合程序日志来进行分析。</p>
-
-<p>TCP协议栈大概是这样子：
-<img src="http://www.skullbox.net/diagrams/tcppacket.gif?dur=673" alt="image" /></p>
-
-<p>下面是wiredshark抓包的截图，从ea开始才是应用层协议的内容。</p>
-
-<p><img src="http://code4craft.github.io/images/posts/tcp-wiredshark.png" alt="image" /></p>
-
-<h2>应用层协议分析</h2>
-
-<p>实现replay后，拿HTTP协议做了测试，自己用程序写了个URLConnection，倒是能够实现replay，但是换到浏览器里就很难了，因为cookie总是会有些不一样(现在基本上所有站点都会写cookie吧)。如果不对应用层协议本身进行分析，那么进行包的伪造就很难了。</p>
-
-<p>https协议对于重放攻击做了处理，每次的请求包都不一样，也无法replay成功，暂时略过。</p>
-
-<p>后来对于测试中得重点协议&mdash;mysql的协议，进行了研究。</p>
-
-<p>这是一个有状态的协议，状态转移图如下：</p>
-
-<p><img src="http://dev.mysql.com/doc/internals/en/images/graphviz-db6c3eaf9f35f362259756b257b670e75174c29b.png" alt="image" /></p>
-
-<p>详细介绍<a href="http://dev.mysql.com/doc/internals/en/client-server-protocol.html">http://dev.mysql.com/doc/internals/en/client-server-protocol.html</a>，有点hold不住的感觉啊！</p>
-
-<p>看了Authentication部分，会由server端发送一个随机数，来避免重放攻击。这个东西启发了我，因为主动权一般都是在server端，而我们要对client进行欺骗，难度就小了很多。</p>
-
-<h2>架构设计</h2>
-
-<p>后来决定把架构解耦了，fake server单独作为一个模块，可以单独启动成TCP server，也可以加入到jsocks里。最后架构是这样子：</p>
-
-<p><img src="http://code4craft.github.io/images/posts/monkeysocks-arch.png" alt="image" /></p>
-
-<p>fake servers的实现必定是个大坑，不过能把常用协议都了解一遍，本身也很有意思不是么？</p>
-
-<h2>开发计划：</h2>
-
-<ul>
-<li><p>实现fake servers的TCP框架。</p></li>
-<li><p>研究并实现常用协议的fake server。</p></li>
-<li><p>确定持久化以及报文对应的策略。</p></li>
-</ul>
+<ol>
+<li>用更小的盘子吃；</li>
+<li>用高蛋白的食物、用粥类防止饥饿；</li>
+<li>小习惯也能改变体重。</li>
+</ol>
 
 </div>
 
@@ -168,7 +128,7 @@
   
 
 
-<time datetime="2013-07-07T21:35:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
+<time datetime="2014-05-12T23:04:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2014</time>
       
 
 
@@ -176,7 +136,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/07/07/monkeysocks-arch/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/05/12/ondiet/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/05/12/ondiet/" >Tweet</a>
   
   
   
@@ -185,10 +145,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/07/06/monkeysocks/" title="Previous Post: monkeysocks开发日志">&laquo; monkeysocks开发日志</a>
+        <a class="basic-alignment left" href="/blog/2014/04/27/ping-jing/" title="Previous Post: 平静">&laquo; 平静</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/18/webmagicde-she-ji-ji-zhi-ji-yuan-li/" title="Next Post: webmagic的设计机制及原理-如何开发一个Java爬虫">webmagic的设计机制及原理-如何开发一个Java爬虫 &raquo;</a>
       
     </p>
   </footer>

@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-04-27T21:40:30+08:00</updated>
+  <updated>2014-05-12T23:11:02+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[减肥中]]></title>
+    <link href="http://code4craft.github.com/blog/2014/05/12/ondiet/"/>
+    <updated>2014-05-12T23:04:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/05/12/ondiet</id>
+    <content type="html"><![CDATA[<p>Github马拉松进行了78天了，希望也以同样的毅力坚持减肥。</p>
+
+<!--more-->
+
+
+<p>今天看了一篇文章：<a href="http://www.panghufei.com/?p=11163">http://www.panghufei.com/?p=11163</a>，以及BBC的纪录片<a href="http://v.youku.com/v_show/id_XNTYyODM5MjE2.html">视频: BBC 关于减肥你应该知道的十件事</a>。</p>
+
+<p>纪录片很好，总结出来几点：</p>
+
+<ol>
+<li>用更小的盘子吃；</li>
+<li>用高蛋白的食物、用粥类防止饥饿；</li>
+<li>小习惯也能改变体重。</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[平静]]></title>
@@ -1413,26 +1436,6 @@
 <li><a href="http://en.wikipedia.org/wiki/Lambda_calculus">http://en.wikipedia.org/wiki/Lambda_calculus</a></li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[体验到了open-source的魅力]]></title>
-    <link href="http://code4craft.github.com/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/"/>
-    <updated>2013-08-18T21:58:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li</id>
-    <content type="html"><![CDATA[<p>webmagic从第一个正式版本到现在大概有一个月了，这一个月一直在提交代码，Longest Streak已经达到了25天，打破了开发blackhole时15天的记录了。webmagic确实是我最得意的一个项目，结合了领域经验和编码功底，包括注释和编码都是精雕细琢的。</p>
-
-<!--more-->
-
-
-<p>webmagic在oschina上推了两次，反响都挺好，读过源码的都说相当不错。webmagic的fork/star比相当高，看来大家都想改改，这也说明确实源码挺容易理解，挺好！一方面也说明功能不是很够，其实这也是以后的一个方向。</p>
-
-<p>周五的时候往sonatype提交了一个JIRA，希望提交到maven中央库，走上了国际化的路线呢！既然国际化了，也就把注释和readme全部改成了英文。虽然完全是体力活，但是本着坚持终归会有回报的想法，还是很认真的去做了。上周开始用番茄工作法来管理时间，周末这两天都完成了6、7个番茄，比平时工作日都要高，看来果然兴趣才是生产力。</p>
-
-<p>最高兴的是，有一个做爬虫的朋友<a href="https://github.com/yuany">@yuany</a>对webmagic很有兴趣，交流之后，决定把他加到webmagic的合作者里来。因为我工作中没有写爬虫，所以能有个经常写爬虫的合作者是相当好的，应该能把webmagic的易用性提高不少的。</p>
-
-<p>后来对他的提交做了merge，好多我以前写的丑的地方还给做了重构，感觉挺开心的。学习、交流、提高，同时能产生有用的代码，这就是我最初的目标了。</p>
 ]]></content>
   </entry>
   
