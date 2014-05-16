@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-05-16T08:38:52+08:00</updated>
+  <updated>2014-05-16T08:39:34+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -128,7 +128,7 @@
 <li><p>在1的前提下，Full GC很频繁</p>
 
 <p> 这种情况是频繁创建大对象，或者创建了一些超大对象导致的。</p></li>
-<li><p>大对象toString()产生的大String很可能是罪魁祸首</p></li>
+<li><p>第3种情况下，大对象toString()产生的大String很可能是罪魁祸首</p></li>
 </ol>
 
 ]]></content>
