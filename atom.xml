@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-05-16T08:39:34+08:00</updated>
+  <updated>2014-05-26T21:32:06+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HttpClient使用坑一则——关于Postdata的encoding]]></title>
+    <link href="http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/"/>
+    <updated>2014-05-26T21:31:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding</id>
+    <content type="html"><![CDATA[<p>之前有个Http服务，使用Serlvet API实现的，现在遇到一个问题：一个同学使用HttpClient进行POST调用，结果中文传过来都是乱码。</p>
+
+<!--more-->
+
+
+<p>使用自制抓包工具<a href="https://github.com/code4craft/dp-idea">DP-IDEA</a>抓包分析Http请求，发现类似<code>&amp;value=%3f%3f</code>内容，并且Http头中Content-Type为<code>application/x-www-form-urlencoded</code>。上网查了才发现，Http Post请求也会默认做UrlEncoding，而HttpClient如果不设置，默认会用&#8221;ISO-8859-1&#8221;进行编码，于是改为UTF-8，问题解决！</p>
+
+<p>PS: ISO-8859-1编码时，会将高位字符编码成63(16进制就是3F)，所以以后遇到这个可疑的字符，更加有迹可循一点。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[又一次线上OOM排查经过]]></title>
@@ -1279,24 +1295,6 @@
 <p>尝试用agent修改代码。后来沮丧的发现，agent的<code>ClassFileTransformer</code>无法获取到系统级别的class，但是看ByteMan介绍，它倒是可以做到，有必要研究一番。</s></p>
 
 <p>后来跟RednaxelaFX提问之后，确认了JVM是根据ClassCloader+package来确定一个包的，所以要使自己写的类能访问<code>sun.nio</code>包的内容，必须使用Boostrap Classloader来加载。后来在javaagent里配置了相应参数，搞定！</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[今天把mou整崩溃了]]></title>
-    <link href="http://code4craft.github.com/blog/2013/09/24/jin-tian-ba-mouzheng-beng-kui-liao/"/>
-    <updated>2013-09-24T20:17:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/09/24/jin-tian-ba-mouzheng-beng-kui-liao</id>
-    <content type="html"><![CDATA[<p>一直觉得Mou写markdown，小巧灵活，久而久之也喜欢把一些临时文本放在里面。</p>
-
-<p>结果晚上回来的时候打不开了，内存飙到1.6G，CPU跑到200%多，死活打不开。作为markdown重度患者，简直要崩溃了。</p>
-
-<!---more--->
-
-
-<p>怀疑是打开了非法的文件导致。删了App重新装，问题依旧，不知道是把临时文件存在哪的。用进程管理器找到打开的文件，将疑似缓存的文件都删了(<code>~/Library</code>下面几个)，依然没有用！</p>
-
-<p>后来都要绝望的时候，竟然蹦出来了，原来是之前随便贴了一些数据，估计是有markdown的保留字，导致Mou解析出错了！下次还是不要乱拷数据到Mou里了吧！</p>
 ]]></content>
   </entry>
   

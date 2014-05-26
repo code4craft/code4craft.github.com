@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: shell - 非典型代码强迫症</title>
+  <title>HttpClient使用坑一则——关于Postdata的encoding - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="Category: shell">
+  <meta name="description" content="之前有个Http服务，使用Serlvet API实现的，现在遇到一个问题：一个同学使用HttpClient进行POST调用，结果中文传过来都是乱码。 使用自制抓包工具DP-IDEA抓包分析Http请求，发现类似&amp;value=%3f%3f内容，并且Http头中Content- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.comblog/categories/shell/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,36 +63,111 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Shell</h1>
+    
+      <h1 class="entry-title">HttpClient使用坑一则——关于Postdata的encoding</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-26T21:31:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>之前有个Http服务，使用Serlvet API实现的，现在遇到一个问题：一个同学使用HttpClient进行POST调用，结果中文传过来都是乱码。</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">写了个快捷保存文本的shell工具</a></h1>
-<time datetime="2013-06-27T22:14:00+08:00" pubdate><span class='month'>Jun</span> <span class='day'>27</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/python/'>python,</a>, <a class='category' href='/blog/categories/shell/'>shell</a></span>
-</footer>
+<!--more-->
 
 
-</article>
+<p>使用自制抓包工具<a href="https://github.com/code4craft/dp-idea">DP-IDEA</a>抓包分析Http请求，发现类似<code>&amp;value=%3f%3f</code>内容，并且Http头中Content-Type为<code>application/x-www-form-urlencoded</code>。上网查了才发现，Http Post请求也会默认做UrlEncoding，而HttpClient如果不设置，默认会用&#8221;ISO-8859-1&#8221;进行编码，于是改为UTF-8，问题解决！</p>
 
+<p>PS: ISO-8859-1编码时，会将高位字符编码成63(16进制就是3F)，所以以后遇到这个可疑的字符，更加有迹可循一点。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">code4craft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-26T21:31:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/http/'>http</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/15/oom-cont/" title="Previous Post: 又一次线上OOM排查经过">&laquo; 又一次线上OOM排查经过</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
 
 </div>
 

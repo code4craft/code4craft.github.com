@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="最近线上一个服务又出现了频繁Full GC的情况，导致提供的业务经常超时。问题出现非常不稳定，经过两周的时候，终于又捕捉到了一次Full GC，于是联系运维做Heap Dump之后，经过一系列分析，终于解决问题。这次的问题稍微复杂一点，但是也比较有代表性，用到了VisualVM和MAT两个工具， &hellip;">
+  <meta name="description" content="之前有个Http服务，使用Serlvet API实现的，现在遇到一个问题：一个同学使用HttpClient进行POST调用，结果中文传过来都是乱码。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/">HttpClient使用坑一则——关于Postdata的encoding</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-26T21:31:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前有个Http服务，使用Serlvet API实现的，现在遇到一个问题：一个同学使用HttpClient进行POST调用，结果中文传过来都是乱码。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -430,47 +471,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/29/hg-internal/">代码管理进入大数据时代</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-29T14:01:00+08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近Facebook在它们的博客中发布了文章，说到它们扩展了Mercurial（一种代码管理工具），以管理它们日渐庞大的代码。Facebook的代码量有多大？<a href="http://www.informationisbeautiful.net/visualizations/million-lines-of-code/">informationisbeautiful</a>这个网站发布过可视化一个软件代码量的介绍，Facebook的代码量大约是6000万行，超过了Windows Vista和Visual Studio 2012。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/29/hg-internal/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -503,6 +503,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/">HttpClient使用坑一则——关于Postdata的encoding</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/15/oom-cont/">又一次线上OOM排查经过</a>
       </li>
     
@@ -516,10 +520,6 @@
     
       <li class="post">
         <a href="/blog/2014/04/15/ruan-jian-kai-fa-shi-fou-cun-zai-law/">软件开发是否存在Law?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/30/dan-ran/">淡然</a>
       </li>
     
   </ul>
