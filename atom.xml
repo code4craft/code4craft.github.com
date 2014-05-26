@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-05-26T21:32:06+08:00</updated>
+  <updated>2014-05-26T21:32:53+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[HttpClient使用坑一则——关于Postdata的encoding]]></title>
+    <title type="html"><![CDATA[HttpClient使用坑一则——关于Post Data的encoding]]></title>
     <link href="http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/"/>
     <updated>2014-05-26T21:31:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding</id>
