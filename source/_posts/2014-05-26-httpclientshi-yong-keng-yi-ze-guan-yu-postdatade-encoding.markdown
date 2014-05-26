@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "HttpClient使用坑一则——关于Postdata的encoding"
+title: "HttpClient使用坑一则——关于Post Data的encoding"
 date: 2014-05-26 21:31
 comments: true
 categories: http
