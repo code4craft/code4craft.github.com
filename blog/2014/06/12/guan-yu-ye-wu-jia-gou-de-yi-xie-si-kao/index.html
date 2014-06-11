@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>关于业务架构的一些思考 - 非典型代码强迫症</title>
+  <meta name="author" content="code4craft">
+
+  
+  <meta name="description" content="最近换了部门，接手了好几个新项目，也进行了一些重构的尝试，总结一些经验。主要针对Web开发领域，算是抛砖引玉了。 1. 经历的几种业务架构的方式 公司是典型的SOA架构，Web层之下就是远程Service。Web层负责调用Service，Service则在内部整合缓存、数据库等内容，实现业务逻辑 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/06/12/guan-yu-ye-wu-jia-gou-de-yi-xie-si-kao/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="非典型代码强迫症" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">非典型代码强迫症</a></h1>
+  
+    <h2>Coding and hacking!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">关于业务架构的一些思考</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-12T07:24:00+08:00" pubdate data-updated="true">Jun 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近换了部门，接手了好几个新项目，也进行了一些重构的尝试，总结一些经验。主要针对Web开发领域，算是抛砖引玉了。</p>
+
+<!--more-->
+
+
+<h2>1. 经历的几种业务架构的方式</h2>
+
+<p>公司是典型的SOA架构，Web层之下就是远程Service。Web层负责调用Service，Service则在内部整合缓存、数据库等内容，实现业务逻辑。</p>
+
+<p>这样的结构没有什么问题，问题就在于Service内部的实现上。即使是Service的一个方法，内部实现也可能很复杂，这就涉及到代码分解的问题。</p>
+
+<p>例如：在一个SNS系统中，我有一个UserService，负责User的CRUD。当然实际逻辑会比较复杂，例如新建User要创建用户，还要初始化积分、等级、收件箱等内容。那么，我该怎么做这件事呢？</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">UserService</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">addUser</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">updateUser</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">UserDTO</span> <span class="nf">getUser</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">deleteUser</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>1.1 随意拆分式</h3>
+
+<p>我们之前的结构很随意，大部分代码都直接写在Service的实现类中，Service直接访问Dao实现逻辑。如果过于复杂，则会拆分成一些小的内部Service，并把它们聚合起来。这种方式在业务不复杂的时候，其实工作的还挺好的。</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0612/000228_XQfi_190591.png" alt="架构1" /></p>
+
+<h3>1.2 水平分层式</h3>
+
+<p>新接手的项目，老实说业务会更复杂。之前的做法是将业务分为了dal-数据库访问、domain-领域模型抽象、biz-业务逻辑、service-服务集成四层。例如一个查询数据的操作，可能要经历这么多个分层的流转，才能最终提供外部服务。这样分下来，代码的全复杂度确实也低了不少。</p>
+
+<p>但是这个划分导致我接手项目的时候困惑了很久，导致我觉得自己是不是理解能力下降了。后来在着手重构的时候，发现其实很多层次边界根本就很模糊了，甚至连参与维护者也不是很清楚。</p>
+
+<p>过多的分层，会增加坏代码的破坏力，如果边界不是足够清晰，那就不如不分。</p>
+
+<p>我理想的水平分层其实Web-Service-Dao已经足够了，因为他们的边界相对清晰，直接把Dao当做模型也工作得挺好，抽象出Domain来，根据已有的经验略微多余。</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0612/000255_uD3s_190591.png" alt="架构2" /></p>
+
+<h3>1.3 垂直拆分式</h3>
+
+<p>今天在做另一个项目的时候，尝试用一个责任链的方式来做这个事情。采用了垂直拆分的方式，将完成一件事，按照不同的模型，进行了细分，分成多个Processor，接口类似下面这样。Service内部只对这些子Processor做链式调用，它甚至也不知道有多少个Processor。结果这种方法出奇的好，大家发现并行开发很方便，测试也好写了，修改也方便了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Processor</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onAdd</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDelete</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0612/000311_enMh_190591.png" alt="架构3" /></p>
+
+<h2>2. 结论：几个架构的检验标准</h2>
+
+<p>经过多次的折腾，也接手过不少的项目，我得出这么几个结论：</p>
+
+<h3>2.1 一段逻辑，要能让别人轻松的定位到代码在哪里</h3>
+
+<p>这是我参与了很多项目的感受。好的结构并不需要跟踪很多代码层次，才能发现其中的逻辑到底在哪里。相反坏的架构可能有很多层抽象，单个复杂度不高，但是一段逻辑你根本不知道在哪一层。当然也可能是逻辑本身就揉成一坨，也不容易找到想要的东西。</p>
+
+<p>快速的发现相关逻辑，可以减少很多维护成本。</p>
+
+<p>当然，有些架构有学习成本，但是掌握之后，能够满足这个要求，我觉得也可以算是好的架构。</p>
+
+<h3>2.2 Web开发，可扩展性大于可复用性</h3>
+
+<p>根据我一些有限的经验看来，在互联网领域，复用的需求，其实并不如产品需求变更来的迫切。水平分层很大的动机是复用，但是往往内部的复用程度比较有限。而面对需求的变化，水平分层基本上从上到下都进行修改。而合理的垂直拆分可以只修改一个地方，这也是所谓的开闭原则了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">code4craft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-12T07:24:00+08:00" pubdate data-updated="true">Jun 12<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jia-gou/'>架构</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/06/12/guan-yu-ye-wu-jia-gou-de-yi-xie-si-kao/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/06/12/guan-yu-ye-wu-jia-gou-de-yi-xie-si-kao/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/02/zhong-wan-liao-yi-hui-wow/" title="Previous Post: 重玩了一会wow">&laquo; 重玩了一会wow</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/12/guan-yu-ye-wu-jia-gou-de-yi-xie-si-kao/">关于业务架构的一些思考</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/02/zhong-wan-liao-yi-hui-wow/">重玩了一会wow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/26/httpclientshi-yong-keng-yi-ze-guan-yu-postdatade-encoding/">HttpClient使用坑一则——关于Post Data的encoding</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/15/oom-cont/">又一次线上OOM排查经过</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/12/ondiet/">减肥中</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - code4craft -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
