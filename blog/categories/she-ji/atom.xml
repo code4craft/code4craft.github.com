@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 设计 | 非典型代码强迫症]]></title>
+  <link href="http://code4craft.github.com/blog/categories/she-ji/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2014-06-15T09:43:02+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[code4craft]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[没有银弹-谈谈软件设计的几个矛盾]]></title>
+    <link href="http://code4craft.github.com/blog/2014/06/16/ruan-jian-she-ji-de-ji-ge-mao-dun/"/>
+    <updated>2014-06-16T09:30:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/06/16/ruan-jian-she-ji-de-ji-ge-mao-dun</id>
+    <content type="html"><![CDATA[<p>最近在做项目的重构和功能改进，设计做了很多，也发生了一些争执。其实总结下来，很多争执的内容其实早就是经典的问题。这些问题没有孰优孰劣，具体采用哪种方案，还得因地制宜。</p>
+
+<ol>
+<li><p>低耦合与灵活性</p>
+
+<p> 对于一个大型系统，</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
