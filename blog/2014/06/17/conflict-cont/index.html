@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>写了个快捷保存文本的shell工具 - 非典型代码强迫症</title>
+  <title>没有银弹-谈谈软件设计的几个矛盾(二) - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。 第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦。想写了个工具， &hellip;">
+  <meta name="description" content="1. 关联与冗余 数据库第三范式种约定，数据没有传递依赖性，但是在互联网应用中，会存在非常多冗余的情况。冗余的目的主要有几个： 性能 将所有需要的数据冗余到一起可以提高性能。
+解耦 一般来说，互联网行业一般都希望一个应用的逻辑尽可能简单，依赖方尽可能的少。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/06/17/conflict-cont/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">写了个快捷保存文本的shell工具</h1>
+      <h1 class="entry-title">没有银弹-谈谈软件设计的几个矛盾(二)</h1>
     
     
       <p class="meta">
@@ -83,100 +84,45 @@
   
 
 
-<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
+<time datetime="2014-06-17T07:49:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。</p>
+<div class="entry-content"><h3>1. 关联与冗余</h3>
 
-<!-- more -->
+<p>数据库第三范式种约定，数据没有传递依赖性，但是在互联网应用中，会存在非常多冗余的情况。冗余的目的主要有几个：</p>
+
+<ol>
+<li><p>性能</p>
+
+<p> 将所有需要的数据冗余到一起可以提高性能。</p></li>
+<li><p>解耦</p>
+
+<p> 一般来说，互联网行业一般都希望一个应用的逻辑尽可能简单，依赖方尽可能的少。冗余数据可以将多个数据源的数据整合到一个数据源，那么应用本身就无需关心这部分逻辑了。</p></li>
+<li><p>允许变更</p>
+
+<p> 如果系统A使用了B的数据之后，又有自己独立变更的需要，那么冗余就必不可少了。</p></li>
+</ol>
 
 
-<p>第一个工具是个助记程序。像工作中我们总会管理一些文本，比如内网服务器地址、git仓库地址什么的，之前一直都是要登录一个平台去拷贝下来，然后粘贴到shell里，特别麻烦。想写了个工具，为一个文本写一个助记符，然后保存到文件里，每次可以调用程序把文件读出来，再根据助记符查找到对应文本。用法可以这样：</p>
+<p>其实从某种意义上，我觉得2比1更重要。而3则是根据需要来决定。从优先级来说是3&gt;2&gt;1。</p>
 
-<pre><code>add alias text
-get alias
-</code></pre>
+<p>冗余的坏处有几个：</p>
 
-<p>例如：</p>
+<ol>
+<li><p>有同步的成本</p>
 
-<pre><code>add getter https://github.com/code4craft/getter 
-</code></pre>
+<p> 如果冗余的是一个会发生更新的数据，那么数据同步的成本就不得不考虑了。</p></li>
+<li><p>增加整体复杂度</p>
 
-<p>也可以用&#8220;符号穿插到程序里：</p>
+<p> 其实这个是基于1的基础上的。如果只是冗余了数据，后续无需同步，其实系统会相对简单。但是如果有同步的需求，那么可能会有很多个同步的逻辑甚至系统，最后会让整个系统变得复杂和不可控。</p></li>
+</ol>
 
-<pre><code>git clone `get getter`
-</code></pre>
 
-<p>刚开始用python写了一遍，把文件保存到~/.getrc，并每次读出来并更新。</p>
-
-<p>后来想了想，这个方法没有自动补全，太麻烦！有没有好办法？最终想到，干脆把name作为可执行文件名，value作为程序的输出，每个name对应一个输出，再以特定前缀开始，这样子也有自动提示了，岂不是更好？于是就有了shell版本：</p>
-
-<pre><code>add.sh
-
- #!/bin/sh
-FILE_PATH=/usr/local/getter
-PREFIX=-
-[ -d "$FILE_PATH" ] || mkdir -p $FILE_PATH
-if [ -z "$1" ]
-then
-    echo "Usage: $0 alias [text]"
-else
-    FILE_NAME=$FILE_PATH/$PREFIX$1
-    if [ -z "$2" ]
-    then
-        rm -f $FILE_NAME
-    else
-        echo "#!/bin/sh" &gt; $FILE_NAME
-        echo "echo \"$2\"" &gt;&gt; $FILE_NAME
-        chmod +x $FILE_NAME
-    fi
-fi
-</code></pre>
-
-<p>记得在/etc/bashrc中加一行</p>
-
-<pre><code>export PATH=$PATH:/usr/local/getter
-</code></pre>
-
-<p>后来一想，那么如果我要保存一个可执行的shell命令，执行时是不是要<code>-xx</code>?干脆把命令直接写到脚本里，也别echo了！</p>
-
-<pre><code>edd.sh
-
- #!/bin/sh
-FILE_PATH=/usr/local/getter
-PREFIX=-
-[ -d "$FILE_PATH" ] || mkdir -p $FILE_PATH
-if [ -z "$1" ]
-then
-    echo "Usage: $0 alias [command]"
-else
-    FILE_NAME=$FILE_PATH/$PREFIX$1
-    if [ -z "$2" ]
-    then
-        rm -f $FILE_NAME
-    else
-        echo "#!/bin/sh" &gt; $FILE_NAME
-        echo "$2 \$1 \$2 \$3" &gt;&gt; $FILE_NAME
-        chmod +x $FILE_NAME
-    fi
-fi
-</code></pre>
-
-<p>比如之后我要保存一条命令&#8221;curl <a href="http://code4craft.github.io/blackhole/install.sh">http://code4craft.github.io/blackhole/install.sh</a> | sh&#8221;，可以这么用：</p>
-
-<pre><code>#保存命令
-edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
-#执行命令
--install
-</code></pre>
-
-<p>代码已经放到了github:</p>
-
-<p><a href="https://github.com/code4craft/getter">https://github.com/code4craft/getter</a></p>
+<p>其实第1条的同步机制总归是可以实现的，但是第2条的复杂度才是最需要考虑的地方。</p>
 </div>
 
 
@@ -199,21 +145,15 @@ edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
   
 
 
-<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
+<time datetime="2014-06-17T07:49:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/python/'>python,</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/06/17/conflict-cont/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/06/17/conflict-cont/" >Tweet</a>
   
   
   
@@ -222,10 +162,8 @@ edd install "curl http://code4craft.github.io/blackhole/install.sh | sh"
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/06/23/%5B%3F%5D-ci-jvmdiao-you-de-jing-guo/" title="Previous Post: BlackHole开发日记-一次压力测试及JVM调优的经过">&laquo; BlackHole开发日记-一次压力测试及JVM调优的经过</a>
+        <a class="basic-alignment left" href="/blog/2014/06/16/ruan-jian-she-ji-de-ji-ge-mao-dun/" title="Previous Post: 没有银弹-谈谈软件设计的几个矛盾">&laquo; 没有银弹-谈谈软件设计的几个矛盾</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/06/28/todolist/" title="Next Post: 一个shell下的todolist">一个shell下的todolist &raquo;</a>
       
     </p>
   </footer>
