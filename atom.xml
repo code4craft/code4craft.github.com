@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-06-17T08:28:11+08:00</updated>
+  <updated>2014-06-28T23:08:56+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[分层开发论]]></title>
+    <link href="http://code4craft.github.com/blog/2014/06/28/kiss/"/>
+    <updated>2014-06-28T22:51:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/06/28/kiss</id>
+    <content type="html"><![CDATA[<p>做Java开发的都喜欢分层的思想，似乎层次是越多越好。虽然之间我并不喜欢层次太多，但是也没有太多的理由让我去厌恶它。但是最近在做一些开发，刚好用了两种极端的方式来完成。</p>
+
+<!--more-->
+
+
+<p>最近在跟同事一起开发项目。两个类似的项目，大致都是一个中间层，从数据库载入一些数据，然后调用另外一个服务。从复杂程度上来说，差距并不大。前一个项目因为之前是他在做这块业务，所以由他主导，结果一开始就分成多层结构，从DAL,DOMAIN,BIZ一层一层往上写起，中间大概有5个对象来完成层级的隔离，转来转去。结果结对编程一个星期，终于弄出雏形。</p>
+
+<p>后来我写另外一个项目，因为开发时间紧，所以理清了业务流程之后，划分为三个阶段，直接分为三个模块，模块内部不分层，从外到内开始写，结果半天就完成了。</p>
+
+<p>到底是分层还是不分层好？分层的意思是隔离变化，核心业务与外部调用分开，降低系统与外部的耦合。但是一般来说，互联网应用内部逻辑相对简单，大部分时间都是在干一些数据相互转换的事情，这种事情你要说跟外部不耦合基本不可能。一般来说，考虑到成本问题，除非需求和数据发生变化，否则外部API变动的可能性极小。这样子耦合的成本并没有那么大。</p>
+
+<p>相反，我觉得系统内部的简单性更加重要。越少开发效率越高，修改越容易，也越不容易出错，分层结构必定是增加了复杂度，但是收获却相对较少。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[没有银弹-谈谈软件设计的几个矛盾(二)]]></title>
@@ -1237,59 +1257,6 @@
 <p><img src="http://static.oschina.net/uploads/space/2013/1117/212244_eFUQ_190591.png" alt="mocksocks" /></p>
 
 <p>这只猴子是一个博客中找到的，出自一个自由设计师之手，貌似已经卖给某个客户了<a href="http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/">http://blog.coghillcartooning.com/2436/monkey-cartoon-character-sketch/</a>。估计真正开源的时候，会把它换掉吧，目前仅仅自己用用，也就无所谓了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[WebMagic-Avalon计划启动]]></title>
-    <link href="http://code4craft.github.com/blog/2013/11/11/webmagic-avalon-start/"/>
-    <updated>2013-11-11T07:50:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/11/11/webmagic-avalon-start</id>
-    <content type="html"><![CDATA[<p>一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！</p>
-
-<p>双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！</p>
-
-<!--more-->
-
-
-<h3>1. 将爬虫脚本化</h3>
-
-<p>用尽量自然，简单的语言达到爬虫配置的目的，初定使用JRuby，雏形大概是这样子：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">title</span> <span class="o">=</span> <span class="n">css</span> <span class="s">&quot;div.BlogTitle h1&quot;</span>
-</span><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="n">css</span> <span class="s">&quot;div.BlogContent&quot;</span>
-</span><span class='line'><span class="n">urls</span> <span class="s">&quot;http://my\\.oschina\\.net/flashsword/blog/\\d+&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>见博客：<a href="http://my.oschina.net/flashsword/blog/175349">在webmagic中加入了自定义语言</a></p>
-
-<h3>2. 完整的管理后台</h3>
-
-<p>完整的管理后台，包括：</p>
-
-<ul>
-<li><p>规则的选择</p></li>
-<li><p>爬虫的管理</p></li>
-<li><p>爬虫的监控</p></li>
-</ul>
-
-
-<h3>3. 脚本分享</h3>
-
-<p>一个脚本要做到可分享，可能包括几个描述性内容：</p>
-
-<ul>
-<li><p>适配的URL</p></li>
-<li><p>简单描述</p></li>
-<li><p>抽取结果</p></li>
-</ul>
-
-
-<p>最后做到一个平台，可以自由发布和搜索脚本。</p>
 ]]></content>
   </entry>
   
