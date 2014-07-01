@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: java - 非典型代码强迫症</title>
+  <title>缓存不是万灵药 - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="Category: java">
+  <meta name="description" content="公司有个很重要的服务，因为数据需求非常杂，所以关联的数据表非常多。而这个服务就承担起提供如此多数据的使命。 现在的做法是极度依赖缓存的，所以数据都读取出来，打包存到缓存中。一旦失效，一条数据大概会需要上百毫秒去读取，于是我们不得不提供一个预热缓存的程序，定期的去扫描。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.comblog/categories/java/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/07/01/huan-cun-de-she-ji-ji-qi-ta/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,36 +63,105 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Java</h1>
+    
+      <h1 class="entry-title">缓存不是万灵药</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-01T08:00:00+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>公司有个很重要的服务，因为数据需求非常杂，所以关联的数据表非常多。而这个服务就承担起提供如此多数据的使命。</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/">MockSocks开发日志之三-为NIO设置Socks代理</a></h1>
-<time datetime="2013-10-20T16:28:00+08:00" pubdate><span class='month'>Oct</span> <span class='day'>20</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bytecode/'>bytecode,</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/nio/'>nio,</a></span>
-</footer>
+<!--more-->
 
 
-</article>
+<p>现在的做法是极度依赖缓存的，所以数据都读取出来，打包存到缓存中。一旦失效，一条数据大概会需要上百毫秒去读取，于是我们不得不提供一个预热缓存的程序，定期的去扫描。之前出过一次问题就是缓存失效之后，该服务出现大量超时，乃至线程池跑满，整个服务都不可用。</p>
 
+<p>在我的理解中，缓存是一个提高性能的方案，但是绝对不是万灵药，哪痛贴哪。比如这个服务，有些数据可能只有极少需求方需要，但是之前是统统都读取出来，而我觉得正确的做法可能是理清数据需求，从更细粒度去提供。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">code4craft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-01T08:00:00+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/07/01/huan-cun-de-she-ji-ji-qi-ta/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/07/01/huan-cun-de-she-ji-ji-qi-ta/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/28/kiss/" title="Previous Post: 分层开发论">&laquo; 分层开发论</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
 
 </div>
 
