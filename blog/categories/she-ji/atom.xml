@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 设计 | 非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/blog/categories/she-ji/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-07-02T08:26:02+08:00</updated>
+  <updated>2014-07-02T10:09:12+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -18,7 +18,10 @@
     <link href="http://code4craft.github.com/blog/2014/07/01/dai-ma-da-quan-du-shu-bi-ji/"/>
     <updated>2014-07-01T23:01:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2014/07/01/dai-ma-da-quan-du-shu-bi-ji</id>
-    <content type="html"><![CDATA[<p>最近项目开发比较密集，也遇到了一些方式的碰撞，这个时候再翻到《代码大全》，真是瞌睡时碰到枕头的感觉了。决定好好读一遍，记录如下：</p>
+    <content type="html"><![CDATA[<p>最近项目开发比较密集，也遇到了一些方式的碰撞，这个时候再翻到《代码大全》，真是瞌睡时碰到枕头的感觉了。决定好好读一遍，记录一下。</p>
+
+<!--more-->
+
 
 <p>xxiv: 软件构建是项目必须完成的阶段，它要为小型项目75%的错误负责，为大型和中型项目50%-75%的错误负责。——我们在项目的错误中，往往只看重设计的重要性，其实大部分错误都来自软件构建（即编程）本身。</p>
 
