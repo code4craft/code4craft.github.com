@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 设计 | 非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/blog/categories/she-ji/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-07-01T08:19:26+08:00</updated>
+  <updated>2014-07-02T08:26:02+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[代码大全读书笔记]]></title>
+    <link href="http://code4craft.github.com/blog/2014/07/01/dai-ma-da-quan-du-shu-bi-ji/"/>
+    <updated>2014-07-01T23:01:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/07/01/dai-ma-da-quan-du-shu-bi-ji</id>
+    <content type="html"><![CDATA[<p>最近项目开发比较密集，也遇到了一些方式的碰撞，这个时候再翻到《代码大全》，真是瞌睡时碰到枕头的感觉了。决定好好读一遍，记录如下：</p>
+
+<p>xxiv: 软件构建是项目必须完成的阶段，它要为小型项目75%的错误负责，为大型和中型项目50%-75%的错误负责。——我们在项目的错误中，往往只看重设计的重要性，其实大部分错误都来自软件构建（即编程）本身。</p>
+
+<p>P11：如何利用隐喻Metaphors（对软件的建模），将影响如何解决这个问题。</p>
+
+<p>P28：程序员是软件食物链的最后一环。架构师吃掉需求，设计师吃掉架构，而程序员则消化设计。</p>
+
+<p>P35：前期做好准备的项目，返工的成本是最低的。如果无法做到完全的准备，准备80%的需求，并为20%留够时间是一个可行的做法。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[没有银弹-谈谈软件设计的几个矛盾]]></title>
