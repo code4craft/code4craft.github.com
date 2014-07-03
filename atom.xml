@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-07-02T10:09:12+08:00</updated>
+  <updated>2014-07-03T08:19:26+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -30,6 +30,26 @@
 <p>P28：程序员是软件食物链的最后一环。架构师吃掉需求，设计师吃掉架构，而程序员则消化设计。</p>
 
 <p>P35：前期做好准备的项目，返工的成本是最低的。如果无法做到完全的准备，准备80%的需求，并为20%留够时间是一个可行的做法。</p>
+
+<p>P46：架构应该确定软件采用的组织结构，并尽量列举其他可能的方案以及选择最终方案的理由。依据80/20原则，架构可以对确定决定项目80%功能的20%的类进行详细说明。</p>
+
+<p>架构设计的常规内容(挑几个觉得重要的)：</p>
+
+<ol>
+<li>程序组织 Program Orgnization</li>
+<li>主要的类 Major Classes</li>
+<li>数据设计 Data Design</li>
+<li>业务规则 Business Rules</li>
+<li>安全性 Security</li>
+<li>性能 Performance</li>
+<li>可伸缩性 Scalability</li>
+<li>容错性</li>
+</ol>
+
+
+<p>P51：在软件开发的链条中，链条的强度不是等于最薄弱的环节，而是所有薄弱环节的乘积。</p>
+
+<p>P53：架构应该描述决策的动机，谨防“我们向来这么做”的说法。有个有趣的例子：Beth 想做丈夫 Adbul 家祖传的炖肉。Adbul 说，先撒上胡椒和盐，然后去头去尾，最后放在锅里盖上盖子炖就好了。Beth 就问了，“为什么要去头去尾呢？” Abdul 回答说，我不知道，我一直这么做，这要问我妈。他打电话回家一问，母亲也说不知道，她一直这么做，这个问题要问奶奶。母亲就打了个电话给奶奶，奶奶回答说，“我不知道你为什么要去头去尾，我这么做是因为我的锅太小了装不下”</p>
 ]]></content>
   </entry>
   
