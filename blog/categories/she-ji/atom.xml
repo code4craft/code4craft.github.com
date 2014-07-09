@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 设计 | 非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/blog/categories/she-ji/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-07-09T01:03:49+08:00</updated>
+  <updated>2014-07-10T01:05:59+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -80,7 +80,7 @@
 
 <p>P84：程序调用、组合、继承的依赖程度从轻到中。继承是非常重度的耦合。</p>
 
-<p>P90</p>
+<p>P90：</p>
 ]]></content>
   </entry>
   
