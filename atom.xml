@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-07-10T01:05:59+08:00</updated>
+  <updated>2014-07-22T00:01:01+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[安安满岁了]]></title>
+    <link href="http://code4craft.github.com/blog/2014/07/21/an-an-man-sui-liao/"/>
+    <updated>2014-07-21T23:59:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/07/21/an-an-man-sui-liao</id>
+    <content type="html"><![CDATA[<p>今天安安满岁了，我却还在公司加班，都没有能见她一面。相信付出总会有回报，能力加上努力，一定会让家里变得越来越好！</p>
+
+<p>爸爸也好喜欢安安啊！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[代码大全读书笔记]]></title>
@@ -1051,24 +1062,6 @@
 <p>长期的目标是能自己出本书，但是自己积累还远远不够，需要继续坚持。</p>
 
 <p>今年的工作和学习能打个90分。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[开始使用hive]]></title>
-    <link href="http://code4craft.github.com/blog/2013/11/21/kai-shi-shi-yong-hive/"/>
-    <updated>2013-11-21T17:18:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2013/11/21/kai-shi-shi-yong-hive</id>
-    <content type="html"><![CDATA[<p>终于到周末了！这周事情不多，仅仅是用hive迁移一个跑脚本的程序，结果写了一周都没弄好，被hive操的生活不能自理了！加上负责的事情逐渐多起来，也变得有点忙了。</p>
-
-<!--more-->
-
-
-<p>接触一个新领域，总会有控制不住的感觉。开发流程、工具、思路都是新的，还有一些说不清道不明的问题。我也自认为对开发有些心得了，什么东西都能鼓捣鼓捣，但是真正在生产环境，面对对于一个新的领域，仍然会感到手足无措。</p>
-
-<p>我们这边有工作十几年的C++高手，但是换到Java依然会需要向人请教，真可谓隔行如隔山！这大概就是说程序员吃青春饭的原因吧！</p>
-
-<p>其实我挺喜欢挑战，但是对于这么一个跑一遍都要几十分钟的东西来说，实在喜欢不起来。难怪大数据的人才值钱，这东西实在太枯燥了，生命都浪费在执行上了。</p>
 ]]></content>
   </entry>
   
