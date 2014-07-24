@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Java字节码织入技术概述 - 非典型代码强迫症</title>
+  <title>写在工作满三年的时候 - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="十问： 什么是Java字节码？ Class文件的结构： ClassFile { u4 magic; u2 minor_version; u2 major_version; u2 constant_pool_count; cp_info constant_pool[ &hellip;">
+  <meta name="description" content="连续忙了大概1个半月，没有9点之前回家过，今天项目终于临近尾声，回家写个博客吧。 转眼间工作满三年了。 1.生活 三年前我怀揣着梦想来到了北京，后来又为了家庭来了上海。在北京的一年，没有家庭负担，和女朋友过着甜蜜的日子，工作虽然忙但是没什么压力，整天玩玩游戏，玩玩摄影，非常自在。工资其实挺低的， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/10/20/java-bytecode/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/07/24/xie-zai-gong-zuo-man-san-nian-de-shi-hou/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">Java字节码织入技术概述</h1>
+      <h1 class="entry-title">写在工作满三年的时候</h1>
     
     
       <p class="meta">
@@ -83,76 +83,41 @@
   
 
 
-<time datetime="2013-10-20T16:52:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+<time datetime="2014-07-24T21:54:00+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>十问：</p>
+<div class="entry-content"><p>连续忙了大概1个半月，没有9点之前回家过，今天项目终于临近尾声，回家写个博客吧。</p>
 
-<ul>
-<li>什么是Java字节码？</li>
-</ul>
+<p>转眼间工作满三年了。</p>
 
-
-<!-- more -->
+<!--more-->
 
 
-<p>Class文件的结构：</p>
+<h2>1.生活</h2>
 
-<pre><code>   ClassFile {
-          u4             magic;
-          u2             minor_version;
-          u2             major_version;
-          u2             constant_pool_count;
-          cp_info        constant_pool[constant_pool_count-1];
-          u2             access_flags;
-          u2             this_class;
-          u2             super_class;
-          u2             interfaces_count;
-          u2             interfaces[interfaces_count];
-          u2             fields_count;
-          field_info     fields[fields_count];
-          u2             methods_count;
-          method_info    methods[methods_count];
-          u2             attributes_count;
-          attribute_info attributes[attributes_count];
-   }
-</code></pre>
+<p>三年前我怀揣着梦想来到了北京，后来又为了家庭来了上海。在北京的一年，没有家庭负担，和女朋友过着甜蜜的日子，工作虽然忙但是没什么压力，整天玩玩游戏，玩玩摄影，非常自在。工资其实挺低的，但是两个人在北京，一个小单间，已经觉得很开心了。</p>
 
-<p><img src="http://static.oschina.net/uploads/space/2013/1020/193328_GPX0_190591.png" alt="在此输入图片描述" /></p>
+<p>来了上海之后，组建了家庭，随后有了宝宝，过上了有责任的生活。生活上基本都围着小家伙转了，失去了一些乐趣，也得到了一些乐趣。或许这就是人生吧。以后需要投更多的时间在生活上。</p>
 
-<pre><code>javap -verbose Downloader
-</code></pre>
+<h2>2.工作</h2>
 
-<p>最开始是常量池，保存类名/方法/字面量等信息。</p>
+<p>论工作状态，其实没有发生什么变化，因为技术总归是喜欢的事情，无论做什么都能找到乐趣。闲的时候就做技术钻研，研究开源技术，也搞出了webmagic这个不错的项目，也提交过几个著名项目的patch。忙的时候除了完成任务，也会探索一些工具化的方式，提高效率，也能从工作中积累一些实践经验。</p>
 
-<ul>
-<li>Java字节码在JVM里如何保存？</li>
-</ul>
+<p>工作三年了，因为对技术比较专注，也成了一些新人小伙伴学习的对象。而之前更多是作为一个新人来看待自己，这一点倒是需要调整了。</p>
 
+<p>例如最近做的一个大项目，学到了很多东西。变化最大的是，因为带了几个新人，从之前单打独斗的方式，开始学会安排任务，利用大家的力量。其中感受比较深的就是，要学会合作，既要给能力不足的同事及时的支援，也要给新人合适的锻炼机会。可能确实上手的时候有一段适应期，但是一旦上手起到的作用，可能会超过你的预期。</p>
 
-<p>字节码是类文件</p>
+<p>一个连Java类和接口都分不清的实习生，在指导了大概一两天之后，也能独立的开发出MVC结构的一个完整功能了。所以即使是考虑到项目紧张，也不要只安排最没有技术含量的工作给他们。</p>
 
-<ul>
-<li><p>字节码和ClassLoader的关系？</p>
+<p>也有工作两年的同学，因为之前没做过相关业务，所以迟迟动不了手的，这些给他们指明道路之后，也能够很快的跟上。</p>
 
-<p>  -XX:+TraceClassLoading</p></li>
-<li><p>字节码修改能做的事？</p></li>
-<li><p>字节码修改不能做的事？</p>
+<p>这一点我前期做的不好。一个项目7个人，我大概写了50%以上的代码，其中包括全部框架性质的内容，大致留给他们的是一些接口的实现工作。最后的结果就是开发完成的很快，但是后期修改需求都堆积在我这里，导致进度缓慢。于是今天决定停下项目，把手头做的东西好好讲一讲，让大家能够参与进来。事实证明这个方法效果很好，大家基本上能够分担很多任务了。</p>
 
-<p>  Java加载Class文件后会做&#8221;连接&#8221;操作，就是把符号表的彼此引用连接起来。</p></li>
-<li><p>常用的字节码修改工具？</p></li>
-</ul>
-
-
-<h2>参考书目</h2>
-
-<p>《深入理解Java虚拟机》</p>
-
-<p>《The Java® Virtual Machine Specification-Java SE 7 Edition》</p>
+<p>工作满三年，已经过了急着要证明自己的时候了。带领团队的成长，才是更需要做的事情。</p>
 </div>
 
 
@@ -175,21 +140,15 @@
   
 
 
-<time datetime="2013-10-20T16:52:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+<time datetime="2014-07-24T21:54:00+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/java-bytecode/'>java,bytecode</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/10/20/java-bytecode/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/10/20/java-bytecode/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/07/24/xie-zai-gong-zuo-man-san-nian-de-shi-hou/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/07/24/xie-zai-gong-zuo-man-san-nian-de-shi-hou/" >Tweet</a>
   
   
   
@@ -198,10 +157,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/10/20/mocksockskai-fa-ri-zhi-zhi-san-wei-nioshe-zhi-socksdai-li/" title="Previous Post: MockSocks开发日志之三-为NIO设置Socks代理">&laquo; MockSocks开发日志之三-为NIO设置Socks代理</a>
+        <a class="basic-alignment left" href="/blog/2014/07/21/an-an-man-sui-liao/" title="Previous Post: 安安满岁了">&laquo; 安安满岁了</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/11/03/qconjian-wen/" title="Next Post: qcon见闻">qcon见闻 &raquo;</a>
       
     </p>
   </footer>
