@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-08-01T13:41:32+08:00</updated>
+  <updated>2014-08-01T13:53:21+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -20,9 +20,18 @@
     <id>http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti</id>
     <content type="html"><![CDATA[<p>最近做的业务遇到一个比较棘手的问题：有一个比较核心的数据获取服务，因为其数据库比较分散，从数据库读取效率很低，于是需要使用缓存来解决问题。</p>
 
+<!--more-->
+
+
 <p>这个业务是非常依赖缓存的，现在就遇到一个问题：大部分请求都能让缓存工作的很好，但是少量请求会导致缓存的大量失效。</p>
 
 <p>举个例子，现在做一个博客类网站，那么将博客文章缓存起来，因为大部分文章都满足访问热点，所以并没有太多问题。但是如果有一个服务，需要获取某个博主历史的所有文章，或者获取某个人收藏的所有文章，这个时候缓存就不太管用了。</p>
+
+<p>了解了一些缓存淘汰算法，例如LRU、FIFO、LFU，以及LIRS等。但是无论任何算法都是依赖局部性原理(<a href="http://en.wikipedia.org/wiki/Locality_of_reference">Locality of reference</a>)的。局部性显然是根据使用场景不同而不同的。</p>
+
+<p>而实际情况下，我们倾向于把缓存和数据库一起作为数据访问层，这种抽象对上层使用很友好，但是在场景增多、量级增大的时候，很可能出现问题。我的理解这就是缓存使用中的抽象泄露问题。</p>
+
+<p>关于博客这个例子，比较合适的方式是用LFU代替LRU，但是依然会有些其他问题。写记录下来吧。</p>
 ]]></content>
   </entry>
   
