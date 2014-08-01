@@ -259,15 +259,21 @@
         <lastmod>2014-07-24T23:02:06+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti/
+        </loc>
+        <lastmod>2014-07-28T09:44:01+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://code4craft.github.com/about/</loc>
         <lastmod>2013-06-22T08:55:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2014-07-24T23:02:06+08:00</lastmod>
+        <lastmod>2014-07-28T09:44:01+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2014-07-24T23:02:06+08:00</lastmod>
+        <lastmod>2014-07-28T09:44:01+08:00</lastmod>
     </url>
 </urlset>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>淡然 - 非典型代码强迫症</title>
+  <title>缓存使用中的抽象泄露问题 - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="马上就是29岁生日了，家里的小家伙也开始会逗我玩了，会求抱抱了。以前陪小家伙感觉更多的是责任，现在越来越觉得她是个小人了。 因为毕业晚，一直都是以新人自居，做事也带着学生那会的习气，有些事情没有承担起相应的责任，比如带宝宝。这一点老婆承担了很多，我虽然也会去配合，但是终归没有那么情愿。 &hellip;">
+  <meta name="description" content="最近做的业务遇到一个比较棘手的问题：有一个比较核心的数据获取服务，因为其数据库比较分散，从数据库读取效率很低，于是需要使用缓存来解决问题。 这个业务是非常依赖缓存的，现在就遇到一个问题：大部分请求都能让缓存工作的很好，但是少量请求会导致缓存的大量失效。 举个例子，现在做一个博客类网站， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2014/03/30/dan-ran/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">淡然</h1>
+      <h1 class="entry-title">缓存使用中的抽象泄露问题</h1>
     
     
       <p class="meta">
@@ -83,18 +83,18 @@
   
 
 
-<time datetime="2014-03-30T22:36:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2014</time>
+<time datetime="2014-07-28T09:37:00+08:00" pubdate data-updated="true">Jul 28<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>马上就是29岁生日了，家里的小家伙也开始会逗我玩了，会求抱抱了。以前陪小家伙感觉更多的是责任，现在越来越觉得她是个小人了。</p>
+<div class="entry-content"><p>最近做的业务遇到一个比较棘手的问题：有一个比较核心的数据获取服务，因为其数据库比较分散，从数据库读取效率很低，于是需要使用缓存来解决问题。</p>
 
-<p>因为毕业晚，一直都是以新人自居，做事也带着学生那会的习气，有些事情没有承担起相应的责任，比如带宝宝。这一点老婆承担了很多，我虽然也会去配合，但是终归没有那么情愿。</p>
+<p>这个业务是非常依赖缓存的，现在就遇到一个问题：大部分请求都能让缓存工作的很好，但是少量请求会导致缓存的大量失效。</p>
 
-<p>晚上把头像改成了和女儿的合照，以后以老爸自居了。虽然工作经验也有些不足，但是决定不再装嫩了，多一点责任心，年龄的事就随他去吧。</p>
+<p>举个例子，现在做一个博客类网站，那么将博客文章缓存起来，因为大部分文章都满足访问热点，所以并没有太多问题。但是如果有一个服务，需要获取某个博主历史的所有文章，或者获取某个人收藏的所有文章，这个时候缓存就不太管用了。</p>
 </div>
 
 
@@ -117,7 +117,7 @@
   
 
 
-<time datetime="2014-03-30T22:36:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2014</time>
+<time datetime="2014-07-28T09:37:00+08:00" pubdate data-updated="true">Jul 28<span>th</span>, 2014</time>
       
 
 
@@ -125,7 +125,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/03/30/dan-ran/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/03/30/dan-ran/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti/" >Tweet</a>
   
   
   
@@ -134,10 +134,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/03/20/shi-yong-springprofilehe-mybatisjin-xing-duo-ge-shu-ju-yuan-%28h2he-mysql%29de-qie-huan/" title="Previous Post: 使用SpringProfile和Mybatis进行多个数据源（H2和Mysql）的切换">&laquo; 使用SpringProfile和Mybatis进行多个数据源（H2和Mysql）的切换</a>
+        <a class="basic-alignment left" href="/blog/2014/07/24/xie-zai-gong-zuo-man-san-nian-de-shi-hou/" title="Previous Post: 写在工作满三年的时候">&laquo; 写在工作满三年的时候</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/04/15/ruan-jian-kai-fa-shi-fou-cun-zai-law/" title="Next Post: 软件开发是否存在Law?">软件开发是否存在Law? &raquo;</a>
       
     </p>
   </footer>
