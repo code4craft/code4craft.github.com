@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-08-01T13:53:21+08:00</updated>
+  <updated>2014-08-12T23:31:50+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[细节之美]]></title>
+    <link href="http://code4craft.github.com/blog/2014/08/12/xi-jie-zhi-mei/"/>
+    <updated>2014-08-12T23:05:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/08/12/xi-jie-zhi-mei</id>
+    <content type="html"><![CDATA[<p>最近一个大项目忙完，今天领导召集大家，又要重新做另外一个项目，本质上就是要把之前的业务重写一遍。</p>
+
+<!--more-->
+
+
+<p>站在领导的角度来说，看重的是“拉大旗好办事”，大项目相对来说好拉资源，小伙伴们也能得到锻炼，对于团队来说绝对有利，无可厚非。</p>
+
+<p>但是从纯技术的角度来说，好的项目是需要打磨的，无论是设计还是实现层面，都是一个迭代的过程。webmagic断断续续维护了一年了，好像现在也有很多同类的框架出现，我觉得webmagic最有竞争力的方面，不是单纯的架构设计有多好，而是github上100多个issue。</p>
+
+<p>一个好的项目，优秀的设计占比30%，那么后续维护和完善基本上要占据70%的比例，这是我的观点。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[缓存使用中的抽象泄露问题]]></title>
@@ -1018,24 +1036,6 @@
 <p>第二是github。做开发最重要的是写代码写代码，我在业余的时候写了不少项目，比如之前的DNS服务器BlackHole，比如后来的爬虫框架WebMagic。WebMagic因为需求比较广泛，加上我更新比较勤快，以及oschina这个平台，也获得了不少的关注量。</p>
 
 <p>好像说到这里乱掉了？其实我觉得最重要的就是，做事情一定要了解行业一流水平，多交流，不要畏惧，并且找到适合自己的学习方法。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[对自己好一点]]></title>
-    <link href="http://code4craft.github.com/blog/2014/02/12/good-to-you/"/>
-    <updated>2014-02-12T22:49:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/02/12/good-to-you</id>
-    <content type="html"><![CDATA[<p>生活是需要刺激的。</p>
-
-<!--more-->
-
-
-<p>记得在学校的时候，想要跑步，又觉得无聊，就买了个一百多的飞利浦运动耳机，可以入耳的那种。那会一百多块算是个巨款，相当于一周生活费。但是有了它，我坚持了接近5个月的跑步，作为一个胖子，我也交到了第一个女朋友，也就是现在的孩儿他妈。</p>
-
-<p>记得去年突发奇想，花300多块买了个Intellij个人版，结果编程兴趣盎然，一年写了十几个开源项目，其中还有一个得到很多人的关注，小小的出了把名。</p>
-
-<p>现在编程又有点厌倦了，用什么刺激一下呢？</p>
 ]]></content>
   </entry>
   
