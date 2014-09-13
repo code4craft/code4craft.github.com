@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 性能 | 非典型代码强迫症]]></title>
+  <link href="http://code4craft.github.com/blog/categories/xing-neng/atom.xml" rel="self"/>
+  <link href="http://code4craft.github.com/"/>
+  <updated>2014-09-13T10:19:55+08:00</updated>
+  <id>http://code4craft.github.com/</id>
+  <author>
+    <name><![CDATA[code4craft]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Java性能优化笔记]]></title>
+    <link href="http://code4craft.github.com/blog/2014/09/13/javaxing-neng-you-hua-bi-ji/"/>
+    <updated>2014-09-13T10:17:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/09/13/javaxing-neng-you-hua-bi-ji</id>
+    <content type="html"><![CDATA[<p>最近在做一个关键性服务的重构，重构完之后需要做性能测试。期间一直也在看《Java性能优化权威指南》这本书，记得今年的目标是“能对Java性能做定量分析”，所以趁这个机会好好研究一下。</p>
+
+<!--more-->
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="最近看《羊毛战争》，主角最开始是个技术宅，维护整个地下世界唯一的发电机。“你知不知道我负责的东西多么重要，没有它整个地堡都将陷入黑暗？”“但是我要你做的是更重要的事，没有了人，这些玩意也没有意义了是吧？”我觉得对技术宅的态度更加如是，技术重要，思考方向也是必要的。 ">
+  <meta name="description" content="最近在做一个关键性服务的重构，重构完之后需要做性能测试。期间一直也在看《Java性能优化权威指南》这本书，记得今年的目标是“能对Java性能做定量分析”，所以趁这个机会好好研究一下。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/13/javaxing-neng-you-hua-bi-ji/">Java性能优化笔记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-13T10:17:00+08:00" pubdate data-updated="true">Sep 13<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近在做一个关键性服务的重构，重构完之后需要做性能测试。期间一直也在看《Java性能优化权威指南》这本书，记得今年的目标是“能对Java性能做定量分析”，所以趁这个机会好好研究一下。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/09/13/javaxing-neng-you-hua-bi-ji/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -435,73 +476,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/17/conflict-cont/">没有银弹-谈谈软件设计的几个矛盾(二)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-17T07:49:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>1. 关联与冗余</h3>
-
-<p>数据库第三范式种约定，数据没有传递依赖性，但是在互联网应用中，会存在非常多冗余的情况。冗余的目的主要有几个：</p>
-
-<ol>
-<li><p>性能</p>
-
-<p> 将所有需要的数据冗余到一起可以提高性能。</p></li>
-<li><p>解耦</p>
-
-<p> 一般来说，互联网行业一般都希望一个应用的逻辑尽可能简单，依赖方尽可能的少。冗余数据可以将多个数据源的数据整合到一个数据源，那么应用本身就无需关心这部分逻辑了。</p></li>
-<li><p>允许变更</p>
-
-<p> 如果系统A使用了B的数据之后，又有自己独立变更的需要，那么冗余就必不可少了。</p></li>
-</ol>
-
-
-<p>其实从某种意义上，我觉得2比1更重要。而3则是根据需要来决定。从优先级来说是3&gt;2&gt;1。</p>
-
-<p>冗余的坏处有几个：</p>
-
-<ol>
-<li><p>有同步的成本</p>
-
-<p> 如果冗余的是一个会发生更新的数据，那么数据同步的成本就不得不考虑了。</p></li>
-<li><p>增加整体复杂度</p>
-
-<p> 其实这个是基于1的基础上的。如果只是冗余了数据，后续无需同步，其实系统会相对简单。但是如果有同步的需求，那么可能会有很多个同步的逻辑甚至系统，最后会让整个系统变得复杂和不可控。</p></li>
-</ol>
-
-
-<p>其实第1条的同步机制总归是可以实现的，但是第2条的复杂度才是最需要考虑的地方。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -534,6 +508,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/09/13/javaxing-neng-you-hua-bi-ji/">Java性能优化笔记</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/08/21/yang-mao-zhan-zheng/">羊毛战争</a>
       </li>
     
@@ -547,10 +525,6 @@
     
       <li class="post">
         <a href="/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti/">缓存使用中的抽象泄露问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/24/xie-zai-gong-zuo-man-san-nian-de-shi-hou/">写在工作满三年的时候</a>
       </li>
     
   </ul>
