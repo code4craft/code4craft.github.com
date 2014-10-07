@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-09-29T08:32:37+08:00</updated>
+  <updated>2014-10-07T22:06:18+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[十一贵州行记]]></title>
+    <link href="http://code4craft.github.com/blog/2014/10/07/guo-qing-gui-zhou-xing-ji/"/>
+    <updated>2014-10-07T21:40:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/10/07/guo-qing-gui-zhou-xing-ji</id>
+    <content type="html"><![CDATA[<p>十一陪老婆回贵州，住了几天。主要以陪老婆见亲戚和带宝宝为主，中间也有些见闻心得，记录如下。</p>
+
+<!--more-->
+
+
+<h2>关于二三线城市</h2>
+
+<p>最开始的感受是贵州物价便宜，一顿饭30-40块钱已经是请客吃饭的水平了，在上海大概是一顿好一点的工作套餐。</p>
+
+<p>硬件设施上，贵州一些市区的建设已经不输于上海周边的水平。比如我家住在上海外环边上，大概跟安顺市比较热闹的地段差不多。</p>
+
+<p>但是服务质量上就相差甚远。在贵州很难打到出租车，拼车也已经成为一种惯例了，因为我们是四个人出行，基本没有司机愿意载，导致最后打到车都要对司机有一些感激之情。特别是从贵阳火车站出来那一段，全程人挤人，出租车点直接被人群挤满，但是因为交通阻塞，根本没有出租车过得来。相比在上海，火车站、飞机场的出租车点总是井然有序，在街边打车也很少拒载，也很少有司机想要拼车。</p>
+
+<p>其实关于这种现象，我无意归结为素质问题，更愿意认为是地区文化和发展程度的问题。因为服务质量这种概念还没有成为习惯，大多数都还停留在满足基本的功能需要上。</p>
+
+<h2>关于团购</h2>
+
+<p>这次回家，让我惊讶的是我们的竞争对手美团的团购已经推广到六盘水市了，而点评则没有。跟几个朋友聊了一下，他们都算是还比较追随潮流的的年轻人，说都知道美团和大众点评，倒是团购都用美团，但是不知道点评还有团购业务。</p>
+
+<p>团购在用户端就是电商，知名度、产品价格、丰富程度、用户体验、服务质量都决定了用户的选择。而且移动端用户一般不会同时对多个团购网站进行比较，于是很容易出现强者越强的现象。这一点点评在二三线城市失去了大部分机会，要扳回非常困难了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[第一次参加校招的心得]]></title>
@@ -710,24 +738,6 @@
     <content type="html"><![CDATA[<p>最近工作有些变动，有点忙。加上WebMagic也发展了一些用户，做了不少支持的工作，也发布了一些版本。终于前几天累倒了，感冒头痛，只能休息。</p>
 
 <p>晚上买了个优酷的一年会员，又看了遍《勇敢的心》。之前因为太长没有看完，这次看的时候，听着平静的苏格兰风笛，有种恍若隔世的感觉。之前做事情太急躁，走得慢一点，才能看更多的风景。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[软件开发是否存在Law?]]></title>
-    <link href="http://code4craft.github.com/blog/2014/04/15/ruan-jian-kai-fa-shi-fou-cun-zai-law/"/>
-    <updated>2014-04-15T06:57:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/04/15/ruan-jian-kai-fa-shi-fou-cun-zai-law</id>
-    <content type="html"><![CDATA[<p>昨天跟架构师讨论一个项目的设计，谈到MVC模式。MVC模式，是先从View设计还是先从Model设计？</p>
-
-<!--more-->
-
-
-<p>架构师的观点是，只要使用了某个模式，其中就存在必然的&#8221;Law&#8221;，不遵循就会误入歧途。例如MVC必须要从Model写起，因为Model是稳定的，是“对自然界的建模”，与业务无关，而View是易变的，是具体业务的展现。</p>
-
-<p>我是实用主义者，我认为一个稳定的Model是需要领域积累的，一开始就做到一个稳定的Model，应对不断变化的需求非常难。很多时候从View写起，可以迅速实现业务。当业务发展到一定阶段，再抽象出一个Model也是水到渠成的事情。开发的过程本身也是对领域加深认识的一个过程。</p>
-
-<p>但是也有些现状是“你不去想就不会有”，一堆View拼凑起来的项目太多了，其实最开始用一个不稳定的Model，加以迭代，最终变成稳定的，也是一个很好的过程？</p>
 ]]></content>
   </entry>
   
