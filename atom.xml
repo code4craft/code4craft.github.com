@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-11-01T09:51:01+08:00</updated>
+  <updated>2014-11-12T23:43:58+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[追求的和得到的]]></title>
+    <link href="http://code4craft.github.com/blog/2014/11/12/zhui-qiu-de-he-de-dao-de/"/>
+    <updated>2014-11-12T23:31:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/11/12/zhui-qiu-de-he-de-dao-de</id>
+    <content type="html"><![CDATA[<p>今天做了两个月的团单服务改造终于上线了，相比之前的服务，性能基本上提高了一个数量级，稳定性也增加不少。这是今年做的最有价值的一个项目，之前服务数次S1故障的场景历历在目。而这次重构是按照业务量增加几倍来设计的，相信再过一两年都不太会出问题了。</p>
+
+<!--more-->
+
+
+<p>这个项目的完成还是比较曲折的，中间人员组织调整了好几次。从开始连CEO都亲自过问，到最后连找人改个bug都很困难。最后我承担起了项目跟进的工作，说实话推进很困难，还好还是按时上线。就在今天完成的当天，就听说这些业务要交出去了。</p>
+
+<p>交就交吧，KPI其实是个浮云，这个也不做多想了。无论怎样，只希望把事情做好，以后提到这件事的时候，还记得我的名字，也就够了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[最近几个月的总结]]></title>
@@ -762,29 +778,6 @@
 
 <p> 这种情况是频繁创建大对象，或者创建了一些超大对象导致的。</p></li>
 <li><p>第3种情况下，大对象toString()产生的大String很可能是罪魁祸首</p></li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[减肥中]]></title>
-    <link href="http://code4craft.github.com/blog/2014/05/12/ondiet/"/>
-    <updated>2014-05-12T23:04:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/05/12/ondiet</id>
-    <content type="html"><![CDATA[<p>Github马拉松进行了78天了，希望也以同样的毅力坚持减肥。</p>
-
-<!--more-->
-
-
-<p>今天看了一篇文章：<a href="http://www.panghufei.com/?p=11163">http://www.panghufei.com/?p=11163</a>，以及BBC的纪录片<a href="http://v.youku.com/v_show/id_XNTYyODM5MjE2.html">视频: BBC 关于减肥你应该知道的十件事</a>。</p>
-
-<p>纪录片很好，总结出来几点：</p>
-
-<ol>
-<li>用更小的盘子吃；</li>
-<li>用高蛋白的食物、用粥类防止饥饿；</li>
-<li>小习惯也能改变体重。</li>
 </ol>
 
 ]]></content>
