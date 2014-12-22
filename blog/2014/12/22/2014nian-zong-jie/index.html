@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac使用ssh socks代理翻墙 - 非典型代码强迫症</title>
+  <title>2014年总结 - 非典型代码强迫症</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下： 使用ssh作为socks proxy： 有很多软件都可以实现这个功能，例如Secret Socks，SSH Tunnerl Manager。Secret Socks不支持自动连接，同时每次都要输入密码， &hellip;">
+  <meta name="description" content="又是一年年底。今年我跟老婆结婚第三年，女儿也有一岁半了，一切安好，有家人的陪伴真好。工作上，今年是工作第四年，有了更多的责任，也有了不少的突破。 1. 生活 生活的重点都在小家伙上。小家伙很可爱，看着她一天一天长大，也觉得很开心。带小孩还是比较累的，现在每天下班之后都需要陪她到睡觉， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mac使用ssh Socks代理翻墙</h1>
+      <h1 class="entry-title">2014年总结</h1>
     
     
       <p class="meta">
@@ -83,42 +83,49 @@
   
 
 
-<time datetime="2013-01-05T21:46:00+08:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time>
+<time datetime="2014-12-22T22:47:00+08:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下：</p>
+<div class="entry-content"><p>又是一年年底。今年我跟老婆结婚第三年，女儿也有一岁半了，一切安好，有家人的陪伴真好。工作上，今年是工作第四年，有了更多的责任，也有了不少的突破。</p>
 
-<!-- more -->
+<!--more-->
 
 
-<p>使用ssh作为socks proxy：</p>
+<h2>1. 生活</h2>
 
-<p>有很多软件都可以实现这个功能，例如Secret Socks，SSH Tunnerl Manager。Secret Socks不支持自动连接，同时每次都要输入密码，太麻烦了。SSH Tunnerl Manager也是要输入密码。不过SSH Tunnerl Manager有个好处，更改配置后它会把SSH命令都显示出来。原来Mac下SSH直接就可以支持socks代理，大概这样配置：</p>
+<p>生活的重点都在小家伙上。小家伙很可爱，看着她一天一天长大，也觉得很开心。带小孩还是比较累的，现在每天下班之后都需要陪她到睡觉，早上起来还要带个把小时。</p>
 
-<pre><code>ssh -N -p 22 -C -c -D 7070 username@hostname
-</code></pre>
+<p>因为工资涨了一些，虽然有不少的房贷，但是也没有什么压力了。后来和老婆也定了一些理财计划，以后会慢慢的执行，让生活越来越好。</p>
 
-<p>但是这样依然无法保存密码，后来搜索到一个软件sshpass，下载编译之，运行却提示找不到/usr/libexec/ssh-askpass，后来从网上找到一个人的解决方案，发现其实这就是提供密码的脚本，于是直接在里面敲上：</p>
+<p>生活越来越平淡，平平淡淡才是真嘛。</p>
 
-<pre><code>#! /bin/sh 
+<h2>2. 工作成果</h2>
 
-echo yourpassword
-</code></pre>
+<p>今年工作中发生的事情还是比较多的。</p>
 
-<p>然后使用</p>
+<p>一个是随着工作经验的积累和自己的表现还不错，也受到了更多的重视。参与了几个比较大的项目，也有不少是作为负责人参与，在小伙伴中的声望也比较高了。年中的时候做了一个大项目，整个部门30多个人封闭开发了2个多月，得到了不少锻炼，也作出了不错的成绩。</p>
 
-<pre><code>sshpass -pyourpassword ssh -N -p 22 -C -c -D 7070 username@hostname
-</code></pre>
+<p>在做这个项目的同时，我也体会到了团队的重要，后面就更多的参与到团队建设中来。后面的半年，我组织了接近20次分享，目的是让大家都能得到提高。这也给我们团队起到了不少的推动作用。</p>
 
-<p>就可以了！sshpass貌似自带断线重连功能，相当给力！</p>
+<p>业余上，写的博客数下降了，但是今年花了接近一个月时间，写了一个WebMagic的文档。这是个大工程。因为这个工作，WebMagic的推广更加的迅速，已经有了接近700个star，QQ群也突破了500人。</p>
 
-<p>还有就是autoproxy的配置，在Chrome下使用SwitchySharp，在规则列表里加上<a href="https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt">https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt</a>，选择AutoProxy兼容列表即可，当然对应情景模式别忘了选成你配好的本地代理！</p>
+<h2>3. 技术提高</h2>
 
-<p>最后将启动脚本ln -s到/Library/StartupItems/，至此大功告成。</p>
+<p>技术方面，也还是有一些收获的。主要是往上(架构设计)，往下(性能优化)。</p>
+
+<p>一个是设计方面，随着经验的增加，分析问题也有了一些方法论，使得做设计更加有章可循。总体来说是进步。</p>
+
+<p>关于性能优化方面。年前做了一次重构，重构对象是公司最重要、调用量最大的团单服务，重构的结果，无论从效率还是可用性上来说，基本上已经优化到了业务的极限，瓶颈反而到了RPC中间件、数据库、缓存等地方。我记得年初的目标是“能对性能做定量分析”，今年看来算是达到了50%。</p>
+
+<p>实际上总结下来，我发现无论往上还是往下，详细的分析往往比方案要更有价值。这也算是成为了我的一种方法论吧。</p>
+
+<p>其他的技术提高比较琐碎，也乏善可陈。确实今年变懒了。</p>
+
+<p>年底换了组，做一些ERP性质的开发，挑战更小，必须要自我提高了。要有点危机感。</p>
 </div>
 
 
@@ -141,21 +148,15 @@ echo yourpassword
   
 
 
-<time datetime="2013-01-05T21:46:00+08:00" pubdate data-updated="true">Jan 5<span>th</span>, 2013</time>
+<time datetime="2014-12-22T22:47:00+08:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/gfw/'>gfw</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/" data-via="" data-counturl="http://code4craft.github.com/blog/2013/01/05/macshi-yong-ssh-socksdai-li-fan-qiang/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie/" >Tweet</a>
   
   
   
@@ -164,10 +165,8 @@ echo yourpassword
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/12/17/blackhole-develop-diary/" title="Previous Post: BlackHole开发日记">&laquo; BlackHole开发日记</a>
+        <a class="basic-alignment left" href="/blog/2014/11/12/zhui-qiu-de-he-de-dao-de/" title="Previous Post: 追求的和得到的">&laquo; 追求的和得到的</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/02/17/blackhole-develop-diary2/" title="Next Post: blackhole开发日记II">blackhole开发日记II &raquo;</a>
       
     </p>
   </footer>

@@ -4,7 +4,7 @@
   <title><![CDATA[非典型代码强迫症]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2014-11-12T23:43:58+08:00</updated>
+  <updated>2014-12-23T00:42:07+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2014年总结]]></title>
+    <link href="http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie/"/>
+    <updated>2014-12-22T22:47:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie</id>
+    <content type="html"><![CDATA[<p>又是一年年底。今年我跟老婆结婚第三年，女儿也有一岁半了，一切安好，有家人的陪伴真好。工作上，今年是工作第四年，有了更多的责任，也有了不少的突破。</p>
+
+<!--more-->
+
+
+<h2>1. 生活</h2>
+
+<p>生活的重点都在小家伙上。小家伙很可爱，看着她一天一天长大，也觉得很开心。带小孩还是比较累的，现在每天下班之后都需要陪她到睡觉，早上起来还要带个把小时。</p>
+
+<p>因为工资涨了一些，虽然有不少的房贷，但是也没有什么压力了。后来和老婆也定了一些理财计划，以后会慢慢的执行，让生活越来越好。</p>
+
+<p>生活越来越平淡，平平淡淡才是真嘛。</p>
+
+<h2>2. 工作成果</h2>
+
+<p>今年工作中发生的事情还是比较多的。</p>
+
+<p>一个是随着工作经验的积累和自己的表现还不错，也受到了更多的重视。参与了几个比较大的项目，也有不少是作为负责人参与，在小伙伴中的声望也比较高了。年中的时候做了一个大项目，整个部门30多个人封闭开发了2个多月，得到了不少锻炼，也作出了不错的成绩。</p>
+
+<p>在做这个项目的同时，我也体会到了团队的重要，后面就更多的参与到团队建设中来。后面的半年，我组织了接近20次分享，目的是让大家都能得到提高。这也给我们团队起到了不少的推动作用。</p>
+
+<p>业余上，写的博客数下降了，但是今年花了接近一个月时间，写了一个WebMagic的文档。这是个大工程。因为这个工作，WebMagic的推广更加的迅速，已经有了接近700个star，QQ群也突破了500人。</p>
+
+<h2>3. 技术提高</h2>
+
+<p>技术方面，也还是有一些收获的。主要是往上(架构设计)，往下(性能优化)。</p>
+
+<p>一个是设计方面，随着经验的增加，分析问题也有了一些方法论，使得做设计更加有章可循。总体来说是进步。</p>
+
+<p>关于性能优化方面。年前做了一次重构，重构对象是公司最重要、调用量最大的团单服务，重构的结果，无论从效率还是可用性上来说，基本上已经优化到了业务的极限，瓶颈反而到了RPC中间件、数据库、缓存等地方。我记得年初的目标是“能对性能做定量分析”，今年看来算是达到了50%。</p>
+
+<p>实际上总结下来，我发现无论往上还是往下，详细的分析往往比方案要更有价值。这也算是成为了我的一种方法论吧。</p>
+
+<p>其他的技术提高比较琐碎，也乏善可陈。确实今年变懒了。</p>
+
+<p>年底换了组，做一些ERP性质的开发，挑战更小，必须要自我提高了。要有点危机感。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[追求的和得到的]]></title>
@@ -659,127 +703,6 @@
 <p>使用自制抓包工具<a href="https://github.com/code4craft/dp-idea">DP-IDEA</a>抓包分析Http请求，发现类似<code>&amp;value=%3f%3f</code>内容，并且Http头中Content-Type为<code>application/x-www-form-urlencoded</code>。上网查了才发现，Http Post请求也会默认做UrlEncoding，而HttpClient如果不设置，默认会用&#8221;ISO-8859-1&#8221;进行编码，于是改为UTF-8，问题解决！</p>
 
 <p>PS: ISO-8859-1编码时，会将高位字符编码成63(16进制就是3F)，所以以后遇到这个可疑的字符，更加有迹可循一点。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[又一次线上OOM排查经过]]></title>
-    <link href="http://code4craft.github.com/blog/2014/05/15/oom-cont/"/>
-    <updated>2014-05-15T22:00:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/05/15/oom-cont</id>
-    <content type="html"><![CDATA[<p>最近线上一个服务又出现了频繁Full GC的情况，导致提供的业务经常超时。问题出现非常不稳定，经过两周的时候，终于又捕捉到了一次Full GC，于是联系运维做Heap Dump之后，经过一系列分析，终于解决问题。这次的问题稍微复杂一点，但是也比较有代表性，用到了VisualVM和MAT两个工具，继续记录如下。</p>
-
-<!--more-->
-
-
-<h2>现象</h2>
-
-<p>这次使用公司的<a href="https://github.com/dianping/cat">CAT</a>监控平台看到的内存表现如下：</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/062243_4GUj_190591.png" alt="http://static.oschina.net/uploads/space/2014/0516/062243_4GUj_190591.png" /></p>
-
-<p>可以看到，具体表现是：</p>
-
-<ol>
-<li>在很长一段时间内(数个小时)，New GC比较频繁，Full GC较少(一小时个位数)。</li>
-<li>过了某一时间点后，Full GC增加，New GC则减少。</li>
-<li>将服务切换下线后，Memory Free逐渐回升，Full GC减少。</li>
-</ol>
-
-
-<p>然后观察某一时刻的JMAP histo的内容如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> num     #instances         #bytes  class name
-</span><span class='line'>----------------------------------------------
-</span><span class='line'>   1:       5958517     5840833584  [C
-</span><span class='line'>   2:         37983      706246056  [B
-</span><span class='line'>   3:       5960539      190737248  java.lang.String
-</span><span class='line'>   4:       1522282      126603936  [Ljava.lang.Object;
-</span><span class='line'>   5:       3692000       88608000  java.lang.Double</span></code></pre></td></tr></table></div></figure>
-
-
-<p>可以看到&#8221;[C&#8221;即&#8221;char[]&ldquo;占用内存达到了5.8G，它正是String的内部结构，换句话说，因为存在了大量的大String导致这个问题。</p>
-
-<p>联系运维进行了Heap Dump之后，就开始了分析的过程。因为服务器内存有8G，所以相应的DUMP也有8G，对分析也造成了一点小困难。</p>
-
-<p>下面是一些工具的使用过程，操作系统是OS X 10.8。</p>
-
-<h2>使用VisualVM分析</h2>
-
-<p>首先使用VisualVM对Heap Dump进行分析。分析需要比较大的内存，而VisualVM默认的内存是256M，所以需要先设置<code>/Applications/VisualVM.app/Contents/Resources/visualvm/etc/visualvm.conf</code>中的最大内存量，这里我们设置成了4G<code>-J-Xmx4096m</code>。</p>
-
-<p>好了，现在打开dump文件，整个分析过程共占用内存2G，仍然在可接受范围。之后分析内存，可以看到跟之前histo一样的类关系。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/074246_GKl4_190591.png" alt="visual vm class" /></p>
-
-<p>不同的是，这时候可以点进去，查看具体的对象。这里看到，竟然有几个大的String占用了756M的内存，看来我们找到问题了。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/074742_7S5S_190591.png" alt="visual vm object " /></p>
-
-<p>发现一个奇怪的现象：“计算保留大小”之后，这些String的保留大小都是0。</p>
-
-<p>保留大小是什么呢？</p>
-
-<p>它是分析工具从GC roots开始查找，找到的所有不会回收的对象，然后按照引用关系，计算出这个“对象以及它引用的对象”的内存大小。这里很有趣的是，这些对象的保留大小都是0。</p>
-
-<p>开始我甚至以为是工具出了问题，后来想想，其实答案很简单：这些大String是临时对象，没有什么对象持有它——通过分析这些String的依赖关系也说明了这一点。这些对象是可以被回收的，换句话说，并不是有明显的内存泄露。</p>
-
-<p>这个“没有对象持有的String”很有意思，让我想到了，会不会是log的过程中，产生了这个String？因为log的时候，会调用对象的toString()方法，而一个大对象的toString()可能是很大的。查看了一下String的内容，是<code>[Class[field1=xxx,field2=yyy]]</code>这种结构，几乎可以肯定是toString()的结果，那么我们现在只要查看一下具体的内容，到底是哪里太大就可以了。</p>
-
-<p>可惜的是，VisualVM里我尝试了各种方法，都没有办法Dump出这个对象的数据，甚至还尝试了VisualVM提供的OQL。</p>
-
-<p><a href="http://visualvm.java.net/oqlhelp.html">OQL</a>是一种类SQL的表达式，同时整合了一些Javascript的函数功能，但是它的缺点就是太慢了…最后尝试用OQL Dump对象未果。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/075904_N7Sp_190591.png" alt="visual vm oql" /></p>
-
-<h2>使用MAT分析</h2>
-
-<p>转而尝试一下MAT。Eclipse MAT(Memory Analyzer Tool)是一个强大的内存分析工具，它可以方便的分析内存泄露的问题。实际使用之后，确实也感觉到比VisualVM更加强大一些。</p>
-
-<p>我们使用MAT打开Dump文件，这也是一个漫长的过程。与VisualVM不同的是，MAT分析的时候，会在本地产生几个临时文件保存分析结果，所以相应的内存占用会小一些(1G左右)，第二次打开也会快很多。</p>
-
-<p>打开完成后，我们看到可以看到几个占用内存较大的对象，这就是最可疑的内存泄漏源。意外的是Size显示的只有1.3GB，而且我们的大String都没在里面。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/071417_UaCv_190591.png" alt="mat" /></p>
-
-<p>开始我们一度认为是Dump文件有错，后来上网搜索才知道，因为MAT的主要目标是排查内存占用量，所以默认大小是不计算不可达对象的——而我们的String都是不可达对象。对应Eclipse的文档里有介绍<a href="http://wiki.eclipse.org/MemoryAnalyzer/FAQ#How_to_analyse_unreachable_objects">http://wiki.eclipse.org/MemoryAnalyzer/FAQ#How_to_analyse_unreachable_objects</a>。</p>
-
-<p>于是我们按照说明，在&#8221;Preferences=>Memory Analyzer&#8221;中勾选&#8221;Keep Unreachable Objects&#8221;，删除索引文件Dump同路径下的所有&#8221;.index&#8221;，即可看到所有的对象。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/081748_lx9g_190591.png" alt="mat-with-unreachable" /></p>
-
-<p>点击Histogram，即可看到类的占用。在类上选择&#8221;List Objects&#8221;，即可看到所有对象。在对象上选择&#8221;Copy=>Value to File&#8221;，即可保存到文件。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0516/082102_7Tks_190591.png" alt="mat-objects" /></p>
-
-<h2>原理</h2>
-
-<p>之后我们通过分析对象，发现是因为某个用于缓存的对象使用了一个List结构，但是添加元素的没有去重，导致List越来越大造成的。这个对象本身占用内存只有110M，但是toString()出来的字符串达到700M的大小，所以引起了频繁的GC——最开始对象小的时候是New GC，后来对象大了，直接进入了年老代，就变成了Full GC。</p>
-
-<h2>总结</h2>
-
-<p>回到之前的问题，通过这次分析，我们可以这么总结：</p>
-
-<ol>
-<li><p>将服务切换下线后，Memory Free逐渐回升，Full GC减少，Heap Dump的可达对象较少</p>
-
-<p> 这种情况不是内存泄露，有可能是对象创建开销太大造成的。</p></li>
-<li><p>在1的前提下，New GC很频繁</p>
-
-<p> 这种情况可能是频繁创建小对象，或者创建一些较大的对象(尚不足以直接进入年老代)</p></li>
-<li><p>在1的前提下，Full GC很频繁</p>
-
-<p> 这种情况是频繁创建大对象，或者创建了一些超大对象导致的。</p></li>
-<li><p>第3种情况下，大对象toString()产生的大String很可能是罪魁祸首</p></li>
-</ol>
-
 ]]></content>
   </entry>
   
