@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2015-03-20T10:37:29+08:00</updated>
+  <updated>2015-03-20T10:52:47+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -567,6 +567,13 @@
 <li><p>性能</p>
 
 <p> 将所有需要的数据冗余到一起可以提高性能。</p></li>
+</ol>
+
+
+<!--more-->
+
+
+<ol>
 <li><p>解耦</p>
 
 <p> 一般来说，互联网行业一般都希望一个应用的逻辑尽可能简单，依赖方尽可能的少。冗余数据可以将多个数据源的数据整合到一个数据源，那么应用本身就无需关心这部分逻辑了。</p></li>
