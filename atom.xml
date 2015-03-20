@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2015-03-20T10:29:21+08:00</updated>
+  <updated>2015-03-20T10:32:44+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -29,6 +29,9 @@
 <p>什么样的代码，算是可读性好？我跟别人提过一个标准：“你写的代码，过了几个月、半年、一年，跟你说道一个功能，即使你不记得这个功能怎么做，你也能说清楚这个功能写在哪个地方”。这个标准我自己认为还是很有效的。</p>
 
 <p>那用什么方法可以增加可读性呢？合理的拆分和抽象会增加可读性。另外，我其实一直崇尚“用最常用的方法写程序，直到它发展到你已经理解困难的时候，再去重构”。</p>
+
+<!--more-->
+
 
 <h2>2. 代码美学与合理性</h2>
 
