@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "关于"技术人生"的一些重新审视"
+title: "关于“技术人生”的一些重新审视"
 date: 2015-04-14 20:45
 comments: true
 categories: 
