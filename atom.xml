@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2015-03-20T10:52:47+08:00</updated>
+  <updated>2015-04-14T22:42:25+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,38 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[关于“技术人生”的一些重新审视]]></title>
+    <link href="http://code4craft.github.com/blog/2015/04/14/guan-yu-ji-zhu-ren-sheng-de-yi-xie-zhong-xin-shen-shi/"/>
+    <updated>2015-04-14T20:45:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2015/04/14/guan-yu-ji-zhu-ren-sheng-de-yi-xie-zhong-xin-shen-shi</id>
+    <content type="html"><![CDATA[<p>又有很久不写博客了。最近博客内容离技术越来越远，主要是系统学习的机会和动力太少，很多琐碎的技巧又不想单独记录。年纪大了，除了技术之外，又有了一些其他的思考，我倒是很想把这些东西分享出来。</p>
+
+<!--more-->
+
+
+<h2>1. 这段时间技术的收获</h2>
+
+<p>稍微总结一下技术方面的收获吧。其实收获就是没什么大的收获。技术接触久了，虽然还在做开发，但是很难在一个技术实现点上有太大兴趣了，更关注的是如何解决问题。因为业务也转移到了后台系统，所以技术关注点也从高性能、高可用转移到了业务模型、数据、复用性上面来。这方面能说的其实不多，更多的是把业务挖深，规划和理解产品。</p>
+
+<p>最近最大的收获，可能是中间做过一个HTTP的分享，看了好几个RFC，边边角角都考虑到了。这次分享应该是我至今为止做过的准备最多、效果最好的分享，slides已经上传了，其中有些历史还是挺好玩的：<a href="http://share.csdn.net/slides/13538">《漫谈HTTP》</a>。另外就是一直在用hive拉数据，sql精进了不少，当然仅仅是使用，也没什么好说的。</p>
+
+<p>最近一直在跟进一个大项目，算是架构师的角色，已经差不多顺利上线。其中也有些管理的心得，但是太初级，还是想要积累一段时间再记录下来。</p>
+
+<h2>2. 这段时间看的书</h2>
+
+<p>这段时间看的书都比较形而上。一本是《软件开发者路线图》，讲的是如何成为工匠级的开发者。这本书给我的震动颇大，以至于还专门去写了书评<a href="http://book.douban.com/review/7392173/">http://book.douban.com/review/7392173/</a>。另外一本是温伯格的《你的灯亮着吗》，讲如何解决问题，很有趣，值得一读。</p>
+
+<p>最近正在看了一本书《淘宝十年产品事》，也对产品是什么有了更多的理解。书里提到的问题也是现在我面临的，特别是关于商品、搜索的理解，看完感觉非常有用。</p>
+
+<h2>3. 这段时间的想法</h2>
+
+<p>最近看了一些互联网的历史。20多年前，互联网还没诞生，而现在，互联网影响人的生活方方面面。技术发展让不可能变为可能，而后续的逐渐成熟又将实现产品的成本逐渐降低。能掌握一门技术，为这个时代的发展做一点事情，比起当初简单的做出产品更要吸引人。</p>
+
+<p>这段时间对业务了解也加深了。开始去学会懂产品，懂整个项目的运作，懂得技术在项目中，到底是怎样的位置。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[关于代码质量的一些思考]]></title>
@@ -665,112 +697,6 @@
 <p>其实还有很多东西没说到，以后补充吧。</p>
 
 <p>总结一句话：软件设计要适应满足需求，同时不断演化。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[关于业务架构的一些思考]]></title>
-    <link href="http://code4craft.github.com/blog/2014/06/12/guan-yu-ye-wu-jia-gou-de-yi-xie-si-kao/"/>
-    <updated>2014-06-12T07:24:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/06/12/guan-yu-ye-wu-jia-gou-de-yi-xie-si-kao</id>
-    <content type="html"><![CDATA[<p>最近换了部门，接手了好几个新项目，也进行了一些重构的尝试，总结一些经验。主要针对Web开发领域，算是抛砖引玉了。</p>
-
-<!--more-->
-
-
-<h2>1. 经历的几种业务架构的方式</h2>
-
-<p>公司是典型的SOA架构，Web层之下就是远程Service。Web层负责调用Service，Service则在内部整合缓存、数据库等内容，实现业务逻辑。</p>
-
-<p>这样的结构没有什么问题，问题就在于Service内部的实现上。即使是Service的一个方法，内部实现也可能很复杂，这就涉及到代码分解的问题。</p>
-
-<p>例如：在一个SNS系统中，我有一个UserService，负责User的CRUD。当然实际逻辑会比较复杂，例如新建User要创建用户，还要初始化积分、等级、收件箱等内容。那么，我该怎么做这件事呢？</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">UserService</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">addUser</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">updateUser</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">UserDTO</span> <span class="nf">getUser</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">deleteUser</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>1.1 随意拆分式</h3>
-
-<p>我们之前的结构很随意，大部分代码都直接写在Service的实现类中，Service直接访问Dao实现逻辑。如果过于复杂，则会拆分成一些小的内部Service，并把它们聚合起来。这种方式在业务不复杂的时候，其实工作的还挺好的。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0612/000228_XQfi_190591.png" alt="架构1" /></p>
-
-<h3>1.2 水平分层式</h3>
-
-<p>新接手的项目，老实说业务会更复杂。之前的做法是将业务分为了dal-数据库访问、domain-领域模型抽象、biz-业务逻辑、service-服务集成四层。例如一个查询数据的操作，可能要经历这么多个分层的流转，才能最终提供外部服务。这样分下来，代码的全复杂度确实也低了不少。</p>
-
-<p>但是这个划分让我接手项目的时候困惑了很久，导致我觉得自己是不是理解能力下降了。后来在着手重构的时候，发现其实很多层次边界根本就很模糊了，甚至连参与维护者也不是很清楚。</p>
-
-<p>过多的分层，会增加坏代码的破坏力，如果边界不是足够清晰，那就不如不分。</p>
-
-<p>我理想的水平分层其实Web-Service-Dao已经足够了，因为他们的边界相对清晰，直接把Dao当做模型也工作得挺好，抽象出Domain来，根据已有的经验略微多余。</p>
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0612/000255_uD3s_190591.png" alt="架构2" /></p>
-
-<h3>1.3 垂直拆分式</h3>
-
-<p>今天在做另一个项目的时候，尝试用一个责任链的方式来做这个事情。采用了垂直拆分的方式，将完成一件事，按照不同的模型，进行了细分，分成多个Processor，接口类似下面这样。Service内部只对这些子Processor做链式调用，它甚至也不知道有多少个Processor。结果这种方法出奇的好，大家发现并行开发很方便，测试也好写了，修改也方便了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Processor</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onAdd</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDelete</span><span class="o">(</span><span class="n">UserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://static.oschina.net/uploads/space/2014/0612/000311_enMh_190591.png" alt="架构3" /></p>
-
-<h2>2. 结论：几个架构的检验标准</h2>
-
-<p>经过多次的折腾，也接手过不少的项目，我得出这么几个结论：</p>
-
-<h3>2.1 一段逻辑，要能让别人轻松的定位到代码在哪里</h3>
-
-<p>这是我参与了很多项目的感受。好的结构并不需要跟踪很多代码层次，才能发现其中的逻辑到底在哪里。相反坏的架构可能有很多层抽象，单个复杂度不高，但是一段逻辑你根本不知道在哪一层。当然也可能是逻辑本身就揉成一坨，也不容易找到想要的东西。</p>
-
-<p>快速的发现相关逻辑，可以减少很多维护成本。</p>
-
-<p>当然，有些架构有学习成本，但是掌握之后，能够满足这个要求，我觉得也可以算是好的架构。</p>
-
-<h3>2.2 Web开发，可扩展性大于可复用性</h3>
-
-<p>根据我一些有限的经验看来，在互联网领域，复用的需求，其实并不如产品需求变更来的迫切。水平分层很大的动机是复用，但是往往内部的复用程度比较有限。而面对需求的变化，水平分层基本上从上到下都进行修改。而合理的垂直拆分可以只修改一个地方，这也是所谓的开闭原则了。</p>
 ]]></content>
   </entry>
   
