@@ -321,15 +321,21 @@
         <lastmod>2015-04-14T22:42:01+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://code4craft.github.com/blog/2015/05/28/zhuan-xing-guan-li-de-yi-dian-si-kao/
+        </loc>
+        <lastmod>2015-06-01T23:43:59+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://code4craft.github.com/about/</loc>
         <lastmod>2013-06-22T08:55:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2015-04-14T22:42:01+08:00</lastmod>
+        <lastmod>2015-06-01T23:43:59+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2015-04-14T22:42:01+08:00</lastmod>
+        <lastmod>2015-06-01T23:43:59+08:00</lastmod>
     </url>
 </urlset>
