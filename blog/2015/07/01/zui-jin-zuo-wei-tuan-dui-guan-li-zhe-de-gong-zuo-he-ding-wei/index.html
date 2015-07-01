@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>分层开发论 - 代码工匠</title>
+  <title>最近作为团队管理者的工作和定位 - 代码工匠</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="做Java开发的都喜欢分层的思想，似乎层次是越多越好。虽然之间我并不喜欢层次太多，但是也没有太多的理由让我去厌恶它。但是最近在做一些开发，刚好用了两种极端的方式来完成。 最近在跟同事一起开发项目。两个类似的项目，大致都是一个中间层，从数据库载入一些数据，然后调用另外一个服务。从复杂程度上来说， &hellip;">
+  <meta name="description" content="最近转管理之后，因为某些原因临时带了两个团队，其中有些工作方式又发生了改变，总结一下。 工作 最近一段时间的工作大概包括几部分。 1. 调整团队工作内容 之前本来想写“决定工作内容”的，但是现在想想过于理想化了。基层管理员的能力有限，基本上不能决定不做什么。 帮助产品经理和各个业务方理清需求， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2014/06/28/kiss/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2015/07/01/zui-jin-zuo-wei-tuan-dui-guan-li-zhe-de-gong-zuo-he-ding-wei/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">分层开发论</h1>
+      <h1 class="entry-title">最近作为团队管理者的工作和定位</h1>
     
     
       <p class="meta">
@@ -83,25 +83,51 @@
   
 
 
-<time datetime="2014-06-28T22:51:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2014</time>
+<time datetime="2015-07-01T23:07:00+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>做Java开发的都喜欢分层的思想，似乎层次是越多越好。虽然之间我并不喜欢层次太多，但是也没有太多的理由让我去厌恶它。但是最近在做一些开发，刚好用了两种极端的方式来完成。</p>
+<div class="entry-content"><p>最近转管理之后，因为某些原因临时带了两个团队，其中有些工作方式又发生了改变，总结一下。</p>
 
 <!--more-->
 
 
-<p>最近在跟同事一起开发项目。两个类似的项目，大致都是一个中间层，从数据库载入一些数据，然后调用另外一个服务。从复杂程度上来说，差距并不大。前一个项目因为之前是他在做这块业务，所以由他主导，结果一开始就分成多层结构，从DAL,DOMAIN,BIZ一层一层往上写起，中间大概有5个对象来完成层级的隔离，转来转去。结果结对编程一个星期，终于弄出雏形。</p>
+<h2>工作</h2>
 
-<p>后来我写另外一个项目，因为开发时间紧，所以理清了业务流程之后，划分为三个阶段，直接分为三个模块，模块内部不分层，从外到内开始写，结果半天就完成了。</p>
+<p>最近一段时间的工作大概包括几部分。</p>
 
-<p>到底是分层还是不分层好？分层的意思是隔离变化，核心业务与外部调用分开，降低系统与外部的耦合。但是一般来说，互联网应用内部逻辑相对简单，大部分时间都是在干一些数据相互转换的事情，这种事情你要说跟外部不耦合基本不可能。一般来说，考虑到成本问题，除非需求和数据发生变化，否则外部API变动的可能性极小。这样子耦合的成本并没有那么大。</p>
+<h3>1. 调整团队工作内容</h3>
 
-<p>相反，我觉得系统内部的简单性更加重要。越少开发效率越高，修改越容易，也越不容易出错，分层结构必定是增加了复杂度，但是收获却相对较少。</p>
+<p>之前本来想写“决定工作内容”的，但是现在想想过于理想化了。基层管理员的能力有限，基本上不能决定不做什么。</p>
+
+<p>帮助产品经理和各个业务方理清需求，确立可行并且合理的方案，其实是主要任务。</p>
+
+<p>主要涉及到几个工作内容：</p>
+
+<ol>
+<li>思考方案的合理性，时间成本和维护成本。尽量避免workaround的方案，有些东西做起来一时快，维护起来是无底洞。这部分主要是跟产品经理开会，时间视产品经理的执着程度来定。不过基本上都是一条战线的，只要能满足需求，极少有产品经理对方案有要求。</li>
+<li>跟其他团队扯皮，确定什么东西是谁做。这个问题很多人都偏向于自己最省事的角度考虑，需要他们跟他们讨论，从整个系统的时间成本和合理性来做事。这部分费时费力，经常会议主题还会跑偏。最后不行只能老大拍板。</li>
+</ol>
+
+
+<h3>2. 跟进团队工作进度</h3>
+
+<p>跟进项目的进展，评估风险点也是开发应该做的。团队培养的好的话，早上10分钟的站会足矣。</p>
+
+<h3>3. 处理日常琐事</h3>
+
+<p>一般作为业务的负责人，系统运转的case、各种咨询总会第一时间落到你这里。这是业务运营逃不掉的部分，但是比较琐碎，一般成员都不太乐意处理。之前我刚转管理的时候，会极细的一一处理这些问题，慢慢的将业务拆分成几部分，各自确定负责人的时候，可能就只用转达一下了。</p>
+
+<h2>定位</h2>
+
+<p>我觉得定位分为对上和对下两部分。对上就是理解和实现业务价值，对下就是提高团队战斗力。</p>
+
+<p>我觉得重点说说对下，这部分其实是基层的核心竞争力。这部分我觉得主要是：</p>
+
+<p>合理安排工作，考虑到成员成长和自我实现的需求。如果一个leader只是觉得完成任务，是不够的。我一直对team里面的同学说，我们产出的一个是项目，一个是人，在可控的范围内，我是鼓励大家多折腾，多思考的。</p>
 </div>
 
 
@@ -124,12 +150,12 @@
   
 
 
-<time datetime="2014-06-28T22:51:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2014</time>
+<time datetime="2015-07-01T23:07:00+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ruan-jian-she-ji/'>软件设计</a>
+    <a class='category' href='/blog/categories/guan-li/'>管理</a>
   
 </span>
 
@@ -138,7 +164,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2014/06/28/kiss/" data-via="" data-counturl="http://code4craft.github.com/blog/2014/06/28/kiss/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2015/07/01/zui-jin-zuo-wei-tuan-dui-guan-li-zhe-de-gong-zuo-he-ding-wei/" data-via="" data-counturl="http://code4craft.github.com/blog/2015/07/01/zui-jin-zuo-wei-tuan-dui-guan-li-zhe-de-gong-zuo-he-ding-wei/" >Tweet</a>
   
   
   
@@ -147,10 +173,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/06/17/conflict-cont/" title="Previous Post: 没有银弹-谈谈软件设计的几个矛盾(二)">&laquo; 没有银弹-谈谈软件设计的几个矛盾(二)</a>
+        <a class="basic-alignment left" href="/blog/2015/05/28/zhuan-xing-guan-li-de-yi-dian-si-kao/" title="Previous Post: 转型管理的一点思考">&laquo; 转型管理的一点思考</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/07/01/huan-cun-de-she-ji-ji-qi-ta/" title="Next Post: 缓存不是万灵药">缓存不是万灵药 &raquo;</a>
       
     </p>
   </footer>
