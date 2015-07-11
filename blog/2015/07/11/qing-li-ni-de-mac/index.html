@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>清理你的Mac - 代码工匠</title>
+  <meta name="author" content="code4craft">
+
+  
+  <meta name="description" content="之前图便宜，买了128G的Mac Air，结果最大的苦恼就是空间不够。今天终于抽出时间，写了一些小工具，清理一下无用的文件。 1. 查找大文件夹 第一步其实是要查找哪些文件占据了磁盘空间。finder对于文件夹大小统计是无能为力的，这时候还要借助du来进行查找。 1
+du -hd1 # &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2015/07/11/qing-li-ni-de-mac/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="代码工匠" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">代码工匠</a></h1>
+  
+    <h2>Walking the Long Road</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">清理你的Mac</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-11T09:44:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>之前图便宜，买了128G的Mac Air，结果最大的苦恼就是空间不够。今天终于抽出时间，写了一些小工具，清理一下无用的文件。</p>
+
+<!--more-->
+
+
+<h2>1. 查找大文件夹</h2>
+
+<p>第一步其实是要查找哪些文件占据了磁盘空间。finder对于文件夹大小统计是无能为力的，这时候还要借助<code>du</code>来进行查找。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>du -hd1 <span class="c">#查找一级目录下各文件大小</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是这样的工具始终不太方便，首先无法排序，也不太方便按照指定大小过滤。所以干脆自己写了一个脚本来做这个事情，利用了awk的一些功能。程序比较糙，用了很多临时文件。不过shell的风格就是：能够解决问题才是最重要的不是嘛。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="nv">depth</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="nv">size</span><span class="o">=</span><span class="nv">$2</span>
+</span><span class='line'>sudo du -d<span class="nv">$depth</span> &gt; dud.log
+</span><span class='line'>ls -al | grep -v <span class="s1">&#39;\.\.&#39;</span> &gt; lsd.log
+</span><span class='line'>cat dud.log | awk -F<span class="s1">&#39;\t&#39;</span> -v <span class="nv">size</span><span class="o">=</span><span class="s2">&quot;$size&quot;</span> <span class="s1">&#39;$1&gt;size {print$1,$2}&#39;</span> &gt; dularge_tmp.log <span class="c">#awk无法直接用环境变量，所以使用-v先设置变量</span>
+</span><span class='line'>cat lsd.log | awk -v <span class="nv">size</span><span class="o">=</span><span class="s2">&quot;$size&quot;</span> <span class="s1">&#39;$5&gt;size {print$5,$9}&#39;</span> &gt;&gt; dularge_tmp.log
+</span><span class='line'>sort -k1 -rn dularge_tmp.log &gt; dularge_tmp2.log
+</span><span class='line'>human_readable_size dularge_tmp2.log &gt; dularge.log
+</span><span class='line'>cat dularge.log
+</span><span class='line'>sudo rm dud.log
+</span><span class='line'>rm lsd.log
+</span><span class='line'>rm dularge_tmp2.log
+</span><span class='line'>rm dularge_tmp.log
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>因为awk无法直接用环境变量，所以使用-v先设置变量。而且<code>du</code>还有一个坑：du出来的数字，并不是字节数，根据观察，应该是0.5K为一个单位。于是在脚本中海做了一些转换。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat dud.log | awk -F<span class="s1">&#39;\t&#39;</span> -v <span class="nv">size</span><span class="o">=</span><span class="s2">&quot;$size&quot;</span> <span class="s1">&#39;$1*512&gt;size {print$1*512,$2}&#39;</span> &gt; dularge_tmp.log <span class="c">#计算大小的时候，需要*512</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>2. 删除无效文件</h2>
+
+<p>一遍扫描下来，发现Java项目竟然占了很大的部分，原因是mvn编译好的war包和jar包。怎么办？删之：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -name <span class="s2">&quot;target&quot;</span> -type d -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还有发现QQ聊天记录的图片占据了5G多空间。这里有点麻烦的就是，我也不太希望将这些文件删除，因为可能会有一些重要图片。怎么办呢？我是将所有文件备份，然后将时间多于一段时间的删除。使用finder做这件事太慢了，还是用shell吧。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -mtime +150 -exec rm <span class="o">{}</span> <span class="se">\;</span> <span class="c">#删除150天之前修改的文件</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>至此，空间释放出10G以上，又可以撑一段时间了…</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">code4craft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-11T09:44:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2015/07/11/qing-li-ni-de-mac/" data-via="" data-counturl="http://code4craft.github.com/blog/2015/07/11/qing-li-ni-de-mac/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/01/zui-jin-zuo-wei-tuan-dui-guan-li-zhe-de-gong-zuo-he-ding-wei/" title="Previous Post: 最近作为团队管理者的工作和定位">&laquo; 最近作为团队管理者的工作和定位</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/11/qing-li-ni-de-mac/">清理你的Mac</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/01/zui-jin-zuo-wei-tuan-dui-guan-li-zhe-de-gong-zuo-he-ding-wei/">最近作为团队管理者的工作和定位</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/28/zhuan-xing-guan-li-de-yi-dian-si-kao/">转型管理的一点思考</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/14/guan-yu-ji-zhu-ren-sheng-de-yi-xie-zhong-xin-shen-shi/">关于“技术人生”的一些重新审视</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/20/guan-yu-dai-ma-zhi-liang-de-yi-xie-si-kao/">关于代码质量的一些思考</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - code4craft -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

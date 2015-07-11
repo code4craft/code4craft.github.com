@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2015-07-01T23:08:28+08:00</updated>
+  <updated>2015-07-11T10:25:50+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[清理你的Mac]]></title>
+    <link href="http://code4craft.github.com/blog/2015/07/11/qing-li-ni-de-mac/"/>
+    <updated>2015-07-11T09:44:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2015/07/11/qing-li-ni-de-mac</id>
+    <content type="html"><![CDATA[<p>之前图便宜，买了128G的Mac Air，结果最大的苦恼就是空间不够。今天终于抽出时间，写了一些小工具，清理一下无用的文件。</p>
+
+<!--more-->
+
+
+<h2>1. 查找大文件夹</h2>
+
+<p>第一步其实是要查找哪些文件占据了磁盘空间。finder对于文件夹大小统计是无能为力的，这时候还要借助<code>du</code>来进行查找。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>du -hd1 <span class="c">#查找一级目录下各文件大小</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是这样的工具始终不太方便，首先无法排序，也不太方便按照指定大小过滤。所以干脆自己写了一个脚本来做这个事情，利用了awk的一些功能。程序比较糙，用了很多临时文件。不过shell的风格就是：能够解决问题才是最重要的不是嘛。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="nv">depth</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="nv">size</span><span class="o">=</span><span class="nv">$2</span>
+</span><span class='line'>sudo du -d<span class="nv">$depth</span> &gt; dud.log
+</span><span class='line'>ls -al | grep -v <span class="s1">&#39;\.\.&#39;</span> &gt; lsd.log
+</span><span class='line'>cat dud.log | awk -F<span class="s1">&#39;\t&#39;</span> -v <span class="nv">size</span><span class="o">=</span><span class="s2">&quot;$size&quot;</span> <span class="s1">&#39;$1&gt;size {print$1,$2}&#39;</span> &gt; dularge_tmp.log <span class="c">#awk无法直接用环境变量，所以使用-v先设置变量</span>
+</span><span class='line'>cat lsd.log | awk -v <span class="nv">size</span><span class="o">=</span><span class="s2">&quot;$size&quot;</span> <span class="s1">&#39;$5&gt;size {print$5,$9}&#39;</span> &gt;&gt; dularge_tmp.log
+</span><span class='line'>sort -k1 -rn dularge_tmp.log &gt; dularge_tmp2.log
+</span><span class='line'>human_readable_size dularge_tmp2.log &gt; dularge.log
+</span><span class='line'>cat dularge.log
+</span><span class='line'>sudo rm dud.log
+</span><span class='line'>rm lsd.log
+</span><span class='line'>rm dularge_tmp2.log
+</span><span class='line'>rm dularge_tmp.log
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>因为awk无法直接用环境变量，所以使用-v先设置变量。而且<code>du</code>还有一个坑：du出来的数字，并不是字节数，根据观察，应该是0.5K为一个单位。于是在脚本中海做了一些转换。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat dud.log | awk -F<span class="s1">&#39;\t&#39;</span> -v <span class="nv">size</span><span class="o">=</span><span class="s2">&quot;$size&quot;</span> <span class="s1">&#39;$1*512&gt;size {print$1*512,$2}&#39;</span> &gt; dularge_tmp.log <span class="c">#计算大小的时候，需要*512</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>2. 删除无效文件</h2>
+
+<p>一遍扫描下来，发现Java项目竟然占了很大的部分，原因是mvn编译好的war包和jar包。怎么办？删之：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -name <span class="s2">&quot;target&quot;</span> -type d -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还有发现QQ聊天记录的图片占据了5G多空间。这里有点麻烦的就是，我也不太希望将这些文件删除，因为可能会有一些重要图片。怎么办呢？我是将所有文件备份，然后将时间多于一段时间的删除。使用finder做这件事太慢了，还是用shell吧。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -mtime +150 -exec rm <span class="o">{}</span> <span class="se">\;</span> <span class="c">#删除150天之前修改的文件</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>至此，空间释放出10G以上，又可以撑一段时间了…</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[最近作为团队管理者的工作和定位]]></title>
@@ -635,26 +714,6 @@
 <p>现在的做法是极度依赖缓存的，所以数据都读取出来，打包存到缓存中。一旦失效，一条数据大概会需要上百毫秒去读取，于是我们不得不提供一个预热缓存的程序，定期的去扫描。之前出过一次问题就是缓存失效之后，该服务出现大量超时，乃至线程池跑满，整个服务都不可用。</p>
 
 <p>在我的理解中，缓存是一个提高性能的方案，但是绝对不是万灵药，哪痛贴哪。比如这个服务，有些数据可能只有极少需求方需要，但是之前是统统都读取出来，而我觉得正确的做法可能是理清数据需求，从更细粒度去提供。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[分层开发论]]></title>
-    <link href="http://code4craft.github.com/blog/2014/06/28/kiss/"/>
-    <updated>2014-06-28T22:51:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/06/28/kiss</id>
-    <content type="html"><![CDATA[<p>做Java开发的都喜欢分层的思想，似乎层次是越多越好。虽然之间我并不喜欢层次太多，但是也没有太多的理由让我去厌恶它。但是最近在做一些开发，刚好用了两种极端的方式来完成。</p>
-
-<!--more-->
-
-
-<p>最近在跟同事一起开发项目。两个类似的项目，大致都是一个中间层，从数据库载入一些数据，然后调用另外一个服务。从复杂程度上来说，差距并不大。前一个项目因为之前是他在做这块业务，所以由他主导，结果一开始就分成多层结构，从DAL,DOMAIN,BIZ一层一层往上写起，中间大概有5个对象来完成层级的隔离，转来转去。结果结对编程一个星期，终于弄出雏形。</p>
-
-<p>后来我写另外一个项目，因为开发时间紧，所以理清了业务流程之后，划分为三个阶段，直接分为三个模块，模块内部不分层，从外到内开始写，结果半天就完成了。</p>
-
-<p>到底是分层还是不分层好？分层的意思是隔离变化，核心业务与外部调用分开，降低系统与外部的耦合。但是一般来说，互联网应用内部逻辑相对简单，大部分时间都是在干一些数据相互转换的事情，这种事情你要说跟外部不耦合基本不可能。一般来说，考虑到成本问题，除非需求和数据发生变化，否则外部API变动的可能性极小。这样子耦合的成本并没有那么大。</p>
-
-<p>相反，我觉得系统内部的简单性更加重要。越少开发效率越高，修改越容易，也越不容易出错，分层结构必定是增加了复杂度，但是收获却相对较少。</p>
 ]]></content>
   </entry>
   
