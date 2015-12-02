@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2015-07-11T10:34:39+08:00</updated>
+  <updated>2015-12-02T08:10:09+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[创业日志(一)——路程等于速度乘以时间]]></title>
+    <link href="http://code4craft.github.com/blog/2015/12/02/chuang-ye-ri-zhi-yi-lu-cheng-deng-yu-su-du-cheng-yi-shi-jian/"/>
+    <updated>2015-12-02T08:09:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2015/12/02/chuang-ye-ri-zhi-yi-lu-cheng-deng-yu-su-du-cheng-yi-shi-jian</id>
+    <content type="html"><![CDATA[<p>昨天iOS最新的版本终于审核通过，经过了大概2个月的团队构建和产品迭代，现在产品的APP和M站已经完成，每天也有几百块钱自然的交易额。做了几次活动，活动的时候能够提高到几千一天。如果说创业是个竞赛，大概产品本身已经拿到了入场券的样子。</p>
+
+<p>说实在的，之前在点评，虽然不是巨头，好歹几百万的日活用户，相比之下落差还是挺大的。不过换句话说，我倒是比较相信初创公司都是这样过来的。</p>
+
+<p>产品的粉丝群大概有两百多人，因为iOS版本上线，昨天很热闹，在群里提了好多bug。</p>
+
+<p>人到了30岁，不能不没有点自己的思想。之前做webmagic的时候，大概一天3个星，过了两年也是个比较成功的项目。我还是比较相信，只要一直在往前走，终于能到个什么地方的。</p>
+
+<p>另外，如果不想个办法享受过程，创业也实在太无聊了点。自勉。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[清理你的Mac]]></title>
@@ -698,22 +715,6 @@
 <p>P84：程序调用、组合、继承的依赖程度从轻到中。继承是非常重度的耦合。</p>
 
 <p>P90：</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[缓存不是万灵药]]></title>
-    <link href="http://code4craft.github.com/blog/2014/07/01/huan-cun-de-she-ji-ji-qi-ta/"/>
-    <updated>2014-07-01T08:00:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/07/01/huan-cun-de-she-ji-ji-qi-ta</id>
-    <content type="html"><![CDATA[<p>公司有个很重要的服务，因为数据需求非常杂，所以关联的数据表非常多。而这个服务就承担起提供如此多数据的使命。</p>
-
-<!--more-->
-
-
-<p>现在的做法是极度依赖缓存的，所以数据都读取出来，打包存到缓存中。一旦失效，一条数据大概会需要上百毫秒去读取，于是我们不得不提供一个预热缓存的程序，定期的去扫描。之前出过一次问题就是缓存失效之后，该服务出现大量超时，乃至线程池跑满，整个服务都不可用。</p>
-
-<p>在我的理解中，缓存是一个提高性能的方案，但是绝对不是万灵药，哪痛贴哪。比如这个服务，有些数据可能只有极少需求方需要，但是之前是统统都读取出来，而我觉得正确的做法可能是理清数据需求，从更细粒度去提供。</p>
 ]]></content>
   </entry>
   
