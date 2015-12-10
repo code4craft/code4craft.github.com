@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="昨天跟架构师讨论一个项目的设计，谈到MVC模式。MVC模式，是先从View设计还是先从Model设计？ ">
+  <meta name="description" content="最近工作有些变动，有点忙。加上WebMagic也发展了一些用户，做了不少支持的工作，也发布了一些版本。终于前几天累倒了，感冒头痛，只能休息。 晚上买了个优酷的一年会员，又看了遍《勇敢的心》。之前因为太长没有看完，这次看的时候，听着平静的苏格兰风笛，有种恍若隔世的感觉。之前做事情太急躁，走得慢一点， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,44 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/27/ping-jing/">平静</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-27T21:36:00+08:00" pubdate data-updated="true">Apr 27<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近工作有些变动，有点忙。加上WebMagic也发展了一些用户，做了不少支持的工作，也发布了一些版本。终于前几天累倒了，感冒头痛，只能休息。</p>
+
+<p>晚上买了个优酷的一年会员，又看了遍《勇敢的心》。之前因为太长没有看完，这次看的时候，听着平静的苏格兰风笛，有种恍若隔世的感觉。之前做事情太急躁，走得慢一点，才能看更多的风景。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -433,89 +471,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/18/struts2/">Struts2一个[安全问题]的分析报告</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-18T09:42:00+08:00" pubdate data-updated="true">Nov 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>一：起因</h2>
-
-<p>最近公司代码被扫出有一个xss漏洞，检查之后，发现大致是这样一个页面：</p>
-
-<figure class='code'><figcaption><span>DemoAction </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAction</span> <span class="kd">extends</span> <span class="n">ActionSupport</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nd">@Override</span>
-</span><span class='line'>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>                <span class="k">return</span> <span class="s">&quot;success&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/11/18/struts2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -550,6 +505,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/10/chuang-ye-ri-zhi-er-cong-xiu-xing-dao-lu-xing/">创业日志(二)&#8211;从修行到旅行</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/02/chuang-ye-ri-zhi-yi-lu-cheng-deng-yu-su-du-cheng-yi-shi-jian/">创业日志(一)——路程等于速度乘以时间</a>
       </li>
     
@@ -563,10 +522,6 @@
     
       <li class="post">
         <a href="/blog/2015/05/28/zhuan-xing-guan-li-de-yi-dian-si-kao/">转型管理的一点思考</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/14/guan-yu-ji-zhu-ren-sheng-de-yi-xie-zhong-xin-shen-shi/">关于“技术人生”的一些重新审视</a>
       </li>
     
   </ul>

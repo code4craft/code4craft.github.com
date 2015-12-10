@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2015-12-02T08:29:27+08:00</updated>
+  <updated>2015-12-10T08:32:02+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[创业日志(二)--从修行到旅行]]></title>
+    <link href="http://code4craft.github.com/blog/2015/12/10/chuang-ye-ri-zhi-er-cong-xiu-xing-dao-lu-xing/"/>
+    <updated>2015-12-10T07:45:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2015/12/10/chuang-ye-ri-zhi-er-cong-xiu-xing-dao-lu-xing</id>
+    <content type="html"><![CDATA[<p>创业是一种修行的论调早已不陌生。当然，因为创业总要面临各种各样的问题，即使你解决了这些问题，到达的也未必是一个好的结局。作为修行，比拼的当然是意志力了，最后好像都是意志力强大的人站到了最后。</p>
+
+<p>前段时间一直把创业当做一种修行，觉得总需要更加努力。</p>
+
+<p>昨天下午的时候，修好了一个BUG，让搜索结果更准确了一点，让提示更方便了，感觉产品更强大了一些，也不需要谁点赞，想到一切都在往前走，真是一种享受。</p>
+
+<p>甘之若饴才能更长久。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[创业日志(一)——路程等于速度乘以时间]]></title>
@@ -646,77 +661,6 @@
     <content type="html"><![CDATA[<p>今天安安满岁了，我却还在公司加班，都没有能见她一面。相信付出总会有回报，能力加上努力，一定会让家里变得越来越好！</p>
 
 <p>爸爸也好喜欢安安啊！</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[代码大全读书笔记]]></title>
-    <link href="http://code4craft.github.com/blog/2014/07/01/dai-ma-da-quan-du-shu-bi-ji/"/>
-    <updated>2014-07-01T23:01:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/07/01/dai-ma-da-quan-du-shu-bi-ji</id>
-    <content type="html"><![CDATA[<p>最近项目开发比较密集，也遇到了一些方式的碰撞，这个时候再翻到《代码大全》，真是瞌睡时碰到枕头的感觉了。决定好好读一遍，记录一下。</p>
-
-<!--more-->
-
-
-<p>xxiv: 软件构建是项目必须完成的阶段，它要为小型项目75%的错误负责，为大型和中型项目50%-75%的错误负责。——我们在项目的错误中，往往只看重设计的重要性，其实大部分错误都来自软件构建（即编程）本身。</p>
-
-<p>P11：如何利用隐喻Metaphors（对软件的建模），将影响如何解决这个问题。</p>
-
-<p>P28：程序员是软件食物链的最后一环。架构师吃掉需求，设计师吃掉架构，而程序员则消化设计。</p>
-
-<p>P35：前期做好准备的项目，返工的成本是最低的。如果无法做到完全的准备，准备80%的需求，并为20%留够时间是一个可行的做法。</p>
-
-<p>P46：架构应该确定软件采用的组织结构，并尽量列举其他可能的方案以及选择最终方案的理由。依据80/20原则，架构可以对确定决定项目80%功能的20%的类进行详细说明。</p>
-
-<p>架构设计的常规内容(挑几个觉得重要的)：</p>
-
-<ol>
-<li>程序组织 Program Orgnization</li>
-<li>主要的类 Major Classes</li>
-<li>数据设计 Data Design</li>
-<li>业务规则 Business Rules</li>
-<li>安全性 Security</li>
-<li>性能 Performance</li>
-<li>可伸缩性 Scalability</li>
-<li>容错性</li>
-</ol>
-
-
-<p>P51：在软件开发的链条中，链条的强度不是等于最薄弱的环节，而是所有薄弱环节的乘积。</p>
-
-<p>P53：架构应该描述决策的动机，谨防“我们向来这么做”的说法。有个有趣的例子：Beth 想做丈夫 Adbul 家祖传的炖肉。Adbul 说，先撒上胡椒和盐，然后去头去尾，最后放在锅里盖上盖子炖就好了。Beth 就问了，“为什么要去头去尾呢？” Abdul 回答说，我不知道，我一直这么做，这要问我妈。他打电话回家一问，母亲也说不知道，她一直这么做，这个问题要问奶奶。母亲就打了个电话给奶奶，奶奶回答说，“我不知道你为什么要去头去尾，我这么做是因为我的锅太小了装不下”。</p>
-
-<p>P62：选择合适的编程语言很重要。如果C的表达能力是1的话，C++和Java就是2.5。而perl和python却有 6。</p>
-
-<p>P69：“深入一种语言编程”，而不只是“使用一种语言编程”。</p>
-
-<p>P74：设计是一个险恶(Wicked Problem)的问题——只有解决或者部分解决才能被明确的问题。</p>
-
-<p>P75：设计是一个了无章法的过程(Sloppy Process)，优、劣设计之间的差异往往非常微妙。</p>
-
-<p>P77：软件的首要使命是管理复杂度。人们很少把技术原因归结为项目失败的主要因素，项目的失败多数由差强人意的需求、规划和管理导致的。但是，当项目确实由技术因素导致失败时，其原因通常就是失控的复杂度。</p>
-
-<p>P79：拆分实际上是一种“关注点分离”。</p>
-
-<p>高代价、低效率的设计源于三种根源：</p>
-
-<ol>
-<li>用复杂的方法解决简单的问题。</li>
-<li>用简单但错误的方法解决复杂的问题。</li>
-<li>用不恰当的复杂方法解决复杂的问题。</li>
-</ol>
-
-
-<p>P81：</p>
-
-<p>高扇入(high fan-in)：指底层工具类被更多的类使用。</p>
-
-<p>低扇出(low fan-out)：指一个类尽量少的依赖其他的类。</p>
-
-<p>P84：程序调用、组合、继承的依赖程度从轻到中。继承是非常重度的耦合。</p>
-
-<p>P90：</p>
 ]]></content>
   </entry>
   
