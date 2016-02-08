@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2016-01-12T07:31:11+08:00</updated>
+  <updated>2016-02-08T17:23:49+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2016年目标]]></title>
+    <link href="http://code4craft.github.com/blog/2016/02/08/2016nian-mu-biao/"/>
+    <updated>2016-02-08T10:26:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2016/02/08/2016nian-mu-biao</id>
+    <content type="html"><![CDATA[<p><img src="http://code4craft.github.com/images/posts/2015_2016.jpg" alt="2016" /></p>
+
+<p>新的一年，还是要给自己定一些目标吧。</p>
+
+<ul>
+<li>减肥到180。</li>
+<li>WebMagic发布至少两个大版本，完善代理、xpath等功能，并对基础代码进行部分重构。</li>
+<li>对至少3个典型的业务场景（例如：账号、订单、商品）架构方案做全面的综述，提出自己满意的通用方案，并整理成文章，如果能写出开源项目就更好。</li>
+</ul>
+
+
+<p>去年没有明确订过目标，一些大的事情列一列吧：</p>
+
+<ul>
+<li>接触团队管理。</li>
+<li>对性能优化有了一些定量的认识。</li>
+<li>处理了一年case，对业务开发考虑更全面了。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[沸腾十五年读后]]></title>
@@ -684,28 +711,6 @@
 <p>但是从纯技术的角度来说，好的项目是需要打磨的，无论是设计还是实现层面，都是一个迭代的过程。webmagic断断续续维护了一年了，好像现在也有很多同类的框架出现，我觉得webmagic最有竞争力的方面，不是单纯的架构设计有多好，而是github上100多个issue。</p>
 
 <p>一个好的项目，优秀的设计占比30%，那么后续维护和完善基本上要占据70%的比例，这是我的观点。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[缓存使用中的抽象泄露问题]]></title>
-    <link href="http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti/"/>
-    <updated>2014-07-28T09:37:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/07/28/huan-cun-shi-yong-zhong-de-chou-xiang-xie-lu-wen-ti</id>
-    <content type="html"><![CDATA[<p>最近做的业务遇到一个比较棘手的问题：有一个比较核心的数据获取服务，因为其数据库比较分散，从数据库读取效率很低，于是需要使用缓存来解决问题。</p>
-
-<!--more-->
-
-
-<p>这个业务是非常依赖缓存的，现在就遇到一个问题：大部分请求都能让缓存工作的很好，但是少量请求会导致缓存的大量失效。</p>
-
-<p>举个例子，现在做一个博客类网站，那么将博客文章缓存起来，因为大部分文章都满足访问热点，所以并没有太多问题。但是如果有一个服务，需要获取某个博主历史的所有文章，或者获取某个人收藏的所有文章，这个时候缓存就不太管用了。</p>
-
-<p>了解了一些缓存淘汰算法，例如LRU、FIFO、LFU，以及LIRS等。但是无论任何算法都是依赖局部性原理(<a href="http://en.wikipedia.org/wiki/Locality_of_reference">Locality of reference</a>)的。局部性显然是根据使用场景不同而不同的。</p>
-
-<p>而实际情况下，我们倾向于把缓存和数据库一起作为数据访问层，这种抽象对上层使用很友好，但是在场景增多、量级增大的时候，很可能出现问题。我的理解这就是缓存使用中的抽象泄露问题。</p>
-
-<p>关于博客这个例子，比较合适的方式是用LFU代替LRU，但是依然会有些其他问题。写记录下来吧。</p>
 ]]></content>
   </entry>
   
