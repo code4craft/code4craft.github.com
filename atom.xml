@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2016-02-08T17:24:48+08:00</updated>
+  <updated>2016-02-08T17:26:59+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -18,9 +18,12 @@
     <link href="http://code4craft.github.com/blog/2016/02/08/2016nian-mu-biao/"/>
     <updated>2016-02-08T10:26:00+08:00</updated>
     <id>http://code4craft.github.com/blog/2016/02/08/2016nian-mu-biao</id>
-    <content type="html"><![CDATA[<p><img src="http://code4craft.github.com/images/posts/2015_2016.jpg" alt="2016" /></p>
+    <content type="html"><![CDATA[<p><img src="http://code4craft.github.com/images/posts/2015_16.jpg" alt="2016" /></p>
 
 <p>新的一年，还是要给自己定一些目标吧。</p>
+
+<!---more--->
+
 
 <ul>
 <li>减肥到180。</li>
