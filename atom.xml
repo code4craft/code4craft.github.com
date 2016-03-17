@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2016-02-08T17:31:34+08:00</updated>
+  <updated>2016-03-17T23:56:49+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[激荡三十年读后]]></title>
+    <link href="http://code4craft.github.com/blog/2016/03/16/ji-dang-san-shi-nian-du-hou/"/>
+    <updated>2016-03-16T22:37:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2016/03/16/ji-dang-san-shi-nian-du-hou</id>
+    <content type="html"><![CDATA[<p><img src="http://code4craft.github.com/images/posts/jidang30nian.jpg" alt="激荡三十年" /></p>
+
+<p>最近想读点历史的书，也想接触点其他专业领域，这类书写的浅显、有趣的不多。之前读的《众病之王》是一本，吴晓波的《激荡三十年》也是这么一本书。</p>
+
+<p>这本书是讲的是改革开放三十年来的经济发展，但是基本不列数据，不讲术语，甚至不提自己的观点，仅仅从代表人物出发，做一些归纳，是非常轻松的读物。</p>
+
+<p>但是讲述的其实是很严肃的内容，这三十年的故事实在跌宕起伏，而且自己正身处这个变革中，所以看的时候好像也用上帝视角来看着自己的经历，看着中国的崛起，实在是让人内心激荡不已。</p>
+
+<p>第一个感想是，再强大的个体都没办法抵挡形势。</p>
+
+<p>第二个感想是，死掉的企业很多，他们多数都是遇到了重大的问题，在这么长的时间里，没有犯错的都活下来了。就像《火星救援》里男主说的：“你只要开始，进行计算，解决一个问题，解决下一个问题，解决下下个问题。等解决了足够的问题，你就能回家了。”</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2016年目标]]></title>
@@ -697,24 +716,6 @@
 <p>第四，个人追求。</p>
 
 <p>能想到的就这些了，我的意思倒不是说谁对谁错，但是没有目标，盲目的觉得技术至上，也不太可取。毕竟我也是一个俗人，上有老下有小，职业发展也是不得不考虑的事情了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[细节之美]]></title>
-    <link href="http://code4craft.github.com/blog/2014/08/12/xi-jie-zhi-mei/"/>
-    <updated>2014-08-12T23:05:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/08/12/xi-jie-zhi-mei</id>
-    <content type="html"><![CDATA[<p>最近一个大项目忙完，今天领导召集大家，又要重新做另外一个项目，本质上就是要把之前的业务重写一遍。</p>
-
-<!--more-->
-
-
-<p>站在领导的角度来说，看重的是“拉大旗好办事”，大项目相对来说好拉资源，小伙伴们也能得到锻炼，对于团队来说绝对有利，无可厚非。</p>
-
-<p>但是从纯技术的角度来说，好的项目是需要打磨的，无论是设计还是实现层面，都是一个迭代的过程。webmagic断断续续维护了一年了，好像现在也有很多同类的框架出现，我觉得webmagic最有竞争力的方面，不是单纯的架构设计有多好，而是github上100多个issue。</p>
-
-<p>一个好的项目，优秀的设计占比30%，那么后续维护和完善基本上要占据70%的比例，这是我的观点。</p>
 ]]></content>
   </entry>
   

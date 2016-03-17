@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="听说最近VPN封的厉害，都改用ssh翻墙了。在Mac下实验了一把，总算鼓捣成功。总结如下： ">
+  <meta name="description" content="2013-2-17 时隔一个月，再次迎来更新！ 过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题： 收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>2013-2-17</h4>
+
+<p>时隔一个月，再次迎来更新！</p>
+
+<p>过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题：</p>
+
+<p>收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包，做为判定DNS劫持和DNS拦截的依据，最终将正确结果缓存。实现的方式是NIO，复用DatagramChannel。</p>
+
+<p>经过测试，gfw在实现DNS污染的同时，不会丢弃掉回包，因此此方案是可行的，而且比起UDP转TCP的方式，理论上速度会快很多。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/02/17/blackhole-develop-diary2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -401,6 +450,10 @@ rake是个好东西。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/16/ji-dang-san-shi-nian-du-hou/">激荡三十年读后</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/08/2016nian-mu-biao/">2016年目标</a>
       </li>
     
@@ -414,10 +467,6 @@ rake是个好东西。</p>
     
       <li class="post">
         <a href="/blog/2015/12/10/chuang-ye-ri-zhi-er-cong-xiu-xing-dao-lu-xing/">创业日志(二)&#8211;从修行到旅行</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/02/chuang-ye-ri-zhi-yi-lu-cheng-deng-yu-su-du-cheng-yi-shi-jian/">创业日志(一)——路程等于速度乘以时间</a>
       </li>
     
   </ul>
