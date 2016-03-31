@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![webmagic](https://camo.githubusercontent.com/77fe3da40f9b2c5839df0267890a2457a64003e0/68747470733a2f2f7261772e6769746875622e636f6d2f636f64653463726166742f7765626d616769632f6d61737465722f6173736574732f6c6f676f2e6a7067)
+![webmagic](http://img.piaoniu.com/webmagic.jpeg)
 
 ## 一 得到的
 
