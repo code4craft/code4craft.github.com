@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![](images/posts/stock-photo-42998730.jpg)
+![](/images/posts/stock-photo-42998730.jpg)
 
 最近心里特别恐慌。
 
