@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>创业日志（三）一年来一些技术上的总结 - 代码工匠</title>
+  <meta name="author" content="code4craft">
+
+  
+  <meta name="description" content="转眼又到11月，加入票牛也快一周年了，作为初创团队的一员，走完了从0到1的过程，有些东西，还是想记录下来。如果分享能帮到别人，就更好了。因为我的工作主要是后端开发，有些经验会偏向后端一点。 1. 初创公司中技术的定位 先说说技术的定位。除了一些技术方向的创业，技术一般都不是核心竞争力。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://code4craft.github.com/blog/2016/10/30/chuang-ye-ri-zhi-%28san-%29%5Byi%5D-nian-hou-%5Byi%5D-xie-ji-zhu-shang-de-zong-jie/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="代码工匠" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-41279861-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">代码工匠</a></h1>
+  
+    <h2>Walking the Long Road</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:code4craft.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">创业日志（三）一年来一些技术上的总结</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-30T09:55:00+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>转眼又到11月，加入票牛也快一周年了，作为初创团队的一员，走完了从0到1的过程，有些东西，还是想记录下来。如果分享能帮到别人，就更好了。因为我的工作主要是后端开发，有些经验会偏向后端一点。</p>
+
+<!--more-->
+
+
+<h3>1. 初创公司中技术的定位</h3>
+
+<p>先说说技术的定位。除了一些技术方向的创业，技术一般都不是核心竞争力。但是技术团队并非没有追求，我觉得初创项目中技术的定位就是：快速试错。</p>
+
+<p>作为初创团队，产品方向一般都会有一个探索期，没有人知道产品做出来之后效果如何，这个时候，快速上线并保持迭代就非常重要了。</p>
+
+<p>我们是做一个垂直电商平台，第一个产品上线前，几个竞争对手就已经PC、M站、APP该有的都有了。但是我们花了四个月的时间把这几个平台全部做了出来，结果对手才改了两个小版本，这一点确实是有些优势的。</p>
+
+<h3>2. 技术团队的构建</h3>
+
+<p>团队当然是最重要的。其实我之前一直很向往人人都是精英的创业技术团队，每个人独当一面，谈起技术无所不知，分分钟劈技术情操。可惜来之后发现，这样的人是宝贝，来一个是一个，想要客户端、后端、前端都是这样的人就是妄想了。</p>
+
+<p>但是业务发展确实需要人，而且最好确实能独当一面，这个时候怎么办呢？</p>
+
+<p>这点只有一个经验：多挑挑。多投渠道，多面试，多培养。现在创业大潮下，人员流动也不是那么慢，从非知名企业出来的同学，可能相对来说技术多少有些偏科，但是有一些实践能力不错，也聪明好学的，在好的团队氛围下，也能在团队发挥很大能量。多用用招聘渠道，多花点时间，总归能招到满意的人。</p>
+
+<p>另一个经验是招人尽量提前，如果到了产品需要发力的时候，才觉得人手不够，工程师还要安排时间去面试，是会很难过的。</p>
+
+<p>我们技术团队到现在也只是六个人的规模，小团队最大的优势就是沟通成本很低，效率是关键。</p>
+
+<h3>3. 谈谈基础技术选型</h3>
+
+<p>一般来说，在大公司做业务开发，基础技术受到的限制很多，一旦自己放手来干，分分钟就要搞出一个新天地。什么Docker、微服务，能上的都想要玩一遍。基础技术选型上我们属于比较保守的，也没有走多少弯路，总结下来大概几个原则：</p>
+
+<h4>1. 主要技术挑团队熟悉的</h4>
+
+<p>这里我认为的主要技术包括：开发语言、数据库，语言涉及到代码积累，数据库涉及到数据积累，这两个都是迁移成本非常高的。另外语言涉及到相应的框架、工具链，数据库则常常会成为流量上去之后第一个垮掉的，这两个多少会有些疑难杂症，有一些技术积累，处理问题才相对有底气。</p>
+
+<h4>2. 能提高效率的技术，不遗余力的用，不排除自己造轮子</h4>
+
+<p>首先推荐Java 8，lambda是提高效率利器，特别是集合的stream操作太好用了。我们用在生产环境很久了，也没碰到什么大坑。</p>
+
+<p>我们基于MyBatis开发了一套SQL生成器，可以根据Dao的方法名约定生成SQL，还开发了Intellij插件可以根据Entity生成建表语句，基本上开发的Dao我们只需要写模型类的几个字段。</p>
+
+<p>我们基于jade4j开发了一套模板渲染方式，后端只需要在Controller写数据，前端写Jade模板和ES6，最后模板可以独立发布上线。</p>
+
+<p>这些轮子的开发投入也就是两三天的时间，但是给我们节省了很多时间。项目都开源了，这是我们的github地址：<a href="https://github.com/ipiaoniu">https://github.com/ipiaoniu</a></p>
+
+<h4>3. 关于微服务</h4>
+
+<p>最近微服务很火，但是我们采用的还是单WAR包部署的方式。我一直认为，当开始将人员按照业务拆分的时候，微服务才开始产生实际的价值。而且单个项目带来的重构实在太便利了，在业务变化期尤其好用。</p>
+
+<p>贴一下我们的一些技术选型吧，并没有多高大上，但还是比较实用的：</p>
+
+<pre><code>服务器：阿里云ECS
+负载均衡：阿里云负载均衡(4层)+nginx(7层)
+CDN：七牛
+数据库：MySQL ECS自建和RDS都用过，其实差不多，RDS相对贵一点，嫌麻烦的可以选
+语言：Java 8 谁用谁知道
+框架：Spring MVC + MyBatis Spring MVC够用了，MaBatis我们写了daogen
+模板：jade4j 项目不是很完善，改过几个bug，但是支持jade可以与前端无缝衔接
+运维：Ansible 用于初始化、发布、配置更新等
+APM：Cat 虽然接入有一些坑，但是功能够用
+监控：Zabbix 多找找开源的template，如果搭起来嫌麻烦可以找找Docker镜像
+代码托管：gitlab 其实git.oschina.com或者coding.net都不错，私有库不收钱
+</code></pre>
+
+<h3>4. 几个有用的业务架构经验</h3>
+
+<p>最后谈谈最想说的业务架构方面。因为毕竟80%以上的时间都是在写业务代码，如何把业务代码写得高效，也是一个非常重要的事。除了之前提到的工具化，一个好的架构起到的影响会比预想的大。这里有几点经验：</p>
+
+<h4>1. 建立简单的核心业务模型，并让业务依赖它而不是互相依赖</h4>
+
+<p>核心模型越简单越好，复杂的模型，一个是本身就很难处理好。即使能处理的很好，没有模型本身维护的成本，也会有理解成本，很难保证使用者不犯错。</p>
+
+<p>例如我们做交易，其实核心的就是商品和订单。商品有库存、价格、描述以及一些业务属性（也就是SKU），而订单则是承载起交易行为的实体，会连接起用户、商品、支付以及后续的配货流程。</p>
+
+<p>我们之前实际上吃过一次亏。因为演出是一个多层结构的商品体系，一个演唱会会有全国巡演，每个城市的演出也会有不同时间，同一时间根据座位好坏也会有不同票价，同一价格也会分为不同区域，加上我们做C2C平台还会有商家，所以层级非常多。最早我们的商品有6个层级，一次购买行为依赖这么多层次的数据，维护起来很困难。</p>
+
+<p>而如果将SKU单独抽象出一个实体，交易流程并不直接跟商品架构打交道，则会容易得多。</p>
+
+<p>核心业务模型的确定其实是个很难的过程，例如我们就在很长一段时间为SKU到底是同一价格的一类票，还是每一个单独的确定座位的票举棋不定。实在不行，到了明确的时候，尽早重构它。</p>
+
+<h4>2. 活用“拼凑式开发”</h4>
+
+<p>我们做过很多种运营活动。去年水果团单什么的火过一阵子，我们做过尝试。后来还做过砍价、秒杀、投票、特卖、预约等，有些形式被证明了不适合这个行业，有些形式也留了下来成了常规活动。</p>
+
+<p>拼凑式开发的意思就是，不要随便修改核心模型和流程，通过在外围增加一些触发逻辑来完成功能。</p>
+
+<p>有个非常经典的案例是，我们是一个卖票的网站，订单上挂的商品都是票，之前也是这么设计的。后来有个需求是我们可以让用户用较低的价格购买优惠券，然后等到演出有票的时候再使用优惠券来买票。做的同学很快想到说既然用户买的是优惠券，那么能不能把商品的范围扩大到票和优惠券，看起来模型也很统一？</p>
+
+<p>但是这个方案后来被我否决了，因为预约券其实是小场景，也无法确定效果如果，是否能持续做。而商品是什么的问题，已经牵扯到核心模型，核心模型的复杂度增加几乎是不可逆的。最后的方案是：买的还是票，购买后根据消息触发发优惠券的行为，同样可以满足需求。然后再后来，这个业务也默默的消亡了…</p>
+
+<p>拼凑式开发会有两个结局，一个是业务不做了，那么记得删掉代码，不要心疼；另一个是业务做大了，来了更多的优化需求，这个时候再拼凑式，会越改越累，因为拼凑式开发是违反高内聚原则的，它可能分散在各种核心流程的环节。这个时候，将它独立出来，作为单独的模块来维护。</p>
+
+<p>另外，在核心流程的生命周期中，留几个扩展点也是很好的做法。做业务开发，特别是项目初期，一般都不太讲究开闭原则，反正改起来也挺容易。这一点实在是应该向Java界最经典的框架Spring学习，核心IoC支撑起其他所有功能。核心模块是值得按照开闭原则去设计的。</p>
+
+<h4>3. 单个项目仓库和不断重构</h4>
+
+<p>这一点可以算是小团队的优势。对于人多的团队来说，同一个代码仓库最大的问题就是并行开发时候的合并和冲突，不得不将项目分离。但是人少的时候，即使大家频繁提交代码，冲突也不会太多，这个时候单代码仓库的一些优势就能体现出来。</p>
+
+<p>重构的成本会非常小。方法改名或者参数修改，借助IDE完成是分分钟的事情，大的改动也可以有明确的范围。我们在受够了6个层级的商品后，有一天终于决定要进行重构，结果删除了其中一层，保证项目语法检查通过之后，测试，删表，发现竟然已经没有了问题，整个代码重构时间不到一天，要知道之前在大团队做类似事情，时间会是以月计的，甚至有筹划数月，最终根本推不下去而放弃的时候。</p>
+
+<h3>5. 关于创业</h3>
+
+<p>说了这么多技术，其实创业一年来感受最多的不是技术本身。你不太会在生产环境用上了Docker、Scala或是其他高科技而欣喜。</p>
+
+<p>当我看到公司发出去的快递信封，从轻松装进快递员的小袋子，变成了篮子装，再变成了小车装的时候，就会感觉自己还是做了点事情的。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">code4craft</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-30T09:55:00+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2016</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://code4craft.github.com/blog/2016/10/30/chuang-ye-ri-zhi-%28san-%29%5Byi%5D-nian-hou-%5Byi%5D-xie-ji-zhu-shang-de-zong-jie/" data-via="" data-counturl="http://code4craft.github.com/blog/2016/10/30/chuang-ye-ri-zhi-%28san-%29%5Byi%5D-nian-hou-%5Byi%5D-xie-ji-zhu-shang-de-zong-jie/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/06/27/yao-you-dian-wei-ji-gan/" title="Previous Post: 要有点危机感">&laquo; 要有点危机感</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+<section imagesd="comment">
+<h1>Add a comment</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"code4craft"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+</section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+  <h1>新浪微博</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1487828712&verifier=a3843d95">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/10/30/chuang-ye-ri-zhi-%28san-%29%5Byi%5D-nian-hou-%5Byi%5D-xie-ji-zhu-shang-de-zong-jie/">创业日志（三）一年来一些技术上的总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/06/27/yao-you-dian-wei-ji-gan/">要有点危机感</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/31/xie-zai-webmagickuai-yao-san-nian-de-shi-hou/">写在WebMagic快要三岁的时候</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/19/pai-che-pai/">从拍车牌的系统设计谈起</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/16/ji-dang-san-shi-nian-du-hou/">激荡三十年读后</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - code4craft -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

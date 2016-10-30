@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。 ">
+  <meta name="description" content="monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。 jsocks的改造 首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。 今天把jsocks修改了下， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,190 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/07/monkeysocks-arch/">Monkeysocks架构规划</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-07T21:35:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。它使用socks代理，将录制网络流量并本地保存，并在测试时将其重放。</p></blockquote>
+
+<h2>jsocks的改造</h2>
+
+<p>首先对公司一个项目进行了代理，测试结果：从开始启动到完成，只有4.7M的网络流量，本地空间开销不是问题。</p>
+
+<p>今天把jsocks修改了下，将build工具换成了maven，并独立成了项目<a href="https://github.com/code4craft/monkeysocks/jsocks">https://github.com/code4craft/jsocks</a>。后来算是把record和replay功能做完了，开始研究各种协议replay的可能性。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/07/monkeysocks-arch/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/06/monkeysocks/">Monkeysocks开发日志</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-06T16:09:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>monkeysocks的目标是为开发以及测试提供一个稳定的环境。</p></blockquote>
+
+<h4>2013-7-5 动机</h4>
+
+<p>前几天听说公司的测试团队在鼓捣数据固化的东西，说白了就是在测试启动时构建一个临时性的数据库，操作完之后再销毁，这样的好处是不造成测试副作用，同时屏蔽环境的差异。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/06/monkeysocks/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/03/show-in-github/">玩转github之&#8211;神啊满足我的虚荣心吧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-03T07:47:00+08:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>github版简历</h3>
+
+<p><a href="http://resume.github.io/">http://resume.github.io/</a>上有这个东东，但是样式太难看了。看到一个挺不错的模板<a href="https://github.com/hit9/GhResume">https://github.com/hit9/GhResume</a>，就给用上了。我的简历：
+<a href="http://code4craft.github.io/GhResume/">http://code4craft.github.io/GhResume/</a></p>
+
+<h3>关注star</h3>
+
+<p>最近做的项目在github每天会有几个star，出于虚荣心嘛，经常忍不住就会去看看，有人star了没？有人fork了没？</p>
+
+<p>每天看太麻烦了，干脆做成一个chrome插件，带桌面通知，有新star提醒，岂不开心？</p>
+
+<p>于是有了<a href="https://github.com/code4craft/exciting"><strong>exciting</strong></a>！ 哥也会做chrome插件了！液！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/28/todolist/">一个shell下的todolist</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-28T10:17:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>使用和文件保存都挺简单，试试看吧！</p>
+
+<p><a href="http://todotxt.com/">http://todotxt.com/</a>貌似还能同步到手机端？</p>
+
+<p>下载之后，</p>
+
+<pre><code>ln -s xxx/todo.sh /usr/local/bin/todo
+</code></pre>
+
+<p>貌似这样会把东西存到/usr/local/bin/todo.txt里？不管了！</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -341,190 +525,6 @@ jhat -J-Xmx512m dumpfile
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/12/blackhole-io-model/">BlackHole开发日记-使用三种不同IO模型实现一个DNS代理服务器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-12T22:16:00+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>BlackHoleJ是一个DNS服务器。他的一个功能是，对于它解析不了的DNS请求，它将请求转发到另外一台DNS服务器，然后再将其响应返回给客户端，起到一个DNS代理的作用。</p>
-
-<p><img src="/images/posts/forward.png" alt="image" /></p>
-
-<p>这个功能的实现经历了三个版本，也对应了三个经典的IO模型。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/12/blackhole-io-model/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/25/2012-summary/">2012年总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-25T22:40:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>看了别人写的数字总结，自己也来跟风写一个吧。</p>
-
-<p>看了8本书：</p>
-
-<p>《HTTP权威指南》、《UNIX编程艺术》、《程序员的思维修炼》、《软件随想录》、《TCP/IP详解》、《构建高性能Web站点 : 改善性能和扩展规模的具体做法》、《深入Java虚拟机》、《JAVA并发编程实战》</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/25/2012-summary/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/25/blackhole-anti-dns-poison/">BlackHole开发日志&#8211;防止DNS污染</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-25T21:13:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3></h3>
-
-<hr />
-
-<h3>DNS污染原理</h3>
-
-<p>DNS污染是比DNS劫持更加难以防御的一种攻击，受攻击者访问网站时可被导向其他域名，例如某“不存在的网站”被导向了一个“不存在的IP地址”。</p>
-
-<p>DNS污染的原理如下：</p>
-
-<p>DNS查询也是一个经典的请求-回答模式。首先，客户端发起DNS查询，这是一个UDP包。路由器在转发IP包时，对其内容做解析，若发现其是使用53端口的UDP包，并且其内容符合某些特征(普通的DNS请求都是明文)，则从旁路直接返回一个伪造的应答，将其应答指向某个特定IP。因为这个返回速度非常快，所以先于正常请求到达客户端。而客户端收到一个返回包，就认为得到了答案，不再继续接收，而正确的请求结果就被忽略了！</p>
-
-<p><img src="/images/posts/dns-poison.png" alt="image" /></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/25/blackhole-anti-dns-poison/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/17/fenng-career/">十年莽撞IT路</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-17T18:39:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>原文地址：<a href="http://dbanotes.net/mylife/ten_years_it_road.html">http://dbanotes.net/mylife/ten_years_it_road.html</a> 作者冯大辉<a href="http://weibo.com/fenng">@fenng</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/17/fenng-career/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -559,23 +559,23 @@ jhat -J-Xmx512m dumpfile
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/10/30/chuang-ye-ri-zhi-%28san-%29%5Byi%5D-nian-hou-%5Byi%5D-xie-ji-zhu-shang-de-zong-jie/">创业日志（三）一年来一些技术上的总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/06/27/yao-you-dian-wei-ji-gan/">要有点危机感</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/31/xie-zai-webmagickuai-yao-san-nian-de-shi-hou/">写在WebMagic快要三岁的时候</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/19/pai-che-pai/">从拍车牌的系统设计谈起</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/16/ji-dang-san-shi-nian-du-hou/">激荡三十年读后</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/08/2016nian-mu-biao/">2016年目标</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/25/fei-teng-shi-wu-nian-du-hou/">沸腾十五年读后</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/18/2015nian-zong-jie/">2015年总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/10/chuang-ye-ri-zhi-er-cong-xiu-xing-dao-lu-xing/">创业日志(二)&#8211;从修行到旅行</a>
       </li>
     
   </ul>
