@@ -9,7 +9,24 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="之前做了个Java项目MockSocks，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。 当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重， &hellip;">
+  <meta name="description" content="一：起因 最近公司代码被扫出有一个xss漏洞，检查之后，发现大致是这样一个页面： DemoAction 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+public class DemoAction extends ActionSupport { private &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +93,89 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/18/struts2/">Struts2一个[安全问题]的分析报告</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-18T09:42:00+08:00" pubdate data-updated="true">Nov 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>一：起因</h2>
+
+<p>最近公司代码被扫出有一个xss漏洞，检查之后，发现大致是这样一个页面：</p>
+
+<figure class='code'><figcaption><span>DemoAction </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAction</span> <span class="kd">extends</span> <span class="n">ActionSupport</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="s">&quot;success&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/18/struts2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -467,51 +567,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/03/sum/">工作满两年时候的总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-03T15:15:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近工作处于低靡状态。公司玩转型，但是也没转出个啥效果。组里转到前端开发了，产品方向不定，至今也没做出个啥玩意来。工作内容缺少挑战性，更多是跟产品形态打交道了。不是很喜欢这个领域。升职的事也说不准，虽然自己只有两年工作经验，但是由于读书太久，岁数却接近30了，有点危机感。</p>
-
-<p>生活上丰富多彩。女儿出生了，开始操心起来了。压力也大了些，要计划买房了。老婆工作不顺利，不过她自己也没太大所谓，随遇而安吧。</p>
-
-<p>业余项目也挺丰富。BlackHoleJ和webmagic有了不少star了，都有了公司级用户，也得到了不少赞扬。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/03/sum/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -546,6 +601,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/12/13/2016nian-zong-jie/">2016，不虚此行</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/11/26/chuang-ye-gong-si-zhi-nan-zhi-ban-gong-shi-wang-luo-checklist/">创业公司指南之办公室网络checklist</a>
       </li>
     
@@ -559,10 +618,6 @@
     
       <li class="post">
         <a href="/blog/2016/06/27/yao-you-dian-wei-ji-gan/">要有点危机感</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/31/xie-zai-webmagickuai-yao-san-nian-de-shi-hou/">写在WebMagic快要三岁的时候</a>
       </li>
     
   </ul>
