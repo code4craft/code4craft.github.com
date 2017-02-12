@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2016-12-25T19:57:26+08:00</updated>
+  <updated>2017-02-12T09:37:37+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2017年的一些计划]]></title>
+    <link href="http://code4craft.github.com/blog/2017/02/12/2017nian-de-yi-xie-ji-hua/"/>
+    <updated>2017-02-12T08:58:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2017/02/12/2017nian-de-yi-xie-ji-hua</id>
+    <content type="html"><![CDATA[<p>回想了下<a href="http://code4craft.github.io/blog/2016/02/08/2016nian-mu-biao/">2016年的目标</a>，发现完成的并不好：</p>
+
+<ol>
+<li>减肥到180。 <code>0%</code></li>
+<li>WebMagic发布至少两个大版本，完善代理、xpath等功能，并对基础代码进行部分重构。<code>60%</code></li>
+<li>对至少3个典型的业务场景（例如：账号、订单、商品）架构方案做全面的综述，提出自己满意的通用方案，并整理成文章，如果能写出开源项目就更好。<code>70%</code></li>
+</ol>
+
+
+<!--more-->
+
+
+<p>说来惭愧，1坚持了大概两个月，一路Keep刷榜，后来坚持不下去的真实原因其实是WOW军团再临开服，玩了一张季卡，结果这东西一旦松懈就很难继续了。这个是必须要做的，今年继续。减肥基本没效果。</p>
+
+<p>2算是完成60%，发了一个大版本，其实大功能基本没做，但是面子工程是翻新了一遍，主页也改用jekyll重写了。不过去年有基于WebMagic的衍生项目，把管理后台做好了，代理那边也有个写的很好的项目参考，17年RoadMap也已确定，WebMagic从14年开始就没有大功能改动了，明年应该会有比较大的进展。</p>
+
+<p>3算是70%。不考虑规模，去年做的业务功能基本上是前面几年的总和。“账号、订单、商品”，包括其他的进销存、钱包、权限，因为自己一直在做，所以确实有了一些心得，也把公司的这几块理顺了，但是因为这样才发现：很难有项目级的通用方案。做了5年半业务开发，才发现：当你把业务开发理顺了的时候，其实也是挺容易的。</p>
+
+<p>定一下今年目标：</p>
+
+<ol>
+<li>减肥到180。</li>
+<li>WebMagic发布两个大版本，完善监控和代理模块。<a href="https://github.com/code4craft/webmagic/issues/446">2017 RoadMap</a></li>
+<li>重拾机器学习，特别是了解深度学习目前工业界的一些应用场景。</li>
+<li>关于的公司的，把新人培养起来，组建一个有战斗力的团队。</li>
+</ol>
+
+
+<p>另外，今年二宝也要出生了，可见时间会越来越少，工作上因为一些杂事效率也慢慢变低，需要培养更高效的习惯。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2016，不虚此行]]></title>
@@ -815,22 +852,6 @@ APM：Cat 虽然接入有一些坑，但是功能够用
 <p>其他的技术提高比较琐碎，也乏善可陈。确实今年变懒了。</p>
 
 <p>年底换了组，做一些ERP性质的开发，挑战更小，必须要自我提高了。要有点危机感。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[追求的和得到的]]></title>
-    <link href="http://code4craft.github.com/blog/2014/11/12/zhui-qiu-de-he-de-dao-de/"/>
-    <updated>2014-11-12T23:31:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/11/12/zhui-qiu-de-he-de-dao-de</id>
-    <content type="html"><![CDATA[<p>今天做了两个月的团单服务改造终于上线了，相比之前的服务，性能基本上提高了一个数量级，稳定性也增加不少。这是今年做的最有价值的一个项目，之前服务数次S1故障的场景历历在目。而这次重构是按照业务量增加几倍来设计的，相信再过一两年都不太会出问题了。</p>
-
-<!--more-->
-
-
-<p>这个项目的完成还是比较曲折的，中间人员组织调整了好几次。从开始连CEO都亲自过问，到最后连找人改个bug都很困难。最后我承担起了项目跟进的工作，说实话推进很困难，还好还是按时上线。就在今天完成的当天，就听说这些业务要交出去了。</p>
-
-<p>交就交吧，KPI其实是个浮云，这个也不做多想了。无论怎样，只希望把事情做好，以后提到这件事的时候，还记得我的名字，也就够了。</p>
 ]]></content>
   </entry>
   
