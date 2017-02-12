@@ -6,6 +6,8 @@ comments: true
 categories: 
 ---
 
+![](/images/posts/stock-photo-92524253.jpg)
+
 回想了下[2016年的目标](http://code4craft.github.io/blog/2016/02/08/2016nian-mu-biao/)，发现完成的并不好：
 
 1. 减肥到180。 `0%`
