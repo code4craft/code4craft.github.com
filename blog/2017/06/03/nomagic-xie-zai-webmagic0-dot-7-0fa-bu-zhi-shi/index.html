@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>WebMagic-Avalon计划启动 - 代码工匠</title>
+  <title>No Magic - 写在WebMagic0.7.0发布之时 - 代码工匠</title>
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！ 双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！ 1. 将爬虫脚本化 用尽量自然，简单的语言达到爬虫配置的目的， &hellip;">
+  <meta name="description" content="过节三天，没有安排长途旅游，除了带女儿出去活动一下，终于有点时间写点业余代码了。 WebMagic这次终于有比较大的重构，其实要感谢英语培训班，因为大部分代码都是女儿上课的时候完成的。她上课两个小时，我就在旁边的咖啡店等两小时，可以没什么干扰的写两小时代码。这个版本前前后后也拖了2个月了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://code4craft.github.com/blog/2013/11/11/webmagic-avalon-start/">
+  <link rel="canonical" href="http://code4craft.github.com/blog/2017/06/03/nomagic-xie-zai-webmagic0-dot-7-0fa-bu-zhi-shi/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">WebMagic-Avalon计划启动</h1>
+      <h1 class="entry-title">No Magic - 写在WebMagic0.7.0发布之时</h1>
     
     
       <p class="meta">
@@ -95,58 +95,45 @@
   
 
 
-<time datetime="2013-11-11T07:50:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+<time datetime="2017-06-03T20:13:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2017</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>一直以来都有个想法，想要将爬虫做到可配置化，同时可复用这些配置。然后将这些配置做成可复用，可分享，可搜索的，这样就不会经常有一堆人重复劳动了！</p>
+<div class="entry-content"><p><img src="http://webmagic.io/images/logo.jpeg" alt="logo" /></p>
 
-<p>双11的时候启动这个项目，希望解放苦逼的程序员，以后多点时间去谈恋爱，陪家人！</p>
+<p>过节三天，没有安排长途旅游，除了带女儿出去活动一下，终于有点时间写点业余代码了。</p>
 
-<!--more-->
+<p>WebMagic这次终于有比较大的重构，其实要感谢英语培训班，因为大部分代码都是女儿上课的时候完成的。她上课两个小时，我就在旁边的咖啡店等两小时，可以没什么干扰的写两小时代码。这个版本前前后后也拖了2个月了，终于在前两天测试完成，主要部分没什么大问题了，也可以发一个版本。</p>
 
+<p>这次发布主要针对两个诟病比较久的问题，一个是POST请求的处理，一个是代理的切换。老实说我自己遇到这两种场景都不多，所以之前一直用的是很简单的做法完成功能。</p>
 
-<h3>1. 将爬虫脚本化</h3>
-
-<p>用尽量自然，简单的语言达到爬虫配置的目的，初定使用JRuby，雏形大概是这样子：</p>
+<p>这次想重写，最难的部分就是如何定API。前前后后包括网友提交的，也有5、6个版本了。最终选择的API我还是比较满意的，好处就是它看起来很简单。好的API定义，应该给人的感觉是“啊，就应该是这样子的”。比如POST请求，有一个核心就是设置RequestBody。之前写了一版是根据参数和Content-Type去动态的做转换，例如Request.setParams(Object)，然后Request.setContentType(&ldquo;JSON&rdquo;)，就可以提交JSON。这个在Spring MVC等框架中也用的不少。后来改成了最基本的、最简单的方式：自己设置RequestBody，再将RequestBody的构造做封装，最终写起来是这样的：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">title</span> <span class="o">=</span> <span class="n">css</span> <span class="s">&quot;div.BlogTitle h1&quot;</span>
-</span><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="n">css</span> <span class="s">&quot;div.BlogContent&quot;</span>
-</span><span class='line'><span class="n">urls</span> <span class="s">&quot;http://my\\.oschina\\.net/flashsword/blog/\\d+&quot;</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">(</span><span class="s">&quot;http://xxx/path&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">request</span><span class="o">.</span><span class="na">setMethod</span><span class="o">(</span><span class="n">HttpConstant</span><span class="o">.</span><span class="na">Method</span><span class="o">.</span><span class="na">POST</span><span class="o">);</span>
+</span><span class='line'><span class="n">request</span><span class="o">.</span><span class="na">setRequestBody</span><span class="o">(</span><span class="n">HttpRequestBody</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="s">&quot;{&#39;id&#39;:1}&quot;</span><span class="o">,</span><span class="s">&quot;utf-8&quot;</span><span class="o">));</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>见博客：<a href="http://my.oschina.net/flashsword/blog/175349">在webmagic中加入了自定义语言</a></p>
+<p>这个接口看起来一点也不高级，但是挺容易理解。这里JSON是序列化好的结果，其实HttpRequestBody.json()也是多余，直接将Content-Type传过来，连.json()也省了。只不过考虑到对功能有一些“友好性”的引导，毕竟手写Content-Type容易出错，所以加上了。</p>
 
-<h3>2. 完整的管理后台</h3>
+<p>之前看《Unix编程艺术》，觉得Keep It Simple, Stupid挺好。现在写的代码、读的代码越来越越多，也越来越发现简单的好处。</p>
 
-<p>完整的管理后台，包括：</p>
+<p>现在回过头来看WebMagic有挺多设计不合理的地方(幸好能发现不然这几年白混了)。</p>
 
-<ul>
-<li><p>规则的选择</p></li>
-<li><p>爬虫的管理</p></li>
-<li><p>爬虫的监控</p></li>
-</ul>
+<p>刚开始写的时候是4年前，那会取名是受“ImageMagick”影响，“Magic”是希望它可以让Web数据的获取变得很方便，跟魔法一样。那会对模块化已经比较有心得，所以宏观上没什么大问题，但是局部的实现和API上，有很多“试图多做事”的做法。例如html.regex()可以不写捕获组序号，默认取第一个捕获组（如果有的话），@Target()的正则匹配也是自己定制过的，将URL中最常用的&#8221;.&ldquo;直接替换成了&rdquo;&#46;&ldquo;。在使用中，相信也给不少人带来了困扰，从issue中就看得出来。</p>
 
+<p>当然WebMagic本身这么多人喜欢，也是我没料到的，看各种评价，主要还是文档写的比较全面详细，另外API比较简单。最近有次分享，一个朋友找到我跟我合影，说是用到框架收益良多，也是让我很惊喜。</p>
 
-<h3>3. 脚本分享</h3>
+<p>这次0.7.0之后，我会陆续重构一些组件，让它们变得更加简单。</p>
 
-<p>一个脚本要做到可分享，可能包括几个描述性内容：</p>
-
-<ul>
-<li><p>适配的URL</p></li>
-<li><p>简单描述</p></li>
-<li><p>抽取结果</p></li>
-</ul>
-
-
-<p>最后做到一个平台，可以自由发布和搜索脚本。</p>
+<p>No Magic, just K.I.S.S.</p>
 </div>
 
 
@@ -169,7 +156,7 @@
   
 
 
-<time datetime="2013-11-11T07:50:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+<time datetime="2017-06-03T20:13:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2017</time>
       
 
 
@@ -184,10 +171,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/11/08/wu-ze-ren-li-zhi/" title="Previous Post: 无责任励志一则-成功就是把你做的事做精致">&laquo; 无责任励志一则-成功就是把你做的事做精致</a>
+        <a class="basic-alignment left" href="/blog/2017/02/12/2017nian-de-yi-xie-ji-hua/" title="Previous Post: 2017年的一些计划">&laquo; 2017年的一些计划</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/11/17/express-dot-java/" title="Next Post: 小轮子一枚-高仿express的Java服务器">小轮子一枚-高仿express的Java服务器 &raquo;</a>
       
     </p>
   </footer>

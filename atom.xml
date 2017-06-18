@@ -4,7 +4,7 @@
   <title><![CDATA[代码工匠]]></title>
   <link href="http://code4craft.github.com/atom.xml" rel="self"/>
   <link href="http://code4craft.github.com/"/>
-  <updated>2017-02-12T09:43:38+08:00</updated>
+  <updated>2017-06-18T20:17:30+08:00</updated>
   <id>http://code4craft.github.com/</id>
   <author>
     <name><![CDATA[code4craft]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[No Magic - 写在WebMagic0.7.0发布之时]]></title>
+    <link href="http://code4craft.github.com/blog/2017/06/03/nomagic-xie-zai-webmagic0-dot-7-0fa-bu-zhi-shi/"/>
+    <updated>2017-06-03T20:13:00+08:00</updated>
+    <id>http://code4craft.github.com/blog/2017/06/03/nomagic-xie-zai-webmagic0-dot-7-0fa-bu-zhi-shi</id>
+    <content type="html"><![CDATA[<p><img src="http://webmagic.io/images/logo.jpeg" alt="logo" /></p>
+
+<p>过节三天，没有安排长途旅游，除了带女儿出去活动一下，终于有点时间写点业余代码了。</p>
+
+<p>WebMagic这次终于有比较大的重构，其实要感谢英语培训班，因为大部分代码都是女儿上课的时候完成的。她上课两个小时，我就在旁边的咖啡店等两小时，可以没什么干扰的写两小时代码。这个版本前前后后也拖了2个月了，终于在前两天测试完成，主要部分没什么大问题了，也可以发一个版本。</p>
+
+<p>这次发布主要针对两个诟病比较久的问题，一个是POST请求的处理，一个是代理的切换。老实说我自己遇到这两种场景都不多，所以之前一直用的是很简单的做法完成功能。</p>
+
+<p>这次想重写，最难的部分就是如何定API。前前后后包括网友提交的，也有5、6个版本了。最终选择的API我还是比较满意的，好处就是它看起来很简单。好的API定义，应该给人的感觉是“啊，就应该是这样子的”。比如POST请求，有一个核心就是设置RequestBody。之前写了一版是根据参数和Content-Type去动态的做转换，例如Request.setParams(Object)，然后Request.setContentType(&ldquo;JSON&rdquo;)，就可以提交JSON。这个在Spring MVC等框架中也用的不少。后来改成了最基本的、最简单的方式：自己设置RequestBody，再将RequestBody的构造做封装，最终写起来是这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Request</span><span class="o">(</span><span class="s">&quot;http://xxx/path&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">request</span><span class="o">.</span><span class="na">setMethod</span><span class="o">(</span><span class="n">HttpConstant</span><span class="o">.</span><span class="na">Method</span><span class="o">.</span><span class="na">POST</span><span class="o">);</span>
+</span><span class='line'><span class="n">request</span><span class="o">.</span><span class="na">setRequestBody</span><span class="o">(</span><span class="n">HttpRequestBody</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="s">&quot;{&#39;id&#39;:1}&quot;</span><span class="o">,</span><span class="s">&quot;utf-8&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个接口看起来一点也不高级，但是挺容易理解。这里JSON是序列化好的结果，其实HttpRequestBody.json()也是多余，直接将Content-Type传过来，连.json()也省了。只不过考虑到对功能有一些“友好性”的引导，毕竟手写Content-Type容易出错，所以加上了。</p>
+
+<p>之前看《Unix编程艺术》，觉得Keep It Simple, Stupid挺好。现在写的代码、读的代码越来越越多，也越来越发现简单的好处。</p>
+
+<p>现在回过头来看WebMagic有挺多设计不合理的地方(幸好能发现不然这几年白混了)。</p>
+
+<p>刚开始写的时候是4年前，那会取名是受“ImageMagick”影响，“Magic”是希望它可以让Web数据的获取变得很方便，跟魔法一样。那会对模块化已经比较有心得，所以宏观上没什么大问题，但是局部的实现和API上，有很多“试图多做事”的做法。例如html.regex()可以不写捕获组序号，默认取第一个捕获组（如果有的话），@Target()的正则匹配也是自己定制过的，将URL中最常用的&#8221;.&ldquo;直接替换成了&rdquo;&#46;&ldquo;。在使用中，相信也给不少人带来了困扰，从issue中就看得出来。</p>
+
+<p>当然WebMagic本身这么多人喜欢，也是我没料到的，看各种评价，主要还是文档写的比较全面详细，另外API比较简单。最近有次分享，一个朋友找到我跟我合影，说是用到框架收益良多，也是让我很惊喜。</p>
+
+<p>这次0.7.0之后，我会陆续重构一些组件，让它们变得更加简单。</p>
+
+<p>No Magic, just K.I.S.S.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2017年的一些计划]]></title>
@@ -810,50 +850,6 @@ APM：Cat 虽然接入有一些坑，但是功能够用
 <p>于是我回到了那个经典的“技术还是管理路线”的问题。有好一段时间，我一直在linkedin上翻各种人的简历。然后我发现一个现象：好多架构师出去了也能胜任总监、CTO的角色，而现在的总监、CTO也多是从基层技术做起，他们唯一的共同点就是：在这个技术和业务领域有很长的工作经历。</p>
 
 <p>另外一个我看到的就是，其实技术职业发展相对扁平，有2到3次机会（有同一公司，也有跳槽），也就差不多了。对于自己来说，倒不如问自己，如果这样的机会来了，你是否能胜任，欠缺什么，更为重要。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[2014年总结]]></title>
-    <link href="http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie/"/>
-    <updated>2014-12-22T22:47:00+08:00</updated>
-    <id>http://code4craft.github.com/blog/2014/12/22/2014nian-zong-jie</id>
-    <content type="html"><![CDATA[<p>又是一年年底。今年我跟老婆结婚第三年，女儿也有一岁半了，一切安好，有家人的陪伴真好。工作上，今年是工作第四年，有了更多的责任，也有了不少的突破。</p>
-
-<!--more-->
-
-
-<h2>1. 生活</h2>
-
-<p>生活的重点都在小家伙上。小家伙很可爱，看着她一天一天长大，也觉得很开心。带小孩还是比较累的，现在每天下班之后都需要陪她到睡觉，早上起来还要带个把小时。</p>
-
-<p>因为工资涨了一些，虽然有不少的房贷，但是也没有什么压力了。后来和老婆也定了一些理财计划，以后会慢慢的执行，让生活越来越好。</p>
-
-<p>生活越来越平淡，平平淡淡才是真嘛。</p>
-
-<h2>2. 工作成果</h2>
-
-<p>今年工作中发生的事情还是比较多的。</p>
-
-<p>一个是随着工作经验的积累和自己的表现还不错，也受到了更多的重视。参与了几个比较大的项目，也有不少是作为负责人参与，在小伙伴中的声望也比较高了。年中的时候做了一个大项目，整个部门30多个人封闭开发了2个多月，得到了不少锻炼，也作出了不错的成绩。</p>
-
-<p>在做这个项目的同时，我也体会到了团队的重要，后面就更多的参与到团队建设中来。后面的半年，我组织了接近20次分享，目的是让大家都能得到提高。这也给我们团队起到了不少的推动作用。</p>
-
-<p>业余上，写的博客数下降了，但是今年花了接近一个月时间，写了一个WebMagic的文档。这是个大工程。因为这个工作，WebMagic的推广更加的迅速，已经有了接近700个star，QQ群也突破了500人。</p>
-
-<h2>3. 技术提高</h2>
-
-<p>技术方面，也还是有一些收获的。主要是往上(架构设计)，往下(性能优化)。</p>
-
-<p>一个是设计方面，随着经验的增加，分析问题也有了一些方法论，使得做设计更加有章可循。总体来说是进步。</p>
-
-<p>关于性能优化方面。年前做了一次重构，重构对象是公司最重要、调用量最大的团单服务，重构的结果，无论从效率还是可用性上来说，基本上已经优化到了业务的极限，瓶颈反而到了RPC中间件、数据库、缓存等地方。我记得年初的目标是“能对性能做定量分析”，今年看来算是达到了50%。</p>
-
-<p>实际上总结下来，我发现无论往上还是往下，详细的分析往往比方案要更有价值。这也算是成为了我的一种方法论吧。</p>
-
-<p>其他的技术提高比较琐碎，也乏善可陈。确实今年变懒了。</p>
-
-<p>年底换了组，做一些ERP性质的开发，挑战更小，必须要自我提高了。要有点危机感。</p>
 ]]></content>
   </entry>
   
