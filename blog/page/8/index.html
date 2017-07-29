@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="BlackHole开发很久了，目前稳定性、性能都还可以了，但是作为一个Java程序，内存开销一直是硬伤，动不动100M内存下去了，对于单机用户实在是不太友好。 怎么办？优化先从分析开始！ 获取内存信息 获取内存信息一般使用jmap。 jmap -histo pid 这种方式获取到得比较简略， &hellip;">
+  <meta name="description" content="作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">写了个快捷保存文本的shell工具</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-27T22:14:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>作为一个Java程序员，对脚本语言程序员自己随时写些小工具，已经羡慕很久了，于是最终开始了脚本语言的学习。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/06/27/yong-pythonxie-liao-ge-xiao-gong-ju/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -484,55 +525,6 @@ jhat -J-Xmx512m dumpfile
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/17/blackhole-develop-diary2/">blackhole开发日记II</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-17T15:14:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>2013-2-17</h4>
-
-<p>时隔一个月，再次迎来更新！</p>
-
-<p>过年的时候产生了一个想法，解决DNS劫持和DNS污染的问题：</p>
-
-<p>收集一些可靠DNS服务器列表，使用同一个本地端口向这些服务器挨个发送请求，同时监听这个端口的返回包。拿到第一条返回包作为结果返回，并且继续监听，收集所有返回包，做为判定DNS劫持和DNS拦截的依据，最终将正确结果缓存。实现的方式是NIO，复用DatagramChannel。</p>
-
-<p>经过测试，gfw在实现DNS污染的同时，不会丢弃掉回包，因此此方案是可行的，而且比起UDP转TCP的方式，理论上速度会快很多。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/17/blackhole-develop-diary2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -567,6 +559,10 @@ jhat -J-Xmx512m dumpfile
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/07/25/di-er-ge-bao-bei/">第二个宝贝</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/06/18/2017linuxconjian-wen/">2017 LinuxCon见闻</a>
       </li>
     
@@ -580,10 +576,6 @@ jhat -J-Xmx512m dumpfile
     
       <li class="post">
         <a href="/blog/2016/12/13/2016nian-zong-jie/">2016，不虚此行</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/11/26/chuang-ye-gong-si-zhi-nan-zhi-ban-gong-shi-wang-luo-checklist/">创业公司指南之办公室网络checklist</a>
       </li>
     
   </ul>
