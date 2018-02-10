@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "'从工程师到产品经理(一)——适应变化'"
+title: "从工程师到产品经理(一)——适应变化"
 date: 2018-02-10 23:20
 comments: true
 categories: 
