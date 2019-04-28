@@ -437,8 +437,14 @@
         <lastmod>2018-12-09T17:23:04+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://code4craft.github.com/blog/2019/02/24/du-luo-su-%3C%3Cxing-fu-zhi-lu-%3E%3E/
+        </loc>
+        <lastmod>2019-04-28T22:48:02+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://code4craft.github.com/</loc>
-        <lastmod>2018-12-09T17:23:04+08:00</lastmod>
+        <lastmod>2019-04-28T22:48:02+08:00</lastmod>
     </url>
     <url>
         <loc>http://code4craft.github.com/about/</loc>
@@ -446,6 +452,6 @@
     </url>
     <url>
         <loc>http://code4craft.github.com/blog/archives/</loc>
-        <lastmod>2018-12-09T17:23:04+08:00</lastmod>
+        <lastmod>2019-04-28T22:48:02+08:00</lastmod>
     </url>
 </urlset>
