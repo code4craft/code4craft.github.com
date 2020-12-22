@@ -9,7 +9,7 @@
   <meta name="author" content="code4craft">
 
   
-  <meta name="description" content="之前做了个Java项目MockSocks，要做UI，用Swing写实在是又low又费劲，跟前端同事聊起node-webkit，觉得很不错。但是我大部分业务都在Java上，于是就涉及到Java与js通信问题。 当然最常用的解决方案就是用Java写一个Web后端。但是这样解决太重， &hellip;">
+  <meta name="description" content="终于到周末了！这周事情不多，仅仅是用hive迁移一个跑脚本的程序，结果写了一周都没弄好，被hive操的生活不能自理了！加上负责的事情逐渐多起来，也变得有点忙了。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,130 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/21/kai-shi-shi-yong-hive/">开始使用hive</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-21T17:18:00+08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>终于到周末了！这周事情不多，仅仅是用hive迁移一个跑脚本的程序，结果写了一周都没弄好，被hive操的生活不能自理了！加上负责的事情逐渐多起来，也变得有点忙了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/21/kai-shi-shi-yong-hive/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/18/struts2/">Struts2一个[安全问题]的分析报告</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-18T09:42:00+08:00" pubdate data-updated="true">Nov 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>一：起因</h2>
+
+<p>最近公司代码被扫出有一个xss漏洞，检查之后，发现大致是这样一个页面：</p>
+
+<figure class='code'><figcaption><span>DemoAction </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAction</span> <span class="kd">extends</span> <span class="n">ActionSupport</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="s">&quot;success&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/18/struts2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -426,92 +550,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/">体验到了open-source的魅力</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-18T21:58:00+08:00" pubdate data-updated="true">Aug 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>webmagic从第一个正式版本到现在大概有一个月了，这一个月一直在提交代码，Longest Streak已经达到了25天，打破了开发blackhole时15天的记录了。webmagic确实是我最得意的一个项目，结合了领域经验和编码功底，包括注释和编码都是精雕细琢的。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/18/ti-yan-dao-liao-open-sourcede-mei-li/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/03/sum/">工作满两年时候的总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-03T15:15:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近工作处于低靡状态。公司玩转型，但是也没转出个啥效果。组里转到前端开发了，产品方向不定，至今也没做出个啥玩意来。工作内容缺少挑战性，更多是跟产品形态打交道了。不是很喜欢这个领域。升职的事也说不准，虽然自己只有两年工作经验，但是由于读书太久，岁数却接近30了，有点危机感。</p>
-
-<p>生活上丰富多彩。女儿出生了，开始操心起来了。压力也大了些，要计划买房了。老婆工作不顺利，不过她自己也没太大所谓，随遇而安吧。</p>
-
-<p>业余项目也挺丰富。BlackHoleJ和webmagic有了不少star了，都有了公司级用户，也得到了不少赞扬。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/03/sum/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -546,6 +584,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2020/12/22/2020nian-zong-jie/">&#8216;2020年总结&#8217;</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2020/05/26/piao-niu-zhe-ji-nian/">票牛这几年</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2019/02/24/du-luo-su-%3C%3Cxing-fu-zhi-lu-%3E%3E/">读罗素《幸福之路》</a>
       </li>
     
@@ -555,14 +601,6 @@
     
       <li class="post">
         <a href="/blog/2018/02/13/cong-gong-cheng-shi-dao-chan-pin-jing-li-er-xue-hui-jie-zhu-ta-ren-de-li-liang/">从工程师到产品经理(二)——学会借助他人的力量</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/02/10/cong-gong-cheng-shi-dao-chan-pin-jing-li-yi-gua-ying-bian-hua/">从工程师到产品经理(一)——适应变化</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/12/26/2017nian-zong-jie/">2017年总结</a>
       </li>
     
   </ul>
@@ -575,7 +613,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2019 - code4craft -
+  Copyright &copy; 2020 - code4craft -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
